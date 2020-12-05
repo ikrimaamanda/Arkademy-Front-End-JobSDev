@@ -1,0 +1,27 @@
+package com.example.jobsdev
+
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.TextView
+import com.example.jobsdev.ResetPassword.ResetPasswordSendEmailActivity
+
+class LoginCompanyActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login_company)
+
+        val tvRegisterCompany = findViewById<TextView>(R.id.tv_register_here)
+
+        tvRegisterCompany.setOnClickListener {
+            val intentRegister = Intent(this, RegisterCompanyActivity::class.java)
+            startActivity(intentRegister)
+        }
+
+        val tvResetPassword = findViewById<TextView>(R.id.tv_forgot_password)
+        tvResetPassword.setOnClickListener {
+            val intentResetPassword = Intent(this, ResetPasswordSendEmailActivity::class.java)
+            startActivity(intentResetPassword)
+        }
+    }
+}

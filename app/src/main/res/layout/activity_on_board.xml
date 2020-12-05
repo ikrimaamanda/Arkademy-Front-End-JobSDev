@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_purple_on_board_activity"
+    android:padding="20dp"
+    tools:context=".OnBoardActivity">
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:src="@drawable/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:text="Temukan developer \nBerbakat dan terbaik \ndi berbagai bidang \nkeahlian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_logo"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:lineSpacingExtra="10dp"
+        android:fontFamily="@font/open_sans_bold"
+        android:layout_marginTop="70dp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btn_login_as_engineer"
+        android:text="Masuk sebagai pekerja"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:background="@drawable/white_button"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginTop="150dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_or"
+        android:text="atau"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btn_login_as_engineer"/>
+
+    <Button
+        android:id="@+id/btn_login_as_company"
+        android:text="Masuk sebagai perekrut"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv_or"
+        android:background="@drawable/transparent_button"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>
