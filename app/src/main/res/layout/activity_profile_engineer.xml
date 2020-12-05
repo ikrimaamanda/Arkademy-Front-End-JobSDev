@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,7 +35,7 @@
 
             <TextView
                 android:id="@+id/tv_full_name"
-                android:text="Ikrima Amanda Wulandari"
+                android:text="Marinda Yunella"
                 android:textColor="#000"
                 android:textSize="22sp"
                 android:layout_marginTop="30dp"
@@ -46,7 +46,7 @@
 
             <TextView
                 android:id="@+id/tv_job_title"
-                android:text="Android Developer"
+                android:text="Web Developer"
                 android:textSize="14sp"
                 android:textColor="@color/grey"
                 android:layout_width="wrap_content"
@@ -201,7 +201,7 @@
 
             <TextView
                 android:id="@+id/tv_email"
-                android:text="ikrimaamanda@gmail.com"
+                android:text="marinda@gmail.com"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/iv_email_icon"
@@ -220,7 +220,7 @@
 
             <TextView
                 android:id="@+id/tv_instagram"
-                android:text="\@ikrimaamanda"
+                android:text="\@marinda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/iv_instagram_icon"
@@ -239,7 +239,7 @@
 
             <TextView
                 android:id="@+id/tv_github"
-                android:text="\@ikrimaamanda"
+                android:text="\@marinda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/iv_github_icon"
@@ -259,7 +259,7 @@
 
             <TextView
                 android:id="@+id/tv_gitlab"
-                android:text="\@ikrimaamanda"
+                android:text="\@marinda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/iv_gitlab_icon"

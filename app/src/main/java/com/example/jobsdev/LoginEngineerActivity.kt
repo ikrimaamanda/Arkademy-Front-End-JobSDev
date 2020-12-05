@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import com.example.jobsdev.HomeApp.HomeCompanyActivity
+import com.example.jobsdev.HomeApp.HomeEngineerActivity
 import com.example.jobsdev.ResetPassword.ResetPasswordSendEmailActivity
 
 class LoginEngineerActivity : AppCompatActivity() {
@@ -14,23 +14,20 @@ class LoginEngineerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login_engineer)
 
         val tvRegisterEngineer = findViewById<TextView>(R.id.tv_register_here)
-
         tvRegisterEngineer.setOnClickListener {
             val intentRegister = Intent(this, RegisterEngineerActivity::class.java)
             startActivity(intentRegister)
         }
 
         val tvForgotPassword = findViewById<TextView>(R.id.tv_forgot_password)
-
         tvForgotPassword.setOnClickListener {
             val intentForgotPassword = Intent(this, ResetPasswordSendEmailActivity::class.java)
             startActivity(intentForgotPassword)
         }
 
         val btnLogin = findViewById<Button>(R.id.btn_login)
-
         btnLogin.setOnClickListener {
-            val intentLogin = Intent(this, HomeCompanyActivity::class.java)
+            val intentLogin = Intent(this, HomeEngineerActivity::class.java)
             startActivity(intentLogin)
         }
     }
