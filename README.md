@@ -42,4 +42,4 @@ Tugas Week 3 is a light algorithm task to hone basic skills of kotlin
 
 ---
 
-[Back To The Top](# Arkademy-Front-End-JobSDev)
+[Back To The Top](#Arkademy-Front-End-JobSDev)
