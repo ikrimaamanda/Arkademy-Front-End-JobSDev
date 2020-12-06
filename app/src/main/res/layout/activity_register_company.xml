@@ -179,7 +179,7 @@
             android:layout_marginRight="5dp"/>
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_register"
             android:text="Daftar"
             android:textStyle="bold"
             android:textAllCaps="false"
