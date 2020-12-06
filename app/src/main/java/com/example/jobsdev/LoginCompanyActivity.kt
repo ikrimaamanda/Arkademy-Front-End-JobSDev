@@ -1,11 +1,15 @@
 package com.example.jobsdev
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import com.example.jobsdev.HomeApp.HomeCompanyActivity
+import com.example.jobsdev.Profile.ProfileAccountEngineerActivity
+import com.example.jobsdev.Profile.ProfileCompanyActivity
 import com.example.jobsdev.ResetPassword.ResetPasswordSendEmailActivity
 
 class LoginCompanyActivity : AppCompatActivity() {
@@ -25,10 +29,15 @@ class LoginCompanyActivity : AppCompatActivity() {
             startActivity(intentForgotPassword)
         }
 
-        val btnLoginCompany = findViewById<Button>(R.id.btn_login)
-        btnLoginCompany.setOnClickListener {
-            val intentLoginCompany = Intent(this, HomeCompanyActivity::class.java)
-            startActivity(intentLoginCompany)
+        val btnLogin = findViewById<Button>(R.id.btn_login)
+        val etFullName = findViewById<EditText>(R.id.et_email)
+        btnLogin.setOnClickListener {
+            val fullName = etFullName.text.toString()
+            val intentLogin = Intent(this, ProfileCompanyActivity::class.java)
+            intentLogin.putExtra("fullName", fullName)
+            setResult(Activity.RESULT_OK, intentLogin)
+            startActivity(intentLogin)
+            finish()
         }
     }
 }
