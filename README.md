@@ -18,7 +18,7 @@ These sections headers will be used to reference location of destination.
 
 ## Description
 
-Tugas Week 3 is a light algorithm task to hone basic skills of kotlin
+This repository is the code from the JobSDev application interface
 
 #### Built With
 
@@ -35,10 +35,9 @@ Tugas Week 3 is a light algorithm task to hone basic skills of kotlin
 ## How to run the app
 
 1. Open Android Studio
-2. Select the task you want to run
-3. Press the green button next to the main function () to run the algorithm
-4. Enter the required inputs if necessary
-5. Finish
+2. Select the project you want to run
+3. Press the green button next to the emulator
+4. Finish
 
 ---
 
