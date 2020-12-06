@@ -1,10 +1,8 @@
 # Arkademy-Front-End-JobSDev
 
-![Project Image](project-image-url)
+![Project Image](https://user-images.githubusercontent.com/26475029/101284934-98946080-381d-11eb-85b3-e0133e704cc8.PNG)
 
 > This is a ReadMe to help understand about this repository
-
-> <img width="203" alt="Capture JobSDev App" src="https://user-images.githubusercontent.com/26475029/101284934-98946080-381d-11eb-85b3-e0133e704cc8.PNG">
 
 ---
 
