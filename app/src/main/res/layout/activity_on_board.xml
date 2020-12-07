@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/tv_title"
-        android:text="Temukan developer \nBerbakat dan terbaik \ndi berbagai bidang \nkeahlian"
+        android:text="Find Talented and best developers in various fields of expertise"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_logo"
@@ -31,7 +31,7 @@
 
     <Button
         android:id="@+id/btn_login_as_engineer"
-        android:text="Masuk sebagai pekerja"
+        android:text="Login as engineer"
         android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
 
     <TextView
         android:id="@+id/tv_or"
-        android:text="atau"
+        android:text="or"
         android:gravity="center"
         android:textColor="@color/white"
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
 
     <Button
         android:id="@+id/btn_login_as_company"
-        android:text="Masuk sebagai perekrut"
+        android:text="Login as recruiter"
         android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

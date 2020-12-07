@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#F6F7F8"
+        android:background="@color/bg_color"
         android:padding="20dp"
         tools:context=".LoginEngineerActivity">
 
@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:text="Nama"
+            android:text="Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -47,7 +47,7 @@
 
         <EditText
             android:id="@+id/et_name"
-            android:hint="Masukkan nama lengkap"
+            android:hint="Enter full name"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
 
         <EditText
             android:id="@+id/et_email"
-            android:hint="Masukkan email"
+            android:hint="Enter email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -80,7 +80,7 @@
 
         <TextView
             android:id="@+id/tv_company"
-            android:text="Perusahaan"
+            android:text="Company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -89,7 +89,7 @@
 
         <EditText
             android:id="@+id/et_company"
-            android:hint="Masukkan nama perusahaan"
+            android:hint="Enter name of company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -100,7 +100,7 @@
 
         <TextView
             android:id="@+id/tv_position"
-            android:text="Jabatan"
+            android:text="Position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -109,7 +109,7 @@
 
         <EditText
             android:id="@+id/et_position"
-            android:hint="Posisi di perusahaan anda"
+            android:hint="Enter a Position in your company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -120,7 +120,7 @@
 
         <TextView
             android:id="@+id/tv_number_phone"
-            android:text="No handphone"
+            android:text="Phone number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -129,7 +129,7 @@
 
         <EditText
             android:id="@+id/et_number_phone"
-            android:hint="Masukkan no hadphone"
+            android:hint="Enter phone number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -140,7 +140,7 @@
 
         <TextView
             android:id="@+id/tv_password"
-            android:text="Kata sandi"
+            android:text="Password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -149,7 +149,7 @@
 
         <EditText
             android:id="@+id/et_password"
-            android:hint="Masukkan kata sandi"
+            android:hint="Enter password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -160,7 +160,7 @@
 
         <TextView
             android:id="@+id/tv_confirm_password"
-            android:text="Konfirmasi kata sandi"
+            android:text="Confirm password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -169,7 +169,7 @@
 
         <EditText
             android:id="@+id/et_confirm_password"
-            android:hint="Masukkan konfirmasi kata sandi"
+            android:hint="Enter confirm password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -180,7 +180,7 @@
 
         <Button
             android:id="@+id/btn_register"
-            android:text="Daftar"
+            android:text="Register"
             android:textStyle="bold"
             android:textAllCaps="false"
             android:background="@drawable/bg_orange"
@@ -199,7 +199,7 @@
             android:layout_gravity="center">
             <TextView
                 android:id="@+id/tv_dont_have_account"
-                android:text="Anda belum punya akun?"
+                android:text="Do you an account?"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -209,7 +209,7 @@
 
             <TextView
                 android:id="@+id/tv_login_here"
-                android:text="Masuk disini"
+                android:text="Login here"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/tv_dont_have_account"
