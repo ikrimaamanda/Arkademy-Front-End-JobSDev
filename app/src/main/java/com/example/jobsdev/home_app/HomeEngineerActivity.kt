@@ -1,24 +1,21 @@
-package com.example.jobsdev.HomeApp
+package com.example.jobsdev.home_app
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.jobsdev.Profile.ProfileAccountEngineerActivity
-import com.example.jobsdev.Profile.ProfileEngineerActivity
+import com.example.jobsdev.profile.ProfileAccountEngineerActivity
+import com.example.jobsdev.profile.ProfileEngineerActivity
 import com.example.jobsdev.R
+import com.example.jobsdev.chat.ChatActivity
+import com.example.jobsdev.search.SearchActivity
+import kotlinx.android.synthetic.main.activity_search.*
 
 class HomeEngineerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_engineer_second)
-
-        val iconAccountEngineer = findViewById<ImageView>(R.id.iv_account_icon)
-        iconAccountEngineer.setOnClickListener {
-            val intentAccounteEngineer = Intent(this, ProfileAccountEngineerActivity::class.java)
-            startActivity(intentAccounteEngineer)
-        }
 
         val engineerOne = findViewById<ConstraintLayout>(R.id.engineer_1)
         engineerOne.setOnClickListener {
@@ -30,6 +27,22 @@ class HomeEngineerActivity : AppCompatActivity() {
         homeApp.setOnClickListener {
             val intentHome = Intent(this, HomeEngineerActivity::class.java)
             startActivity(intentHome)
+        }
+
+        iv_search_icon.setOnClickListener {
+            val intentSearch = Intent(this, SearchActivity::class.java)
+            startActivity(intentSearch)
+        }
+
+        iv_chat_icon.setOnClickListener {
+            val intentChat = Intent(this, ChatActivity::class.java)
+            startActivity(intentChat)
+        }
+
+        val iconAccountEngineer = findViewById<ImageView>(R.id.iv_account_icon)
+        iconAccountEngineer.setOnClickListener {
+            val intentAccounteEngineer = Intent(this, ProfileAccountEngineerActivity::class.java)
+            startActivity(intentAccounteEngineer)
         }
 
     }

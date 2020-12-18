@@ -1,4 +1,4 @@
-package com.example.jobsdev.ResetPassword
+package com.example.jobsdev.reset_password
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

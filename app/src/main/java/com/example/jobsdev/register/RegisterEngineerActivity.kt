@@ -1,10 +1,12 @@
-package com.example.jobsdev
+package com.example.jobsdev.register
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import com.example.jobsdev.LoginEngineerActivity
+import com.example.jobsdev.R
 
 class RegisterEngineerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

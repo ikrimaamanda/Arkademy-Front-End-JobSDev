@@ -7,10 +7,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.example.jobsdev.HomeApp.HomeCompanyActivity
-import com.example.jobsdev.Profile.ProfileAccountEngineerActivity
-import com.example.jobsdev.Profile.ProfileCompanyActivity
-import com.example.jobsdev.ResetPassword.ResetPasswordSendEmailActivity
+import com.example.jobsdev.profile.ProfileCompanyActivity
+import com.example.jobsdev.register.RegisterCompanyActivity
+import com.example.jobsdev.reset_password.ResetPasswordSendEmailActivity
 
 class LoginCompanyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

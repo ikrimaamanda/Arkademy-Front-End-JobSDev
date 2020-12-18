@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
 //        Toast.makeText( this, "Welcome", Toast.LENGTH_SHORT).show()
 
-        val handler = Handler()
+        val handler = Handler(mainLooper)
         handler.postDelayed({
             val intent = Intent(this, OnBoardActivity::class.java)
             startActivity(intent)

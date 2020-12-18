@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JobSDev</string>
+    <string name="find_talented"><![CDATA[Find Talented & best developers in various fields of expertise]]></string>
+    <string name="or">or</string>
 </resources>
