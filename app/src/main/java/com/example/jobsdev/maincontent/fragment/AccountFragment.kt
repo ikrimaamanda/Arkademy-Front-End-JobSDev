@@ -17,6 +17,7 @@ import com.example.jobsdev.LoginEngineerActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.adapter.TabPagerAdapter
 import com.example.jobsdev.databinding.FragmentAccountBinding
+import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
 import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import com.google.android.material.tabs.TabLayout
@@ -43,6 +44,9 @@ class AccountFragment : Fragment() {
             showDialogLogOut()
             showMessage("Log Out")
         }
+        binding.tvGithub.setOnClickListener {
+            startActivity(Intent(activity, GitHubWebViewActivity::class.java))
+        }
 
         pagerAdapter = TabPagerAdapter(childFragmentManager)
         addFragment(binding.root)
@@ -57,8 +61,6 @@ class AccountFragment : Fragment() {
 
     private fun addFragment(view: View?) {
         pagerAdapter = TabPagerAdapter(childFragmentManager)
-//        binding.viewPager
-//        binding.tabLayout
         viewPager = view!!.findViewById(R.id.view_pager)
         tabLayout = view.findViewById(R.id.tab_layout)
 

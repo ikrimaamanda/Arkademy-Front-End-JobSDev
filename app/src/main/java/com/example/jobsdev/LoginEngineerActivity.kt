@@ -11,6 +11,7 @@ import com.example.jobsdev.onboard.OnBoardRegLogActivity
 import com.example.jobsdev.register.OnBoardRegisterActivity
 import com.example.jobsdev.reset_password.ResetPasswordSendEmailActivity
 import com.example.jobsdev.sharedpreference.Constant
+import com.example.jobsdev.sharedpreference.ConstantEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
 class LoginEngineerActivity : AppCompatActivity() {
@@ -63,6 +64,13 @@ class LoginEngineerActivity : AppCompatActivity() {
             sharedPref.putValue(Constant.prefPassword, password)
             sharedPref.putValue(Constant.prefIsLogin, true)
     }
+
+//    private fun CheckAccount() {
+//        val email = sharedPref.getValueString(ConstantEngineer.email)
+//        val password = sharedPref.getValueString(ConstantEngineer.password)
+//
+//        if()
+//    }
 
     private fun showMessage(message : String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()

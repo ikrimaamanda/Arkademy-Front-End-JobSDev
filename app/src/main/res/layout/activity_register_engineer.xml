@@ -5,6 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".LoginEngineerActivity"
     >
+
+    <data>
+        <variable
+            name="model"
+            type="com.example.jobsdev.register.RegisterEngineerActivity" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

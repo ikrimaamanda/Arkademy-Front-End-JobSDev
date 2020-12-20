@@ -5,11 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.jobsdev.profile.ProfileAccountEngineerActivity
 import com.example.jobsdev.profile.ProfileEngineerActivity
 import com.example.jobsdev.R
-import com.example.jobsdev.chat.ChatActivity
-import com.example.jobsdev.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_search.*
 
 class HomeEngineerActivity : AppCompatActivity() {
@@ -27,22 +24,6 @@ class HomeEngineerActivity : AppCompatActivity() {
         homeApp.setOnClickListener {
             val intentHome = Intent(this, HomeEngineerActivity::class.java)
             startActivity(intentHome)
-        }
-
-        iv_search_icon.setOnClickListener {
-            val intentSearch = Intent(this, SearchActivity::class.java)
-            startActivity(intentSearch)
-        }
-
-        iv_chat_icon.setOnClickListener {
-            val intentChat = Intent(this, ChatActivity::class.java)
-            startActivity(intentChat)
-        }
-
-        val iconAccountEngineer = findViewById<ImageView>(R.id.iv_account_icon)
-        iconAccountEngineer.setOnClickListener {
-            val intentAccounteEngineer = Intent(this, ProfileAccountEngineerActivity::class.java)
-            startActivity(intentAccounteEngineer)
         }
 
     }

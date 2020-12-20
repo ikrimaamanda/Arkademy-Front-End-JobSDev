@@ -24,6 +24,14 @@ class PreferencesHelper(context: Context) {
         return sharedPref.getString(key, null)
     }
 
+    fun putValue(key : String, value : Int) {
+        editor.putInt(key, value).apply()
+    }
+
+    fun getValueInt(key : String) : Int? {
+        return sharedPref.getInt(key, 0)
+    }
+
     fun putValue(key : String, value : Boolean) {
         editor.putBoolean(key, value).apply()
     }
