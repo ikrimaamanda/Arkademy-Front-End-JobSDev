@@ -10,7 +10,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/colorAccent"
+            android:max="100"
+            android:theme="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
         <WebView
+            android:id="@+id/github_web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

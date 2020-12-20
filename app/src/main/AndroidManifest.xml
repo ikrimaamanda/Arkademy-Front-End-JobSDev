@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jobsdev">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon_jobsdev_purple_round"
@@ -20,8 +23,6 @@
         <activity android:name=".home_app.HomeCompanyActivity" />
         <activity android:name=".profile.ProfileEngineerActivity" />
         <activity android:name=".home_app.HomeEngineerActivity" />
-        <activity android:name=".home_app.HomeEngineerActivity2" />
-        <activity android:name=".reset_password.LoginAfterResetPasswordActivity" />
         <activity android:name=".reset_password.ResetPasswordInputNewPasswordActivity" />
         <activity android:name=".reset_password.ResetPasswordSendEmailActivity" />
         <activity android:name=".LoginCompanyActivity" />

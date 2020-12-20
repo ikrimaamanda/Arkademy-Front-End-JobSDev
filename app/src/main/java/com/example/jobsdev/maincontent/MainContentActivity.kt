@@ -2,7 +2,6 @@ package com.example.jobsdev.maincontent
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.ActionBarContextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import com.example.jobsdev.R
@@ -11,9 +10,7 @@ import com.example.jobsdev.maincontent.fragment.HomeFragment
 import com.example.jobsdev.maincontent.fragment.MessageFragment
 import com.example.jobsdev.maincontent.fragment.AccountFragment
 import com.example.jobsdev.maincontent.fragment.SearchFragment
-import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.PreferencesHelper
-import kotlinx.android.synthetic.main.activity_main_content.*
 
 class MainContentActivity : AppCompatActivity() {
 
