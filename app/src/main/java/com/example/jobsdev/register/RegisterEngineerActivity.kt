@@ -5,22 +5,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.example.jobsdev.LoginEngineerActivity
 import com.example.jobsdev.R
+import com.example.jobsdev.databinding.ActivityRegisterEngineerBinding
 
 class RegisterEngineerActivity : AppCompatActivity() {
+
+    private lateinit var binding : ActivityRegisterEngineerBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register_engineer)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_register_engineer)
 
-        val btnRegisterEngineer = findViewById<Button>(R.id.btn_register)
-        btnRegisterEngineer.setOnClickListener {
+        binding.btnRegister.setOnClickListener {
             val intentLogin = Intent(this, LoginEngineerActivity::class.java)
             startActivity(intentLogin)
         }
 
-        val tvLoginEngineer = findViewById<TextView>(R.id.tv_login_here)
-        tvLoginEngineer.setOnClickListener {
+        binding.tvLoginHere.setOnClickListener {
             val intentLogin = Intent(this, LoginEngineerActivity::class.java)
             startActivity(intentLogin)
         }

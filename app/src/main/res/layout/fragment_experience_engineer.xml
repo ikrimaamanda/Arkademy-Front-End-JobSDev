@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_experience"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:padding="20dp"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/bg_white">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_experience_1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_tokopedia"
+                    android:src="@drawable/tokopedia"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="60dp"
+                    android:padding="10dp"
+                    app:layout_constraintStart_toEndOf="@id/iv_tokopedia">
+
+                    <TextView
+                        android:id="@+id/tv_experience_1_position"
+                        android:text="Engineer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textColor="#000"
+                        android:textSize="20sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_experience_1_company"
+                        android:text="Tokopedia"
+                        android:textColor="@color/grey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_experience_1_position"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_experience_1_date"
+                        android:text="July 2019 - January 2020"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_experience_1_company"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_experience_1_months"
+                        android:text="6 months"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_experience_1_date"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_experience_1_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                        app:layout_constraintTop_toBottomOf="@id/tv_experience_1_months"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="14sp"
+                        android:lineHeight="24sp"
+                        android:layout_marginTop="20dp"
+                        android:textColor="#000"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_experience_2"
+                app:layout_constraintTop_toBottomOf="@id/layout_experience_1"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="match_parent"
+                android:background="@drawable/transparent_button"
+                android:layout_marginTop="30dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_tokopedia2"
+                    android:src="@drawable/tokopedia"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="60dp"
+                    android:padding="10dp"
+                    app:layout_constraintStart_toEndOf="@id/iv_tokopedia2">
+
+                    <TextView
+                        android:id="@+id/tv_experience_2_position"
+                        android:text="Software Developer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textColor="#000"
+                        android:textSize="20sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_experience_2_company"
+                        android:text="Tokopedia"
+                        android:textColor="@color/grey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_experience_2_position"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_experience_2_date"
+                        android:text="January 2020 - November 2020"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_experience_2_company"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_experience_2_months"
+                        android:text="10 months"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_experience_2_date"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_experience_2_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                        app:layout_constraintTop_toBottomOf="@id/tv_experience_2_months"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="14sp"
+                        android:lineHeight="24sp"
+                        android:layout_marginTop="20dp"
+                        android:textColor="#000"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

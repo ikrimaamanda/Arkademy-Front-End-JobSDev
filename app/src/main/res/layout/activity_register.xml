@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".onboard.OnBoardActivity">
+    tools:context=".register.OnBoardRegisterActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -39,8 +41,8 @@
                 android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/btn_login_as_engineer"
-                android:text="Login as engineer"
+                android:id="@+id/btn_register_engineer"
+                android:text="Register as Engineer"
                 android:textSize="16sp"
                 android:textAllCaps="false"
                 android:layout_width="match_parent"
@@ -59,11 +61,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_below="@id/btn_login_as_engineer"/>
+                android:layout_below="@id/btn_register_engineer"/>
 
             <Button
-                android:id="@+id/btn_login_as_company"
-                android:text="Login as recruiter"
+                android:id="@+id/btn_register_company"
+                android:text="Register as Company"
                 android:textSize="16sp"
                 android:textAllCaps="false"
                 android:layout_width="match_parent"
@@ -77,4 +79,5 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
 </layout>

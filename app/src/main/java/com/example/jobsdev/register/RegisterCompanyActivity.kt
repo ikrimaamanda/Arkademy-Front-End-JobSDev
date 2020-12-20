@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import com.example.jobsdev.LoginCompanyActivity
+import com.example.jobsdev.LoginEngineerActivity
 import com.example.jobsdev.R
 
 class RegisterCompanyActivity : AppCompatActivity() {
@@ -15,13 +16,13 @@ class RegisterCompanyActivity : AppCompatActivity() {
 
         val tvLoginCompany = findViewById<TextView>(R.id.tv_login_here)
         tvLoginCompany.setOnClickListener {
-            val intentLogin = Intent(this, LoginCompanyActivity::class.java)
+            val intentLogin = Intent(this, LoginEngineerActivity::class.java)
             startActivity(intentLogin)
         }
 
         val btnRegisterCompany = findViewById<Button>(R.id.btn_register)
         btnRegisterCompany.setOnClickListener {
-            val intentRegister = Intent(this, LoginCompanyActivity::class.java)
+            val intentRegister = Intent(this, LoginEngineerActivity::class.java)
             startActivity(intentRegister)
         }
     }

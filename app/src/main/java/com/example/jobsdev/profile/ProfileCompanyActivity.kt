@@ -5,16 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.example.jobsdev.home_app.HomeCompanyActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.chat.ChatActivity
+import com.example.jobsdev.databinding.ActivityProfileCompanyBinding
 import com.example.jobsdev.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_search.*
 
 class ProfileCompanyActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityProfileCompanyBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile_company)
+//        setContentView(R.layout.activity_profile_company)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_profile_company)
 
         val tvFullName = findViewById<TextView>(R.id.tv_full_name)
 

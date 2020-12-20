@@ -1,13 +1,13 @@
 package com.example.jobsdev
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.example.jobsdev.profile.ProfileCompanyActivity
+import com.example.jobsdev.maincontent.MainContentActivity
+import com.example.jobsdev.register.OnBoardRegisterActivity
 import com.example.jobsdev.register.RegisterCompanyActivity
 import com.example.jobsdev.reset_password.ResetPasswordSendEmailActivity
 
@@ -18,7 +18,7 @@ class LoginCompanyActivity : AppCompatActivity() {
 
         val tvRegisterCompany = findViewById<TextView>(R.id.tv_register_here)
         tvRegisterCompany.setOnClickListener {
-            val intentRegister = Intent(this, RegisterCompanyActivity::class.java)
+            val intentRegister = Intent(this, OnBoardRegisterActivity::class.java)
             startActivity(intentRegister)
         }
 
@@ -32,9 +32,7 @@ class LoginCompanyActivity : AppCompatActivity() {
         val etFullName = findViewById<EditText>(R.id.et_email)
         btnLogin.setOnClickListener {
             val fullName = etFullName.text.toString()
-            val intentLogin = Intent(this, ProfileCompanyActivity::class.java)
-            intentLogin.putExtra("fullName", fullName)
-            setResult(Activity.RESULT_OK, intentLogin)
+            val intentLogin = Intent(this, MainContentActivity::class.java)
             startActivity(intentLogin)
             finish()
         }
