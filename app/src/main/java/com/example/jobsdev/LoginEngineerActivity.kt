@@ -35,15 +35,14 @@ class LoginEngineerActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            if(binding.etEmail.text.isNotEmpty() && binding.etPassword.text.isNotEmpty()) {
+            if(binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
+                Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
+                binding.etEmail.requestFocus()
+            } else {
                 saveSession(binding.etEmail.text.toString(), binding.etPassword.text.toString())
                 showMessage("Login Success")
                 moveActivity()
             }
-
-            val intentLogin = Intent(this, MainContentActivity::class.java)
-            startActivity(intentLogin)
-            finish()
         }
     }
 

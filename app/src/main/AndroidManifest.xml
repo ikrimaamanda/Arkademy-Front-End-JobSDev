@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/icon_jobsdev_purple_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".register.OnBoardRegisterActivity"></activity>
+        <activity android:name=".maincontent.webview.GitHubWebViewActivity"></activity>
+        <activity android:name=".register.OnBoardRegisterActivity" />
         <activity android:name=".onboard.OnBoardRegLogActivity" />
         <activity android:name=".maincontent.MainContentActivity" />
         <activity android:name=".chat.ChatActivity" />

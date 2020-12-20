@@ -1,6 +1,8 @@
 package com.example.jobsdev.maincontent.fragment
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -38,9 +40,7 @@ class AccountFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account, container, false)
 
         binding.btnLogout.setOnClickListener {
-            sharedPref.clear()
-            activity!!.finish()
-            moveActivity()
+            showDialogLogOut()
             showMessage("Log Out")
         }
 
@@ -57,6 +57,8 @@ class AccountFragment : Fragment() {
 
     private fun addFragment(view: View?) {
         pagerAdapter = TabPagerAdapter(childFragmentManager)
+//        binding.viewPager
+//        binding.tabLayout
         viewPager = view!!.findViewById(R.id.view_pager)
         tabLayout = view.findViewById(R.id.tab_layout)
 
@@ -72,6 +74,19 @@ class AccountFragment : Fragment() {
 
     private fun showMessage(message : String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showDialogLogOut() {
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle("Log Out")
+        builder.setMessage("Do you want to log out?")
+        builder.setPositiveButton("Yes", { dialogInterface : DialogInterface, i : Int -> sharedPref.putValue(Constant.prefIsLogin, false)
+        moveActivity()
+            sharedPref.clear()
+            activity!!.finish()
+        })
+        builder.setNegativeButton("No", {dialogInterface : DialogInterface, i : Int ->})
+        builder.show()
     }
 
 }
