@@ -24,6 +24,7 @@ class OnBoardRegLogActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             startActivity(Intent(this, LoginEngineerActivity::class.java))
+            finish()
         }
     }
 }

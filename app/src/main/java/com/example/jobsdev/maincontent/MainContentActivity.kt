@@ -11,12 +11,13 @@ import com.example.jobsdev.maincontent.fragment.HomeFragment
 import com.example.jobsdev.maincontent.fragment.MessageFragment
 import com.example.jobsdev.maincontent.fragment.AccountFragment
 import com.example.jobsdev.maincontent.fragment.SearchFragment
+import com.example.jobsdev.sharedpreference.Constant
+import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.android.synthetic.main.activity_main_content.*
 
 class MainContentActivity : AppCompatActivity() {
-    object supportActionBar {
 
-    }
+    private lateinit var sharedPref : PreferencesHelper
 
     private lateinit var binding : ActivityMainContentBinding
     private lateinit var homeFragment : HomeFragment
@@ -28,11 +29,10 @@ class MainContentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_content)
 
+        sharedPref = PreferencesHelper(this)
+
+
         setSupportActionBar(binding.toolbar)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        binding.toolbar.setNavigationOnClickListener {
-//            onBackPressed()
-//        }
 
         homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction().replace(R.id.fl_container, homeFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
