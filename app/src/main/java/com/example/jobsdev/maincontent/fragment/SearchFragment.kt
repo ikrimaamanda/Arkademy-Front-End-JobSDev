@@ -40,10 +40,10 @@ class SearchFragment : Fragment() {
         val list = ArrayList<SearchItemDataClass>()
 
         for (i in 0 until size) {
-            val drawable = when(1%3) {
+            val drawable = when(i%3) {
                 0 -> R.drawable.profile_pict
-                1 -> R.drawable.profile_pict
-                else -> R.drawable.profile_pict
+                1 -> R.drawable.profile_pict_2
+                else -> R.drawable.profile_pict_3
             }
 
             val item = SearchItemDataClass(drawable, "Marinda Yunella", "Web Developer", "Kotlin", "Java", "Laravel", "3+")

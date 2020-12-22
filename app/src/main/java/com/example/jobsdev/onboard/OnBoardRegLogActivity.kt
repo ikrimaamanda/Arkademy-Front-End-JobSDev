@@ -4,10 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.example.jobsdev.LoginEngineerActivity
+import com.example.jobsdev.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityOnBoardRegLogBinding
-import com.example.jobsdev.register.OnBoardRegisterActivity
 
 class OnBoardRegLogActivity : AppCompatActivity() {
 
@@ -23,7 +22,7 @@ class OnBoardRegLogActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            startActivity(Intent(this, LoginEngineerActivity::class.java))
+            startActivity(Intent(this, OnBoardLoginActivity::class.java))
             finish()
         }
     }

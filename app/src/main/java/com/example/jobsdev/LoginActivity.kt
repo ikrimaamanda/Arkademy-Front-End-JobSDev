@@ -5,23 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.jobsdev.databinding.ActivityLoginEngineerBinding
+import com.example.jobsdev.databinding.ActivityLoginBinding
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.onboard.OnBoardRegLogActivity
-import com.example.jobsdev.register.OnBoardRegisterActivity
+import com.example.jobsdev.onboard.OnBoardRegisterActivity
 import com.example.jobsdev.reset_password.ResetPasswordSendEmailActivity
 import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
-class LoginEngineerActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var sharedPref : PreferencesHelper
-    private lateinit var binding : ActivityLoginEngineerBinding
+    private lateinit var binding : ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login_engineer)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         sharedPref = PreferencesHelper(this)
 
@@ -47,10 +46,10 @@ class LoginEngineerActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        moveActivity()
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        moveActivity()
+//    }
 
     private fun moveActivity() {
         if (sharedPref.getValueBoolean(Constant.prefIsLogin)!!) {

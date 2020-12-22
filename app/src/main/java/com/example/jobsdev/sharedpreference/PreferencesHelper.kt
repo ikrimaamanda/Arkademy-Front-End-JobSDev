@@ -2,8 +2,6 @@ package com.example.jobsdev.sharedpreference
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.fragment.app.FragmentManager
-import com.example.jobsdev.maincontent.fragment.AccountFragment
 
 class PreferencesHelper(context: Context) {
 

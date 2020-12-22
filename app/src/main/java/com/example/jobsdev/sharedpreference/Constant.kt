@@ -6,6 +6,7 @@ class Constant {
         val prefIsLogin = "Pref is Login"
         val prefEmail = "Pref Email"
         val prefPassword = "Pref Password"
+        val acLevel = "Pref level account"
     }
 }
 

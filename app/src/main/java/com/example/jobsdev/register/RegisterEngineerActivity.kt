@@ -3,16 +3,11 @@ package com.example.jobsdev.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.jobsdev.LoginEngineerActivity
+import com.example.jobsdev.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityRegisterEngineerBinding
-import com.example.jobsdev.maincontent.MainContentActivity
-import com.example.jobsdev.maincontent.dataclass.EngineerModel
-import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.ConstantEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
@@ -43,7 +38,7 @@ class RegisterEngineerActivity : AppCompatActivity() {
         }
 
         binding.tvLoginHere.setOnClickListener {
-            val intentLogin = Intent(this, LoginEngineerActivity::class.java)
+            val intentLogin = Intent(this, LoginActivity::class.java)
             startActivity(intentLogin)
         }
     }
@@ -63,7 +58,7 @@ class RegisterEngineerActivity : AppCompatActivity() {
 
     private fun moveActivity() {
         if (sharedPref.getValueBoolean(ConstantEngineer.prefIsRegis)!!) {
-            startActivity(Intent(this, LoginEngineerActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }

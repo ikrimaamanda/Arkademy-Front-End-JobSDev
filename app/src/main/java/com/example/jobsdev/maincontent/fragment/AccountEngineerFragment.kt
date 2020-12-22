@@ -1,7 +1,6 @@
 package com.example.jobsdev.maincontent.fragment
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -11,34 +10,36 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
-import com.example.jobsdev.LoginEngineerActivity
+import com.example.jobsdev.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.adapter.TabPagerAdapter
-import com.example.jobsdev.databinding.FragmentAccountBinding
+import com.example.jobsdev.databinding.FragmentAccountEngineerBinding
+import com.example.jobsdev.maincontent.editprofile.EditAccountEngineerActivity
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
+import com.example.jobsdev.onboard.OnBoardLoginActivity
 import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import com.google.android.material.tabs.TabLayout
 
-class AccountFragment : Fragment() {
+class AccountEngineerFragment : Fragment() {
 
     private lateinit var sharedPref : PreferencesHelper
-
-    private lateinit var rootView: View
     private lateinit var pagerAdapter: TabPagerAdapter
     private lateinit var viewPager : ViewPager
     private lateinit var tabLayout : TabLayout
-    private lateinit var binding : FragmentAccountBinding
+    private lateinit var binding : FragmentAccountEngineerBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView = inflater.inflate(R.layout.fragment_account, container, false)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account_engineer, container, false)
+
+        binding.btnEditProfile.setOnClickListener {
+            startActivity(Intent(activity, EditAccountEngineerActivity::class.java))
+        }
 
         binding.btnLogout.setOnClickListener {
             showDialogLogOut()
@@ -70,7 +71,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun moveActivity() {
-        val  intent = Intent(activity, LoginEngineerActivity::class.java)
+        val  intent = Intent(activity, OnBoardLoginActivity::class.java)
         activity!!.startActivity(intent)
     }
 

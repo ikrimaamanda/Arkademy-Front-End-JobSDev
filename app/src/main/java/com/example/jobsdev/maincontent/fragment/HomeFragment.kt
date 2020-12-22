@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
 import com.example.jobsdev.adapter.RecyclerViewAdapter
+import com.example.jobsdev.databinding.FragmentHomeBinding
 import com.example.jobsdev.maincontent.dataclass.SearchItemDataClass
 
 class HomeFragment : Fragment() {
 
     private lateinit var rootView : View
+    private lateinit var binding : FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,6 +24,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+
         return rootView
     }
 
@@ -40,10 +45,10 @@ class HomeFragment : Fragment() {
         val list = ArrayList<SearchItemDataClass>()
 
         for (i in 0 until size) {
-            val drawable = when(1%3) {
+            val drawable = when(i%3) {
                 0 -> R.drawable.profile_pict
-                1 -> R.drawable.profile_pict
-                else -> R.drawable.profile_pict
+                1 -> R.drawable.profile_pict_2
+                else -> R.drawable.profile_pict_3
             }
 
             val item = SearchItemDataClass(drawable, "Marinda Yunella", "Web Developer", "Kotlin", "Java", "Laravel", "3+")

@@ -1,4 +1,4 @@
-package com.example.jobsdev.register
+package com.example.jobsdev.onboard
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityRegisterBinding
+import com.example.jobsdev.register.RegisterCompanyActivity
+import com.example.jobsdev.register.RegisterEngineerActivity
 import com.example.jobsdev.sharedpreference.ConstantEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
