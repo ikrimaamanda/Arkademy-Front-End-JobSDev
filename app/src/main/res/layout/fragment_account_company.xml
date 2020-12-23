@@ -65,7 +65,7 @@
 
                 <ImageView
                     android:id="@+id/iv_location_icon"
-                    android:src="@drawable/location_icon"
+                    android:src="@drawable/icon_location"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="20dp"
@@ -78,7 +78,7 @@
                     android:text="Jakarta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
                     app:layout_constraintTop_toTopOf="@id/iv_location_icon"
                     app:layout_constraintStart_toEndOf="@id/iv_location_icon"/>
 
@@ -108,9 +108,9 @@
 
                 <ImageView
                     android:id="@+id/iv_email_icon"
-                    android:src="@drawable/email_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:src="@drawable/icon_email"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     app:layout_constraintTop_toBottomOf="@id/btn_edit_profile"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="50dp"/>

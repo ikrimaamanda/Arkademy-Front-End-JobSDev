@@ -48,7 +48,8 @@
             android:background="@drawable/bg_foot_bar"
             android:layout_margin="12dp"
             android:elevation="2dp"
-            app:menu="@menu/bottom_menu"/>
+            app:menu="@menu/bottom_menu"
+            app:itemIconSize="@dimen/bottom_navigation_icon_size"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

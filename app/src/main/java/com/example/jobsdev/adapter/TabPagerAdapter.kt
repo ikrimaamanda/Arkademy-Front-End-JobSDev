@@ -3,8 +3,8 @@ package com.example.jobsdev.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.example.jobsdev.profile.ExperienceEngineerFragment
-import com.example.jobsdev.profile.PortfolioEngineerFragment
+import com.example.jobsdev.maincontent.fragment.ExperienceEngineerFragment
+import com.example.jobsdev.maincontent.fragment.PortfolioEngineerFragment
 
 class TabPagerAdapter(fragment : FragmentManager) : FragmentStatePagerAdapter(fragment, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

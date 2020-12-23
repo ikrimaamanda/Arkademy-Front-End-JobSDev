@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
-import com.example.jobsdev.maincontent.dataclass.SearchItemDataClass
-import com.example.jobsdev.adapter.RecyclerViewAdapter
+import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
+import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListEngineerAdapter
 
 class SearchFragment : Fragment() {
 
@@ -31,13 +31,15 @@ class SearchFragment : Fragment() {
         val recyclerView : RecyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.apply {
             adapter =
-                RecyclerViewAdapter(exampleList)
+                RecyclerViewListEngineerAdapter(
+                    exampleList
+                )
             layoutManager = LinearLayoutManager(activity)
         }
     }
 
-    private fun generateDummyList(size : Int) : List<SearchItemDataClass> {
-        val list = ArrayList<SearchItemDataClass>()
+    private fun generateDummyList(size : Int) : List<ItemEngineerDataClass> {
+        val list = ArrayList<ItemEngineerDataClass>()
 
         for (i in 0 until size) {
             val drawable = when(i%3) {
@@ -46,7 +48,7 @@ class SearchFragment : Fragment() {
                 else -> R.drawable.profile_pict_3
             }
 
-            val item = SearchItemDataClass(drawable, "Marinda Yunella", "Web Developer", "Kotlin", "Java", "Laravel", "3+")
+            val item = ItemEngineerDataClass(drawable, "Marinda Yunella", "Web Developer", "Kotlin", "Java", "Laravel", "3+")
             list += item
         }
         return list

@@ -27,6 +27,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
             />
 
         <ScrollView
@@ -46,7 +47,7 @@
                     android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/example_item"/>
+                    tools:listitem="@layout/example_item_engineer"/>
 
             </RelativeLayout>
 

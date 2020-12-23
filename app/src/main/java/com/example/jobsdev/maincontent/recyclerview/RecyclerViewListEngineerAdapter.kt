@@ -1,4 +1,4 @@
-package com.example.jobsdev.adapter
+package com.example.jobsdev.maincontent.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
-import com.example.jobsdev.maincontent.dataclass.SearchItemDataClass
+import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
 
-class RecyclerViewAdapter(private val exampleList : List<SearchItemDataClass>) : RecyclerView.Adapter<RecyclerViewAdapter.viewHolder>() {
+class RecyclerViewListEngineerAdapter(private val exampleList : List<ItemEngineerDataClass>) : RecyclerView.Adapter<RecyclerViewListEngineerAdapter.viewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.example_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.example_item_engineer, parent, false)
         return viewHolder(
             itemView
         )

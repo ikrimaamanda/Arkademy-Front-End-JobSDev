@@ -44,10 +44,14 @@ class MainContentActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction().replace(R.id.fl_container, searchFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                 binding.tvTitleToolbar.setText("Search")
             }
-            R.id.message -> {
+            R.id.list -> {
                 messageFragment = MessageFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.fl_container, messageFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-                binding.tvTitleToolbar.setText("Project")
+                if(sharedPref.getValueInt(Constant.acLevel) == 0) {
+                    binding.tvTitleToolbar.setText("List Hire")
+                } else if(sharedPref.getValueInt(Constant.acLevel) == 1) {
+                    binding.tvTitleToolbar.setText("List Project")
+                }
             }
             R.id.account -> {
                 accountEngineerFragment = AccountEngineerFragment()

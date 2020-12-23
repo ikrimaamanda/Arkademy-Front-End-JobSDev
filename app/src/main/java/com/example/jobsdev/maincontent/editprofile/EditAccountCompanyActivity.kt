@@ -12,8 +12,6 @@ class EditAccountCompanyActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_account_company)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_account_company)
 
         setSupportActionBar(binding.toolbar)

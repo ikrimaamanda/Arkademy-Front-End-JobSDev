@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.example.jobsdev.R
-import com.example.jobsdev.databinding.ActivityRegisterBinding
+import com.example.jobsdev.databinding.ActivityOnBoardRegisterBinding
 import com.example.jobsdev.register.RegisterCompanyActivity
 import com.example.jobsdev.register.RegisterEngineerActivity
 import com.example.jobsdev.sharedpreference.ConstantEngineer
@@ -15,12 +15,12 @@ class OnBoardRegisterActivity : AppCompatActivity() {
 
     private lateinit var sharedPref : PreferencesHelper
 
-    private lateinit var binding : ActivityRegisterBinding
+    private lateinit var binding : ActivityOnBoardRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_register)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_on_board_register)
 
         sharedPref = PreferencesHelper(this)
 
