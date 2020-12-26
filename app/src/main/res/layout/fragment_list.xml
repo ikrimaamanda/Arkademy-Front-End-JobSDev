@@ -11,19 +11,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark">
 
-                <SearchView
-                    android:id="@+id/sv_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white"
-                    android:queryHint="Search"
-                    android:iconifiedByDefault="false"
-                    android:layout_marginHorizontal="40dp"
-                    android:layout_marginTop="50dp"
-                    />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_below="@id/sv_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"

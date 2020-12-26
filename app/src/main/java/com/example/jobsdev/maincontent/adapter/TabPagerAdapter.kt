@@ -1,4 +1,4 @@
-package com.example.jobsdev.adapter
+package com.example.jobsdev.maincontent.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

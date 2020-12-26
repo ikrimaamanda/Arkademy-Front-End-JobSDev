@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.jobsdev.R
 
-class MessageFragment : Fragment() {
+class ListFragment : Fragment() {
     private lateinit var rootView : View
 
     override fun onCreateView(
@@ -15,7 +15,7 @@ class MessageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView = inflater.inflate(R.layout.fragment_message, container, false)
+        rootView = inflater.inflate(R.layout.fragment_list, container, false)
         return rootView
     }
 }

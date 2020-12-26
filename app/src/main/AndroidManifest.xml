@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.jobsdev">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +12,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icon_jobsdev_purple_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
         <activity android:name=".onboard.OnBoardLoginActivity"></activity>
         <activity android:name=".maincontent.editprofile.EditAccountCompanyActivity" />
         <activity android:name=".maincontent.editprofile.EditAccountEngineerActivity" />
@@ -19,19 +22,10 @@
         <activity android:name=".onboard.OnBoardRegisterActivity" />
         <activity android:name=".onboard.OnBoardRegLogActivity" />
         <activity android:name=".maincontent.MainContentActivity" />
-        <activity android:name=".chat.ChatActivity" />
-        <activity android:name=".search.SearchActivity" />
-        <activity android:name=".profile.ProfileAccountEngineerActivity" />
-        <activity android:name=".profile.ProfileCompanyActivity" />
-        <activity android:name=".home_app.HomeCompanyActivity" />
-        <activity android:name=".profile.ProfileEngineerActivity" />
-        <activity android:name=".home_app.HomeEngineerActivity" />
         <activity android:name=".reset_password.ResetPasswordInputNewPasswordActivity" />
         <activity android:name=".reset_password.ResetPasswordSendEmailActivity" />
-        <activity android:name=".LoginCompanyActivity" />
         <activity android:name=".register.RegisterCompanyActivity" />
         <activity android:name=".register.RegisterEngineerActivity" />
-        <activity android:name=".onboard.OnBoardActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

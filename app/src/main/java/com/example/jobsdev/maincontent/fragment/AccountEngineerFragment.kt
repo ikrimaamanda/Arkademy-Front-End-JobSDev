@@ -11,9 +11,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.example.jobsdev.LoginActivity
 import com.example.jobsdev.R
-import com.example.jobsdev.adapter.TabPagerAdapter
+import com.example.jobsdev.maincontent.adapter.TabPagerAdapter
 import com.example.jobsdev.databinding.FragmentAccountEngineerBinding
 import com.example.jobsdev.maincontent.editprofile.EditAccountEngineerActivity
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
@@ -49,7 +48,10 @@ class AccountEngineerFragment : Fragment() {
             startActivity(Intent(activity, GitHubWebViewActivity::class.java))
         }
 
-        pagerAdapter = TabPagerAdapter(childFragmentManager)
+        pagerAdapter =
+            TabPagerAdapter(
+                childFragmentManager
+            )
         addFragment(binding.root)
         return binding.root
     }
@@ -61,7 +63,10 @@ class AccountEngineerFragment : Fragment() {
     }
 
     private fun addFragment(view: View?) {
-        pagerAdapter = TabPagerAdapter(childFragmentManager)
+        pagerAdapter =
+            TabPagerAdapter(
+                childFragmentManager
+            )
         viewPager = view!!.findViewById(R.id.view_pager)
         tabLayout = view.findViewById(R.id.tab_layout)
 

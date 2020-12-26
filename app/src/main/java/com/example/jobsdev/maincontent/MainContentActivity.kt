@@ -17,7 +17,8 @@ class MainContentActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainContentBinding
     private lateinit var homeFragment : HomeFragment
     private lateinit var searchFragment: SearchFragment
-    private lateinit var messageFragment: MessageFragment
+//    private lateinit var listFragment: ListFragment
+    private lateinit var listProjectCompanyFragment : ListProjectCompanyFragment
     private lateinit var accountEngineerFragment: AccountEngineerFragment
     private lateinit var accountCompanyFragment : AccountCompanyFragment
 
@@ -45,8 +46,11 @@ class MainContentActivity : AppCompatActivity() {
                 binding.tvTitleToolbar.setText("Search")
             }
             R.id.list -> {
-                messageFragment = MessageFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fl_container, messageFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
+//                listFragment = ListFragment()
+                listProjectCompanyFragment = ListProjectCompanyFragment()
+
+//                supportFragmentManager.beginTransaction().replace(R.id.fl_container, listFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fl_container, listProjectCompanyFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                 if(sharedPref.getValueInt(Constant.acLevel) == 0) {
                     binding.tvTitleToolbar.setText("List Hire")
                 } else if(sharedPref.getValueInt(Constant.acLevel) == 1) {
