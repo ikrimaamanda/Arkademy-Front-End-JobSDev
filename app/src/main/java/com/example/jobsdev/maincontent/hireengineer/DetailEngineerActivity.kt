@@ -18,6 +18,11 @@ class DetailEngineerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail_engineer)
 
+        val name = intent.getStringExtra("name")
+        binding.tvFullName.text = name
+        val jobTitle = intent.getStringExtra("jobTitle")
+        binding.tvJobTitle.text = jobTitle
+
         binding.btnHireEngineer.setOnClickListener {
             startActivity(Intent(this, FormHireActivity::class.java))
         }
@@ -34,6 +39,12 @@ class DetailEngineerActivity : AppCompatActivity() {
         pagerAdapter = TabPagerDetailEngineerAdapter(supportFragmentManager)
         binding.viewPager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun generateDummyList(size : Int) : List<ItemSkillHireEngineerDataClass> {

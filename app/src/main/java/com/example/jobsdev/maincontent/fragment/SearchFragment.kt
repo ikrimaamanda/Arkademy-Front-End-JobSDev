@@ -1,44 +1,48 @@
 package com.example.jobsdev.maincontent.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
+import com.example.jobsdev.databinding.FragmentSearchBinding
 import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
+import com.example.jobsdev.maincontent.hireengineer.DetailEngineerActivity
+import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
 import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListEngineerAdapter
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), OnListEngineerClickListener {
 
     private lateinit var rootView: View
+    private lateinit var binding : FragmentSearchBinding
+    var listEngineer = ArrayList<ItemEngineerDataClass>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView = inflater.inflate(R.layout.fragment_search, container, false)
-        return rootView
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val exampleList = generateDummyList(500)
+        listEngineer = generateDummyList(100)
 
-        val recyclerView : RecyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.apply {
-            adapter =
-                RecyclerViewListEngineerAdapter(
-                    exampleList
-                )
-            layoutManager = LinearLayoutManager(activity)
-        }
+        var engineerAdapter = RecyclerViewListEngineerAdapter(listEngineer, this)
+        binding.recyclerViewSearchEngineer.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerViewSearchEngineer.adapter = engineerAdapter
+        
     }
 
-    private fun generateDummyList(size : Int) : List<ItemEngineerDataClass> {
+    private fun generateDummyList(size : Int) : ArrayList<ItemEngineerDataClass> {
         val list = ArrayList<ItemEngineerDataClass>()
 
         for (i in 0 until size) {
@@ -52,5 +56,14 @@ class SearchFragment : Fragment() {
             list += item
         }
         return list
+    }
+
+    override fun onEngineerItemClicked(position: Int) {
+        Toast.makeText(requireContext(), "Engineer $position clicked", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
+        intent.putExtra("name", listEngineer[position].name)
+        intent.putExtra("jobTitle", listEngineer[position].jobTitle)
+        intent.putExtra("image", listEngineer[position].imageProfile)
+        startActivity(intent)
     }
 }
