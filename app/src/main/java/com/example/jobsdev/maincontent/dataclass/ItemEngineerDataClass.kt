@@ -1,5 +1,5 @@
 package com.example.jobsdev.maincontent.dataclass
 
-data class ItemEngineerDataClass(val imageProfile : Int, val name: String, val jobTitle : String,
-                                 val skillOne : String, val skillTwo : String, val skillThree: String,
-                                 val countOfAnotherSkill : String)
+data class ItemEngineerDataClass(var imageProfile : Int, var name: String, var jobTitle : String,
+                                 var skillOne : String, var skillTwo : String, var skillThree: String,
+                                 var countOfAnotherSkill : String)

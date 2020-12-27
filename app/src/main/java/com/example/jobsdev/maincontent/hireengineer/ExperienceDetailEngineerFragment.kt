@@ -1,4 +1,4 @@
-package com.example.jobsdev.maincontent.fragment
+package com.example.jobsdev.maincontent.hireengineer
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,21 +8,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jobsdev.R
-import com.example.jobsdev.databinding.FragmentExperienceEngineerBinding
-import com.example.jobsdev.maincontent.dataclass.ItemExperienceDataClass
-import com.example.jobsdev.maincontent.dataclass.ItemPortfolioDataClass
-import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListExperienceAdapter
-import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListPortfolioAdapter
+import com.example.jobsdev.databinding.FragmentExperienceDetailEngineerBinding
+import com.example.jobsdev.maincontent.experienceengineer.ItemExperienceDataClass
+import com.example.jobsdev.maincontent.experienceengineer.RecyclerViewListExperienceAdapter
 
-class ExperienceEngineerFragment : Fragment() {
-    private lateinit var binding : FragmentExperienceEngineerBinding
+class ExperienceDetailEngineerFragment : Fragment() {
+    private lateinit var binding : FragmentExperienceDetailEngineerBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_experience_engineer, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_experience_detail_engineer, container, false)
+
         return binding.root
     }
 
@@ -48,7 +47,15 @@ class ExperienceEngineerFragment : Fragment() {
                 else -> R.drawable.instagram_icon
             }
 
-            val item = ItemExperienceDataClass(drawable, "Software Engineer", "Tokopedia", "July 2019 - January 2020", "6 months", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+            val item =
+                ItemExperienceDataClass(
+                    drawable,
+                    "Software Engineer",
+                    "Tokopedia",
+                    "July 2019 - January 2020",
+                    "6 months",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                )
             list += item
         }
         return list

@@ -1,4 +1,4 @@
-package com.example.jobsdev.maincontent.recyclerview
+package com.example.jobsdev.maincontent.portfolioengineer
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
-import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
-import com.example.jobsdev.maincontent.dataclass.ItemPortfolioDataClass
 
 class RecyclerViewListPortfolioAdapter(private val exampleList: List<ItemPortfolioDataClass>) : RecyclerView.Adapter<RecyclerViewListPortfolioAdapter.viewHolder>() {
 

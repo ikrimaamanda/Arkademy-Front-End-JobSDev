@@ -15,7 +15,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".onboard.OnBoardLoginActivity"></activity>
+        <activity android:name=".maincontent.portfolioengineer.UpdatePortfolioTwoActivity"></activity>
+        <activity android:name=".maincontent.hireengineer.FormHireActivity" />
+        <activity android:name=".maincontent.hireengineer.DetailEngineerActivity" />
+        <activity android:name=".maincontent.experienceengineer.UpdateExperienceActivity" />
+        <activity android:name=".maincontent.portfolioengineer.UpdatePortfolioActivity" />
+        <activity android:name=".maincontent.skillengineer.UpdateSkillActivity" />
+        <activity android:name=".maincontent.experienceengineer.AddExperienceActivity" />
+        <activity android:name=".maincontent.portfolioengineer.AddPortfolioActivity" />
+        <activity android:name=".maincontent.skillengineer.AddSkillActivity" />
+        <activity android:name=".onboard.OnBoardLoginActivity" />
         <activity android:name=".maincontent.editprofile.EditAccountCompanyActivity" />
         <activity android:name=".maincontent.editprofile.EditAccountEngineerActivity" />
         <activity android:name=".maincontent.webview.GitHubWebViewActivity" />

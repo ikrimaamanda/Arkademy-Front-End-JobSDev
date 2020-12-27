@@ -10,11 +10,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.example.jobsdev.R
-import com.example.jobsdev.maincontent.adapter.TabPagerAdapter
 import com.example.jobsdev.databinding.FragmentAccountEngineerBinding
+import com.example.jobsdev.maincontent.adapter.TabPagerAdapter
 import com.example.jobsdev.maincontent.editprofile.EditAccountEngineerActivity
+import com.example.jobsdev.maincontent.skillengineer.AddSkillActivity
+import com.example.jobsdev.maincontent.skillengineer.ItemSkillEngineerDataClass
+import com.example.jobsdev.maincontent.skillengineer.RecyclerViewSkillEngineerAdapter
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
 import com.example.jobsdev.onboard.OnBoardLoginActivity
 import com.example.jobsdev.sharedpreference.Constant
@@ -48,11 +52,16 @@ class AccountEngineerFragment : Fragment() {
             startActivity(Intent(activity, GitHubWebViewActivity::class.java))
         }
 
+        binding.btnAddSkill.setOnClickListener {
+            startActivity(Intent(activity, AddSkillActivity::class.java))
+        }
+
         pagerAdapter =
             TabPagerAdapter(
                 childFragmentManager
             )
         addFragment(binding.root)
+
         return binding.root
     }
 
@@ -60,13 +69,18 @@ class AccountEngineerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedPref = PreferencesHelper(view.context)
         binding.tvEmailProfile.text = sharedPref.getValueString(Constant.prefEmail )
+
+        val exampleListSkill = generateDummyList(10)
+        binding.rvSkillEngineer.apply {
+            adapter =
+                RecyclerViewSkillEngineerAdapter(
+                    exampleListSkill
+                )
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        }
     }
 
     private fun addFragment(view: View?) {
-        pagerAdapter =
-            TabPagerAdapter(
-                childFragmentManager
-            )
         viewPager = view!!.findViewById(R.id.view_pager)
         tabLayout = view.findViewById(R.id.tab_layout)
 
@@ -95,6 +109,21 @@ class AccountEngineerFragment : Fragment() {
         })
         builder.setNegativeButton("No", {dialogInterface : DialogInterface, i : Int ->})
         builder.show()
+    }
+
+    private fun generateDummyList(size : Int) : List<ItemSkillEngineerDataClass> {
+        val list = ArrayList<ItemSkillEngineerDataClass>()
+
+        for (i in 0 until size) {
+            val skillName = when(i%3) {
+                0 -> "Kotlin"
+                1 -> "Java"
+                else -> "Laravel"
+            }
+            val item = ItemSkillEngineerDataClass("${i + 1}", skillName)
+            list += item
+        }
+        return list
     }
 
 }

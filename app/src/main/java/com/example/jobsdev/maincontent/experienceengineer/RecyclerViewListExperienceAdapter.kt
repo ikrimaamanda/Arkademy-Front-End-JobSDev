@@ -1,4 +1,4 @@
-package com.example.jobsdev.maincontent.recyclerview
+package com.example.jobsdev.maincontent.experienceengineer
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
-import com.example.jobsdev.databinding.ExampleItemExperienceBinding
-import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
-import com.example.jobsdev.maincontent.dataclass.ItemExperienceDataClass
 
 class RecyclerViewListExperienceAdapter(private val exampleListExperience : List<ItemExperienceDataClass>) : RecyclerView.Adapter<RecyclerViewListExperienceAdapter.viewHolder>() {
 

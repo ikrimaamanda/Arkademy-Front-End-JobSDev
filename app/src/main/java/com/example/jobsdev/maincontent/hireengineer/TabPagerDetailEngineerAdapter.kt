@@ -1,4 +1,4 @@
-package com.example.jobsdev.maincontent.adapter
+package com.example.jobsdev.maincontent.hireengineer
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -6,11 +6,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.jobsdev.maincontent.experienceengineer.ExperienceEngineerFragment
 import com.example.jobsdev.maincontent.portfolioengineer.PortfolioEngineerFragment
 
-class TabPagerAdapter(fragment : FragmentManager) : FragmentStatePagerAdapter(fragment, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class TabPagerDetailEngineerAdapter(fragment : FragmentManager) : FragmentStatePagerAdapter(fragment, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val fragment = arrayOf(
-        PortfolioEngineerFragment(),
-        ExperienceEngineerFragment()
+        PortfolioDetailEngineerFragment(),
+        ExperienceDetailEngineerFragment()
     )
 
     override fun getItem(position: Int): Fragment {

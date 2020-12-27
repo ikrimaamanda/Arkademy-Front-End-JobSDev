@@ -1,26 +1,22 @@
-package com.example.jobsdev.maincontent.editprofile
+package com.example.jobsdev.maincontent.experienceengineer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.example.jobsdev.R
-import com.example.jobsdev.databinding.ActivityEditAccountCompanyBinding
+import com.example.jobsdev.databinding.ActivityAddExperienceEngineerBinding
 
-class EditAccountCompanyActivity : AppCompatActivity() {
+class AddExperienceActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityEditAccountCompanyBinding
+    private lateinit var binding : ActivityAddExperienceEngineerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_account_company)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_experience_engineer)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
-
-        binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
     }

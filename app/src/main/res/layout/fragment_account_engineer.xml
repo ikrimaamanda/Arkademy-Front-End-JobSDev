@@ -194,111 +194,28 @@
                     android:id="@+id/tv_skill"
                     android:text="Skill"
                     android:textSize="18sp"
-                    android:textColor="#000"
+                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
-                <HorizontalScrollView
-                    android:id="@+id/scroll_skill"
+                <ImageButton
+                    android:id="@+id/btn_add_skill"
+                    android:src="@drawable/icon_plus"
+                    android:background="@drawable/circle_purple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_skill_engineer"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/tv_skill"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_skill_kotlin"
-                            android:text="Kotlin"
-                            android:textSize="14sp"
-                            android:padding="5dp"
-                            android:background="@drawable/bg_orange"
-                            android:textColor="@color/white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/tv_skill"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginTop="20dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_skill_Java"
-                            android:text="Java"
-                            android:textSize="14sp"
-                            android:padding="5dp"
-                            android:background="@drawable/bg_orange"
-                            android:textColor="@color/white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/tv_skill"
-                            app:layout_constraintStart_toEndOf="@id/tv_skill_kotlin"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="20dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_skill_laravel"
-                            android:text="Laravel"
-                            android:textSize="14sp"
-                            android:padding="5dp"
-                            android:background="@drawable/bg_orange"
-                            android:textColor="@color/white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/tv_skill"
-                            app:layout_constraintStart_toEndOf="@id/tv_skill_Java"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="20dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_skill_phyton"
-                            android:text="Phyton"
-                            android:textSize="14sp"
-                            android:padding="5dp"
-                            android:background="@drawable/bg_orange"
-                            android:textColor="@color/white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="20dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_skill_php"
-                            android:text="PHP"
-                            android:textSize="14sp"
-                            android:padding="5dp"
-                            android:background="@drawable/bg_orange"
-                            android:textColor="@color/white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="@id/tv_skill_phyton"
-                            app:layout_constraintStart_toEndOf="@id/tv_skill_phyton"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="20dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_skill_swift"
-                            android:text="Swift"
-                            android:textSize="14sp"
-                            android:padding="5dp"
-                            android:background="@drawable/bg_orange"
-                            android:textColor="@color/white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="@id/tv_skill_php"
-                            app:layout_constraintStart_toEndOf="@id/tv_skill_php"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="20dp"
-                            />
-
-                    </LinearLayout>
-
-                </HorizontalScrollView>
+                    app:layout_constraintStart_toStartOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

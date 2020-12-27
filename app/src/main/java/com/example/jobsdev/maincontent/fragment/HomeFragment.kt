@@ -15,7 +15,6 @@ import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
 
 class HomeFragment : Fragment() {
 
-    private lateinit var rootView : View
     private lateinit var binding : FragmentHomeBinding
 
     override fun onCreateView(
@@ -23,10 +22,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView = inflater.inflate(R.layout.fragment_home, container, false)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
-        return rootView
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

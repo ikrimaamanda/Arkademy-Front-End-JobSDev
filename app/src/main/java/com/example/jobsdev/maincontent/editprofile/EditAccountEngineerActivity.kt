@@ -19,5 +19,9 @@ class EditAccountEngineerActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+
+        binding.btnCancel.setOnClickListener {
+            onBackPressed()
+        }
     }
 }

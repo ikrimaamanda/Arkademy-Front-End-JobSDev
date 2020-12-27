@@ -1,5 +1,6 @@
-package com.example.jobsdev.maincontent.fragment
+package com.example.jobsdev.maincontent.portfolioengineer
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentPortfolioEngineerBinding
-import com.example.jobsdev.maincontent.dataclass.ItemPortfolioDataClass
-import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListPortfolioAdapter
+import com.example.jobsdev.maincontent.skillengineer.AddSkillActivity
 
 class PortfolioEngineerFragment : Fragment() {
     private lateinit var binding : FragmentPortfolioEngineerBinding
@@ -21,6 +21,11 @@ class PortfolioEngineerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_portfolio_engineer, container, false)
+
+        binding.btnAddPortfolio.setOnClickListener {
+            startActivity(Intent(activity, AddPortfolioActivity::class.java))
+        }
+
         return binding.root
     }
 
@@ -46,7 +51,10 @@ class PortfolioEngineerFragment : Fragment() {
                 else -> R.drawable.porto2
             }
 
-            val item = ItemPortfolioDataClass(drawable)
+            val item =
+                ItemPortfolioDataClass(
+                    drawable
+                )
             list += item
         }
         return list
