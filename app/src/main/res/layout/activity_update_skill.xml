@@ -54,18 +54,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/et_update_skill_name"
+                app:layout_constraintBottom_toTopOf="@id/tv_current_skill_name"
                 app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_current_skill_name"
+                android:text="Current skill"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/et_update_skill_name"
+                android:layout_marginTop="30dp"/>
 
             <EditText
                 android:id="@+id/et_update_skill_name"
                 android:hint="Update name of skill"
                 android:background="@drawable/white_button"
                 android:padding="10dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_desc"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_current_skill_name"/>
 
             <Button
                 android:id="@+id/btn_add_skill"

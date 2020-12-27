@@ -53,10 +53,20 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
                 else -> R.drawable.profile_pict_3
             }
 
-            val item = ItemEngineerDataClass(drawable, "Marinda Yunella", "Web Developer", "Kotlin", "Java", "Laravel", "3+")
+            val name = when(i%3) {
+                0 -> "Marinda Yunella"
+                1 -> "Alvita Limantara"
+                else -> "Amala Audina"
+            }
+
+            val jobTitle = when(i%3) {
+                0 -> "Web Developer"
+                1 -> "Android Developer"
+                else -> "DevOps"
+            }
+
+            val item = ItemEngineerDataClass(drawable, name, jobTitle, "Kotlin", "Java", "Laravel", "3+")
             list += item
-            val item2 = ItemEngineerDataClass(drawable, "Alvita Limantara", "Android Developer", "Kotlin", "Java", "Laravel", "3+")
-            list += item2
         }
         return list
     }

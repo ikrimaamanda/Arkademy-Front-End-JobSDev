@@ -19,7 +19,6 @@ import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListEngineerAdap
 
 class SearchFragment : Fragment(), OnListEngineerClickListener {
 
-    private lateinit var rootView: View
     private lateinit var binding : FragmentSearchBinding
     var listEngineer = ArrayList<ItemEngineerDataClass>()
 
@@ -39,7 +38,7 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
         var engineerAdapter = RecyclerViewListEngineerAdapter(listEngineer, this)
         binding.recyclerViewSearchEngineer.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewSearchEngineer.adapter = engineerAdapter
-        
+
     }
 
     private fun generateDummyList(size : Int) : ArrayList<ItemEngineerDataClass> {
@@ -52,7 +51,19 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
                 else -> R.drawable.profile_pict_3
             }
 
-            val item = ItemEngineerDataClass(drawable, "Marinda Yunella", "Web Developer", "Kotlin", "Java", "Laravel", "3+")
+            val name = when(i%3) {
+                0 -> "Marinda Yunella"
+                1 -> "Alvita Limantara"
+                else -> "Amala Audina"
+            }
+
+            val jobTitle = when(i%3) {
+                0 -> "Web Developer"
+                1 -> "Android Developer"
+                else -> "DevOps"
+            }
+
+            val item = ItemEngineerDataClass(drawable, name, jobTitle, "Kotlin", "Java", "Laravel", "3+")
             list += item
         }
         return list
@@ -60,10 +71,10 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
 
     override fun onEngineerItemClicked(position: Int) {
         Toast.makeText(requireContext(), "Engineer $position clicked", Toast.LENGTH_SHORT).show()
-        val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
-        intent.putExtra("name", listEngineer[position].name)
-        intent.putExtra("jobTitle", listEngineer[position].jobTitle)
-        intent.putExtra("image", listEngineer[position].imageProfile)
-        startActivity(intent)
+//        val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
+//        intent.putExtra("name", listEngineer[position].name)
+//        intent.putExtra("jobTitle", listEngineer[position].jobTitle)
+//        intent.putExtra("image", listEngineer[position].imageProfile)
+//        startActivity(intent)
     }
 }

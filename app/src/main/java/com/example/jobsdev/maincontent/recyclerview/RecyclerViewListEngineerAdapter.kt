@@ -44,6 +44,5 @@ class RecyclerViewListEngineerAdapter(private val listEngineer : ArrayList<ItemE
         val skillTwo : TextView = itemView.findViewById(R.id.tv_skill_java)
         val skillThree : TextView = itemView.findViewById(R.id.tv_skill_laravel)
         val countOfAnotherSkill : TextView = itemView.findViewById(R.id.tv_count_skills)
-
     }
 }

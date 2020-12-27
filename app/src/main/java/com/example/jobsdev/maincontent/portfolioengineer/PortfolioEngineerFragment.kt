@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentPortfolioEngineerBinding
 import com.example.jobsdev.maincontent.skillengineer.AddSkillActivity
+import com.example.jobsdev.maincontent.skillengineer.ItemSkillEngineerDataClass
+import com.example.jobsdev.maincontent.skillengineer.RecyclerViewSkillEngineerAdapter
+import com.example.jobsdev.maincontent.skillengineer.UpdateSkillActivity
 
-class PortfolioEngineerFragment : Fragment() {
+class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener {
     private lateinit var binding : FragmentPortfolioEngineerBinding
+    var listPortfolio = ArrayList<ItemPortfolioDataClass>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,18 +36,22 @@ class PortfolioEngineerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val exampleListPortfolio = generateDummyList(15)
+        listPortfolio = generateDummyList(15)
 
-        binding.recyclerView.apply {
-            adapter =
-                RecyclerViewListPortfolioAdapter(
-                    exampleListPortfolio
-                )
-            layoutManager = LinearLayoutManager(activity)
-        }
+        var portfolioAdapter = RecyclerViewListPortfolioAdapter(listPortfolio, this)
+        binding.recyclerViewPortfolio.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerViewPortfolio.adapter = portfolioAdapter
+
+//        binding.recyclerView.apply {
+//            adapter =
+//                RecyclerViewListPortfolioAdapter(
+//                    exampleListPortfolio
+//                )
+//            layoutManager = LinearLayoutManager(activity)
+//        }
     }
 
-    private fun generateDummyList(size : Int) : List<ItemPortfolioDataClass> {
+    private fun generateDummyList(size : Int) : ArrayList<ItemPortfolioDataClass> {
         val list = ArrayList<ItemPortfolioDataClass>()
 
         for (i in 0 until size) {
@@ -58,5 +67,11 @@ class PortfolioEngineerFragment : Fragment() {
             list += item
         }
         return list
+    }
+
+    override fun onPortfolioItemClicked(position: Int) {
+        Toast.makeText(requireContext(), "Portfolio $position clicked", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), UpdatePortfolioTwoActivity::class.java)
+        startActivity(intent)
     }
 }

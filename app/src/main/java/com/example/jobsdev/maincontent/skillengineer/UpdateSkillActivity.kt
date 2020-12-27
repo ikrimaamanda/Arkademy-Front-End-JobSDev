@@ -19,5 +19,8 @@ class UpdateSkillActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+
+        val name = intent.getStringExtra("skillName")
+        binding.tvCurrentSkillName.text = name
     }
 }

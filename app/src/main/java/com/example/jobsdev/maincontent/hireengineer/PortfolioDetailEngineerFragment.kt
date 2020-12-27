@@ -1,6 +1,5 @@
 package com.example.jobsdev.maincontent.hireengineer
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentPortfolioDetailEngineerBinding
-import com.example.jobsdev.databinding.FragmentPortfolioEngineerBinding
 import com.example.jobsdev.maincontent.portfolioengineer.ItemPortfolioDataClass
-import com.example.jobsdev.maincontent.portfolioengineer.RecyclerViewListPortfolioAdapter
-import com.example.jobsdev.maincontent.skillengineer.AddSkillActivity
 
 class PortfolioDetailEngineerFragment : Fragment() {
     private lateinit var binding : FragmentPortfolioDetailEngineerBinding
@@ -30,18 +26,19 @@ class PortfolioDetailEngineerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val exampleListPortfolio = generateDummyList(15)
+        val exampleList = generateDummyList(15)
 
-        binding.recyclerView.apply {
+                binding.recyclerView.apply {
             adapter =
-                RecyclerViewListPortfolioAdapter(
-                    exampleListPortfolio
+                RecyclerViewListPortfolioDetailEngineerAdapter(
+                    exampleList
                 )
             layoutManager = LinearLayoutManager(activity)
         }
+
     }
 
-    private fun generateDummyList(size : Int) : List<ItemPortfolioDataClass> {
+    private fun generateDummyList(size : Int) : ArrayList<ItemPortfolioDataClass> {
         val list = ArrayList<ItemPortfolioDataClass>()
 
         for (i in 0 until size) {
@@ -58,4 +55,5 @@ class PortfolioDetailEngineerFragment : Fragment() {
         }
         return list
     }
+
 }
