@@ -4,9 +4,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/bg_color">
 
         <SearchView
             android:id="@+id/sv_search"
@@ -16,18 +16,18 @@
             android:queryHint="Search"
             android:iconifiedByDefault="false"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:ignore="MissingConstraints">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_white_search_screen"
                 android:paddingTop="30dp">
 
                 <androidx.recyclerview.widget.RecyclerView

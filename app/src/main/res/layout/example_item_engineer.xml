@@ -11,19 +11,26 @@
            android:layout_width="match_parent"
            android:layout_height="match_parent">
 
-           <com.mikhaellopez.circularimageview.CircularImageView
-               android:id="@+id/civ_profile_pict"
-               android:layout_width="80dp"
-               android:layout_height="80dp"
-               android:src="@drawable/profile_pict"
-               android:layout_margin="10dp"
-               />
+<!--           <com.mikhaellopez.circularimageview.CircularImageView-->
+<!--               android:id="@+id/civ_profile_pict"-->
+<!--               android:layout_width="80dp"-->
+<!--               android:layout_height="80dp"-->
+<!--               android:src="@drawable/profile_pict"-->
+<!--               android:layout_margin="10dp"-->
+<!--               />-->
 
+           <TextView
+               android:id="@+id/tv_image"
+               android:text="Foto"
+               android:textSize="32sp"
+               android:layout_margin="10dp"
+               android:layout_width="50dp"
+               android:layout_height="50dp"/>
            <androidx.constraintlayout.widget.ConstraintLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:padding="10dp"
-               android:layout_toRightOf="@id/civ_profile_pict">
+               android:layout_toRightOf="@id/tv_image">
 
                <TextView
                    android:id="@+id/tv_name"
@@ -46,63 +53,19 @@
                    android:layout_marginTop="5dp"
                    app:layout_constraintStart_toStartOf="parent"/>
 
-               <androidx.constraintlayout.widget.ConstraintLayout
-                   android:layout_width="match_parent"
+               <TextView
+                   android:id="@+id/tv_job_type"
+                   android:text="fulltime"
+                   android:textSize="14sp"
+                   android:background="@drawable/bg_orange"
+                   android:textColor="@color/white"
+                   android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="10dp"
                    app:layout_constraintTop_toBottomOf="@id/tv_job_title"
-                   app:layout_constraintStart_toStartOf="parent">
-
-                   <TextView
-                       android:id="@+id/tv_skill_kotlin"
-                       android:text="Kotlin"
-                       android:textSize="14sp"
-                       android:paddingHorizontal="5dp"
-                       android:background="@drawable/bg_orange"
-                       android:textColor="@color/white"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintStart_toStartOf="parent" />
-
-                   <TextView
-                       android:id="@+id/tv_skill_java"
-                       android:text="Java"
-                       android:textSize="14sp"
-                       android:paddingHorizontal="5dp"
-                       android:background="@drawable/bg_orange"
-                       android:textColor="@color/white"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintStart_toEndOf="@id/tv_skill_kotlin"
-                       android:layout_marginLeft="10dp" />
-
-                   <TextView
-                       android:id="@+id/tv_skill_laravel"
-                       android:text="Laravel"
-                       android:textSize="14sp"
-                       android:paddingHorizontal="5dp"
-                       android:background="@drawable/bg_orange"
-                       android:textColor="@color/white"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintStart_toEndOf="@id/tv_skill_java"
-                       android:layout_marginLeft="10dp" />
-
-                   <TextView
-                       android:id="@+id/tv_count_skills"
-                       android:text="3+"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       app:layout_constraintStart_toEndOf="@id/tv_skill_laravel"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintBottom_toBottomOf="parent"
-                       android:layout_marginLeft="12dp"/>
-
-               </androidx.constraintlayout.widget.ConstraintLayout>
-
+                   app:layout_constraintStart_toStartOf="parent"
+                   android:layout_marginTop="5dp"
+                   android:paddingHorizontal="5dp"
+                   />
 
            </androidx.constraintlayout.widget.ConstraintLayout>
 

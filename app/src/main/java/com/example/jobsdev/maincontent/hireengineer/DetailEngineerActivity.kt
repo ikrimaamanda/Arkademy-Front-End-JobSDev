@@ -58,7 +58,7 @@ class DetailEngineerActivity : AppCompatActivity() {
                 1 -> "Java"
                 else -> "Laravel"
             }
-            val item = ItemSkillHireEngineerDataClass("${i + 1}", skillName)
+            val item = ItemSkillHireEngineerDataClass("${i + 1}",i, skillName)
             list += item
         }
         return list

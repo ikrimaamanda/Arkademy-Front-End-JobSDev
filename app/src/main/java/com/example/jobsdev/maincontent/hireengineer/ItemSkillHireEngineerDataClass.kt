@@ -1,3 +1,5 @@
 package com.example.jobsdev.maincontent.hireengineer
 
-data class ItemSkillHireEngineerDataClass(val skillId : String, val SkillName : String)
+import com.google.gson.annotations.SerializedName
+
+data class ItemSkillHireEngineerDataClass(val skillId : String, @SerializedName("en_id") val engineerId : Int, val SkillName : String)

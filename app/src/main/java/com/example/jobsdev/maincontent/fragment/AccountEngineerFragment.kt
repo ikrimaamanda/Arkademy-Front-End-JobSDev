@@ -122,7 +122,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
                 1 -> "Java"
                 else -> "Laravel"
             }
-            val item = ItemSkillEngineerDataClass("${i + 1}", skillName)
+            val item = ItemSkillEngineerDataClass("${i + 1}", i, skillName)
             list += item
         }
         return list

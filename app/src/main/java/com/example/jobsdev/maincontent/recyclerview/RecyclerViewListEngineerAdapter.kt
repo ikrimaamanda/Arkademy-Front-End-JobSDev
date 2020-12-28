@@ -24,10 +24,6 @@ class RecyclerViewListEngineerAdapter(private val listEngineer : ArrayList<ItemE
         holder.imageView.setImageResource(currentItem.imageProfile)
         holder.name.text = currentItem.name
         holder.jobTitle.text = currentItem.jobTitle
-        holder.skillOne.text = currentItem.skillOne
-        holder.skillTwo.text = currentItem.skillTwo
-        holder.skillThree.text = currentItem.skillThree
-        holder.countOfAnotherSkill.text = currentItem.countOfAnotherSkill
 
         holder.itemView.setOnClickListener {
             onListEngineerClickListener.onEngineerItemClicked(position)
@@ -40,9 +36,5 @@ class RecyclerViewListEngineerAdapter(private val listEngineer : ArrayList<ItemE
         val imageView : ImageView = itemView.findViewById(R.id.civ_profile_pict)
         val name : TextView = itemView.findViewById(R.id.tv_name)
         val jobTitle : TextView = itemView.findViewById(R.id.tv_job_title)
-        val skillOne : TextView = itemView.findViewById(R.id.tv_skill_kotlin)
-        val skillTwo : TextView = itemView.findViewById(R.id.tv_skill_java)
-        val skillThree : TextView = itemView.findViewById(R.id.tv_skill_laravel)
-        val countOfAnotherSkill : TextView = itemView.findViewById(R.id.tv_count_skills)
     }
 }
