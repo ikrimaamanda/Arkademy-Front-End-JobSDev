@@ -76,6 +76,7 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
         intent.putExtra("name", listEngineer[position].name)
         intent.putExtra("jobTitle", listEngineer[position].jobTitle)
+        intent.putExtra("image", listEngineer[position].imageProfile)
         startActivity(intent)
     }
 }

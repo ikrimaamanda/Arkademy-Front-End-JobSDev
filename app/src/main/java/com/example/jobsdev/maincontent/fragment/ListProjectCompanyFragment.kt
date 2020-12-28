@@ -1,4 +1,4 @@
-package com.example.jobsdev.maincontent.fragment
+ package com.example.jobsdev.maincontent.fragment
 
 import android.os.Bundle
 import android.util.Log

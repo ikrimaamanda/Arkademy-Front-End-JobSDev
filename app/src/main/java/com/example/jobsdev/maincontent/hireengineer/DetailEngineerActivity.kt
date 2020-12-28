@@ -22,6 +22,8 @@ class DetailEngineerActivity : AppCompatActivity() {
         binding.tvFullName.text = name
         val jobTitle = intent.getStringExtra("jobTitle")
         binding.tvJobTitle.text = jobTitle
+        val image = intent.getIntExtra("image", 0)
+        binding.civProfilePict.setImageResource(image)
 
         binding.btnHireEngineer.setOnClickListener {
             startActivity(Intent(this, FormHireActivity::class.java))
