@@ -88,8 +88,7 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
         intent.putExtra("name", listEngineer[position].accountName)
         intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
         intent.putExtra("jobType", listEngineer[position].engineerJobType)
-
-//        intent.putExtra("image", listEngineer[position].imageProfile)
+        intent.putExtra("image", listEngineer[position].engineerProfilePict)
         startActivity(intent)
     }
 }

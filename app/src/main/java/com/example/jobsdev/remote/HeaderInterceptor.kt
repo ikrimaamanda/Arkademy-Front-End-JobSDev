@@ -5,7 +5,7 @@ import okhttp3.Response
 
 class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
-        val tokenAuth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY19pZCI6NzEsImFjX2VtYWlsIjoicml6YWxAZ21haWwuY29tIiwiYWNfbGV2ZWwiOjEsImlhdCI6MTYwOTE4MTg1NCwiZXhwIjoxNjA5MTg1NDU0fQ.3NOgdqMHtMbytNPs7JofjfnJhVyN4aufUt6GMN-596E"
+        val tokenAuth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY19pZCI6NzQsImFjX2VtYWlsIjoieW9sYW5kYUBnbWFpbC5jb20iLCJhY19sZXZlbCI6MCwiaWF0IjoxNjA5MjA2ODMwLCJleHAiOjE2MDkyMTA0MzB9.HxwpgObumzlq1gZubXo6L850iOeuErlcZLxZHmse2l8"
         proceed(
             request().newBuilder()
                 .addHeader("Authorization", "Bearer $tokenAuth")

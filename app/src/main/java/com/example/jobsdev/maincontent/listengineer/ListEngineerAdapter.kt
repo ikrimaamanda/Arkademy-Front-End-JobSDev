@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ExampleItemEngineerBinding
 import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
@@ -27,12 +28,19 @@ class ListEngineerAdapter(private val listEngineer : ArrayList<DetailEngineerMod
 
     override fun onBindViewHolder(holder: ListEngineerViewHolder, position: Int) {
         val item = listEngineer[position]
+        var img = "http://54.236.22.91:4000/image/${item.engineerProfilePict}"
 
-        holder.binding.tvImage.text = item.engineerProfilePict
+//        holder.binding.tvImage.text = item.engineerProfilePict
 //        holder.binding.civProfilePict.setImageResource(item.engineerProfilePict.toInt())
         holder.binding.tvName.text = item.accountName
         holder.binding.tvJobTitle.text = item.engineerJobTitle
         holder.binding.tvJobType.text = item.engineerJobType
+
+        Glide.with(holder.itemView)
+            .load(img)
+            .placeholder(R.drawable.profile_pict)
+            .error(R.drawable.profile_pict)
+            .into(holder.binding.civProfilePict)
 
         holder.itemView.setOnClickListener {
             onListEngineerClickListener.onEngineerItemClicked(position)

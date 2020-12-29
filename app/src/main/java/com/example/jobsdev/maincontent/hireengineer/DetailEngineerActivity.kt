@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityDetailEngineerBinding
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
@@ -22,8 +23,13 @@ class DetailEngineerActivity : AppCompatActivity() {
         binding.tvFullName.text = name
         val jobTitle = intent.getStringExtra("jobTitle")
         binding.tvJobTitle.text = jobTitle
-        val image = intent.getIntExtra("image", 0)
-        binding.civProfilePict.setImageResource(image)
+        val image = intent.getStringExtra("image")
+
+        Glide.with(binding.civProfilePict)
+            .load(image)
+            .placeholder(R.drawable.profile_pict)
+            .error(R.drawable.profile_pict)
+            .into(binding.civProfilePict)
 
         binding.btnHireEngineer.setOnClickListener {
             startActivity(Intent(this, FormHireActivity::class.java))
