@@ -53,7 +53,7 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
     }
 
     fun getListEngineer() {
-        val service = ApiClient.getApiClient()?.create(EngineerApiService::class.java)
+        val service = ApiClient.getApiClient(requireContext())?.create(EngineerApiService::class.java)
 
         coroutineScope.launch {
             Log.d("listengineer", "Start: ${Thread.currentThread().name}")
@@ -91,6 +91,10 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
         intent.putExtra("jobType", listEngineer[position].engineerJobType)
         intent.putExtra("image", listEngineer[position].engineerProfilePict)
+        intent.putExtra("email", listEngineer[position].accountEmail)
+        intent.putExtra("location", listEngineer[position].engineerLocation)
+        intent.putExtra("description", listEngineer[position].engineerDescription)
+
         startActivity(intent)
     }
 }

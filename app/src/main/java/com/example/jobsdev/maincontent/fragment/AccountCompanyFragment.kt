@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.jobsdev.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentAccountCompanyBinding
+import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.maincontent.editprofile.EditAccountCompanyActivity
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
 import com.example.jobsdev.onboard.OnBoardLoginActivity
@@ -70,7 +70,7 @@ class AccountCompanyFragment : Fragment() {
     }
 
     private fun moveActivity() {
-        val  intent = Intent(activity, OnBoardLoginActivity::class.java)
+        val  intent = Intent(activity, LoginActivity::class.java)
         activity!!.startActivity(intent)
     }
 

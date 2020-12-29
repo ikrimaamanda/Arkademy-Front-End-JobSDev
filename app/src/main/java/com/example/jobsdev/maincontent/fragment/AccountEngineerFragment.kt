@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentAccountEngineerBinding
+import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.maincontent.adapter.TabPagerAdapter
 import com.example.jobsdev.maincontent.editprofile.EditAccountEngineerActivity
 import com.example.jobsdev.maincontent.hireengineer.DetailEngineerActivity
@@ -92,7 +93,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
     }
 
     private fun moveActivity() {
-        val  intent = Intent(activity, OnBoardLoginActivity::class.java)
+        val  intent = Intent(activity, LoginActivity::class.java)
         activity!!.startActivity(intent)
     }
 

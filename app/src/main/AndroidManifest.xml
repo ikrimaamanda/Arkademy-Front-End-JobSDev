@@ -35,7 +35,7 @@
         <activity android:name=".reset_password.ResetPasswordSendEmailActivity" />
         <activity android:name=".register.RegisterCompanyActivity" />
         <activity android:name=".register.RegisterEngineerActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".login.LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

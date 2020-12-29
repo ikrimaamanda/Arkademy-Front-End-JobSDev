@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.jobsdev.LoginActivity
+import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityRegisterEngineerBinding
+import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.ConstantEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
@@ -45,11 +46,11 @@ class RegisterEngineerActivity : AppCompatActivity() {
 
     private fun saveSession(name: String, email : String, phoneNumber : String, password : String, confirmPassword: String) {
         sharedPref.putValue(ConstantEngineer.fullName, name)
-        sharedPref.putValue(ConstantEngineer.phoneNumber, phoneNumber)
-        sharedPref.putValue(ConstantEngineer.email, email)
-        sharedPref.putValue(ConstantEngineer.password, password)
-        sharedPref.putValue(ConstantEngineer.confirmPassword, confirmPassword)
-        sharedPref.putValue(ConstantEngineer.prefIsRegis, true)
+        sharedPref.putValue(Constant.prefPhoneNumber, phoneNumber)
+        sharedPref.putValue(Constant.prefEmail, email)
+        sharedPref.putValue(Constant.prefPassword, password)
+        sharedPref.putValue(Constant.prefConfirmPassword, confirmPassword)
+        sharedPref.putValue(Constant.prefIsRegis, true)
     }
 
     private fun showMessage(message : String) {
@@ -57,7 +58,7 @@ class RegisterEngineerActivity : AppCompatActivity() {
     }
 
     private fun moveActivity() {
-        if (sharedPref.getValueBoolean(ConstantEngineer.prefIsRegis)!!) {
+        if (sharedPref.getValueBoolean(Constant.prefIsRegis)!!) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import com.example.jobsdev.LoginActivity
+import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.R
 
 class RegisterCompanyActivity : AppCompatActivity() {

@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.example.jobsdev.LoginActivity
+import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityOnBoardLoginBinding
 import com.example.jobsdev.sharedpreference.Constant
@@ -22,13 +22,13 @@ class OnBoardLoginActivity : AppCompatActivity() {
         sharedPref = PreferencesHelper(this)
 
         binding.btnLoginAsEngineer.setOnClickListener {
-            sharedPref.putValue(Constant.acLevel.toString(), 0)
+//            sharedPref.putValue(Constant.acLevel.toString(), 0)
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 
         binding.btnLoginAsCompany.setOnClickListener {
-            sharedPref.putValue(Constant.acLevel.toString(), 1)
+//            sharedPref.putValue(Constant.acLevel.toString(), 1)
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }

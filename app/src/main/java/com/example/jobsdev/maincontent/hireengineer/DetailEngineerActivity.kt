@@ -3,6 +3,7 @@ package com.example.jobsdev.maincontent.hireengineer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -23,13 +24,20 @@ class DetailEngineerActivity : AppCompatActivity() {
         binding.tvFullName.text = name
         val jobTitle = intent.getStringExtra("jobTitle")
         binding.tvJobTitle.text = jobTitle
+
         val image = intent.getStringExtra("image")
+        var img = "http://54.236.22.91:4000/image/$image"
+        Log.d("image: ", img!!)
 
         Glide.with(binding.civProfilePict)
-            .load(image)
-            .placeholder(R.drawable.profile_pict)
-            .error(R.drawable.profile_pict)
+            .load(img)
+            .placeholder(R.drawable.profile_pict_base)
+            .error(R.drawable.profile_pict_base)
             .into(binding.civProfilePict)
+
+        binding.tvEmailProfile.text = intent.getStringExtra("email")
+        binding.tvLocation.text = intent.getStringExtra("location")
+        binding.tvDesc.text = intent.getStringExtra("description")
 
         binding.btnHireEngineer.setOnClickListener {
             startActivity(Intent(this, FormHireActivity::class.java))

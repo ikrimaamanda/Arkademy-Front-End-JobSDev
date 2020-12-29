@@ -30,8 +30,6 @@ class ListEngineerAdapter(private val listEngineer : ArrayList<DetailEngineerMod
         val item = listEngineer[position]
         var img = "http://54.236.22.91:4000/image/${item.engineerProfilePict}"
 
-//        holder.binding.tvImage.text = item.engineerProfilePict
-//        holder.binding.civProfilePict.setImageResource(item.engineerProfilePict.toInt())
         holder.binding.tvName.text = item.accountName
         holder.binding.tvJobTitle.text = item.engineerJobTitle
         holder.binding.tvJobType.text = item.engineerJobType

@@ -38,7 +38,7 @@ class ListProjectCompanyFragment : Fragment() {
     }
 
     fun getProjectByCnId() {
-        val service = ApiClient.getApiClient()?.create(ProjectsCompanyApiService::class.java)
+        val service = ApiClient.getApiClient(requireContext())?.create(ProjectsCompanyApiService::class.java)
 
         coroutineScope.launch {
             Log.d("ikrima", "Start: ${Thread.currentThread().name}")

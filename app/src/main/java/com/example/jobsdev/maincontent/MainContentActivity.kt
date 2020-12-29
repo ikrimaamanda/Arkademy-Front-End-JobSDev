@@ -51,9 +51,9 @@ class MainContentActivity : AppCompatActivity() {
 
 //                supportFragmentManager.beginTransaction().replace(R.id.fl_container, listFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                 supportFragmentManager.beginTransaction().replace(R.id.fl_container, listProjectCompanyFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-                if(sharedPref.getValueInt(Constant.acLevel) == 0) {
+                if(sharedPref.getValueInt(Constant.prefLevel) == 0) {
                     binding.tvTitleToolbar.setText("List Hire")
-                } else if(sharedPref.getValueInt(Constant.acLevel) == 1) {
+                } else if(sharedPref.getValueInt(Constant.prefLevel) == 1) {
                     binding.tvTitleToolbar.setText("List Project")
                 }
             }
@@ -61,9 +61,9 @@ class MainContentActivity : AppCompatActivity() {
                 accountEngineerFragment = AccountEngineerFragment()
                 accountCompanyFragment = AccountCompanyFragment()
 
-                if(sharedPref.getValueInt(Constant.acLevel) == 0) {
+                if(sharedPref.getValueInt(Constant.prefLevel) == 0) {
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, accountEngineerFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-                } else if(sharedPref.getValueInt(Constant.acLevel) == 1) {
+                } else if(sharedPref.getValueInt(Constant.prefLevel) == 1) {
                     supportFragmentManager.beginTransaction().replace(R.id.fl_container, accountCompanyFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                 }
                 binding.tvTitleToolbar.setText("Profile")

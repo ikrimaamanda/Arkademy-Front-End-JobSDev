@@ -6,18 +6,18 @@ class Constant {
         val prefIsLogin = "Pref is Login"
         val prefEmail = "Pref Email"
         val prefPassword = "Pref Password"
-        val acLevel = "Pref level account"
+        val prefLevel = "Pref level account"
+        val prefToken = "Token Pref"
+        val prefId = "account id"
+        val prefIsRegis = "register"
+        val prefConfirmPassword = "confirm password"
+        val prefPhoneNumber = "089789908768"
     }
 }
 
 class ConstantEngineer {
     companion object {
         val fullName = "full name"
-        val email = "email"
-        val phoneNumber = "089789908768"
-        val password = "password"
-        val confirmPassword = "confirm password"
         val acLevel = 0
-        val prefIsRegis = "register"
     }
 }

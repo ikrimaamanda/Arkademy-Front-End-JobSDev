@@ -1,11 +1,20 @@
 package com.example.jobsdev.remote
 
+import android.content.Context
+import com.example.jobsdev.login.LoginResponse
+import com.example.jobsdev.sharedpreference.Constant
+import com.example.jobsdev.sharedpreference.PreferencesHelper
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class HeaderInterceptor : Interceptor {
+class HeaderInterceptor(private val context : Context) : Interceptor {
+
+    private lateinit var sharedPref : PreferencesHelper
+
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
-        val tokenAuth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY19pZCI6NzQsImFjX2VtYWlsIjoieW9sYW5kYUBnbWFpbC5jb20iLCJhY19sZXZlbCI6MCwiaWF0IjoxNjA5MjA2ODMwLCJleHAiOjE2MDkyMTA0MzB9.HxwpgObumzlq1gZubXo6L850iOeuErlcZLxZHmse2l8"
+        sharedPref = PreferencesHelper(context = context)
+
+        val tokenAuth = sharedPref.getValueString(Constant.prefToken)
         proceed(
             request().newBuilder()
                 .addHeader("Authorization", "Bearer $tokenAuth")
