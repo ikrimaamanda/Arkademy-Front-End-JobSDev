@@ -36,8 +36,8 @@ class ListEngineerAdapter(private val listEngineer : ArrayList<DetailEngineerMod
 
         Glide.with(holder.itemView)
             .load(img)
-            .placeholder(R.drawable.profile_pict)
-            .error(R.drawable.profile_pict)
+            .placeholder(R.drawable.profile_pict_base)
+            .error(R.drawable.profile_pict_base)
             .into(holder.binding.civProfilePict)
 
         holder.itemView.setOnClickListener {

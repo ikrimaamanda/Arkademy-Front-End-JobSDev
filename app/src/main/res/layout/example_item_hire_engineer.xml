@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="30dp">
+
+            <TextView
+                android:id="@+id/tv_project_name"
+                android:text="Build Mobile Legend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/tv_company_name"
+                android:text="Kompas Group"
+                android:textColor="@color/grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_project_name"
+                />
+
+            <ImageView
+                android:id="@+id/iv_location_icon"
+                android:src="@drawable/icon_location"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_company_name"
+                />
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:text="Jakarta"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                app:layout_constraintTop_toTopOf="@id/iv_location_icon"
+                app:layout_constraintStart_toEndOf="@id/iv_location_icon"/>
+
+            <LinearLayout
+                app:layout_constraintTop_toBottomOf="@id/iv_location_icon"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_rupiah"
+                    android:text="Rp"
+                    android:textColor="@color/grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:text="10000000"
+                    android:textColor="@color/grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="5dp"
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_see_detail"
+                android:text="See Detail"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</layout>

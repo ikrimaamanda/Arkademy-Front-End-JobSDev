@@ -8,6 +8,7 @@ import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityOnBoardRegisterBinding
 import com.example.jobsdev.register.RegisterCompanyActivity
 import com.example.jobsdev.register.RegisterEngineerActivity
+import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.ConstantEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
@@ -25,12 +26,12 @@ class OnBoardRegisterActivity : AppCompatActivity() {
         sharedPref = PreferencesHelper(this)
 
         binding.btnRegisterEngineer.setOnClickListener {
-            sharedPref.putValue(ConstantEngineer.acLevel.toString(), 0)
+            sharedPref.putValue(Constant.prefLevel, 0)
             startActivity(Intent(this, RegisterEngineerActivity::class.java))
         }
 
         binding.btnRegisterCompany.setOnClickListener {
-            sharedPref.putValue(ConstantEngineer.acLevel.toString(), 1)
+            sharedPref.putValue(Constant.prefLevel, 1)
             startActivity(Intent(this, RegisterCompanyActivity::class.java))
         }
     }

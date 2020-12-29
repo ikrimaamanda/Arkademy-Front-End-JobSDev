@@ -3,38 +3,43 @@ package com.example.jobsdev.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityRegisterEngineerBinding
+import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.ConstantEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
+import kotlinx.coroutines.*
 
 class RegisterEngineerActivity : AppCompatActivity() {
 
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var binding : ActivityRegisterEngineerBinding
+    private lateinit var coroutineScope: CoroutineScope
+    private lateinit var service : RegistrationApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_register_engineer)
 
         sharedPref = PreferencesHelper(this)
+        coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        service = ApiClient.getApiClient(context = this)!!.create(RegistrationApiService::class.java)
 
         binding.btnRegister.setOnClickListener {
             if(binding.etName.text.isEmpty() || binding.etEmail.text.isEmpty() || binding.etNumberPhone.text.isEmpty() || binding.etPassword.text.isEmpty() || binding.etConfirmPassword.text.isEmpty()) {
                 Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
                 binding.etName.requestFocus()
             } else if(binding.etConfirmPassword.text.toString() != binding.etPassword.text.toString()) {
-                Toast.makeText(this, "Please write again password", Toast.LENGTH_SHORT).show()
+                showMessage("Please write again password")
                 binding.etConfirmPassword.requestFocus()
             }
             else {
-                saveSession(binding.etName.text.toString(), binding.etEmail.text.toString(), binding.etNumberPhone.text.toString(), binding.etPassword.text.toString(), binding.etConfirmPassword.text.toString())
-                showMessage("Registration Success")
-                moveActivity()
+                callRegistrationApi(binding.etName.text.toString(), binding.etEmail.text.toString(), binding.etNumberPhone.text.toString(), binding.etPassword.text.toString())
             }
         }
 
@@ -44,13 +49,27 @@ class RegisterEngineerActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveSession(name: String, email : String, phoneNumber : String, password : String, confirmPassword: String) {
-        sharedPref.putValue(ConstantEngineer.fullName, name)
-        sharedPref.putValue(Constant.prefPhoneNumber, phoneNumber)
-        sharedPref.putValue(Constant.prefEmail, email)
-        sharedPref.putValue(Constant.prefPassword, password)
-        sharedPref.putValue(Constant.prefConfirmPassword, confirmPassword)
-        sharedPref.putValue(Constant.prefIsRegis, true)
+    private fun callRegistrationApi(name : String, email : String, phoneNumber: String, password : String) {
+        coroutineScope.launch {
+            val result =  withContext(Dispatchers.IO) {
+                try {
+                    service.registrationEngineerReq(name, email, phoneNumber, password, 0 )
+                } catch (e : Throwable) {
+                    e.printStackTrace()
+                }
+            }
+
+            if(result is RegistrationResponse) {
+                Log.d("registrationReq : ", result.toString())
+
+                if(result.success) {
+                    showMessage("Registration Success!")
+                    moveActivity()
+                } else {
+                    showMessage("Email is already registered")
+                }
+            }
+        }
     }
 
     private fun showMessage(message : String) {
@@ -58,9 +77,7 @@ class RegisterEngineerActivity : AppCompatActivity() {
     }
 
     private fun moveActivity() {
-        if (sharedPref.getValueBoolean(Constant.prefIsRegis)!!) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
-        }
     }
 }

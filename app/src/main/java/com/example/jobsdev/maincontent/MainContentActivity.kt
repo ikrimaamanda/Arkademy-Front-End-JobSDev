@@ -19,6 +19,7 @@ class MainContentActivity : AppCompatActivity() {
     private lateinit var searchFragment: SearchFragment
 //    private lateinit var listFragment: ListFragment
     private lateinit var listProjectCompanyFragment : ListProjectCompanyFragment
+    private lateinit var listHireEngineerFragment : ListHireEngineerFragment
     private lateinit var accountEngineerFragment: AccountEngineerFragment
     private lateinit var accountCompanyFragment : AccountCompanyFragment
 
@@ -46,14 +47,13 @@ class MainContentActivity : AppCompatActivity() {
                 binding.tvTitleToolbar.setText("Search")
             }
             R.id.list -> {
-//                listFragment = ListFragment()
-                listProjectCompanyFragment = ListProjectCompanyFragment()
-
-//                supportFragmentManager.beginTransaction().replace(R.id.fl_container, listFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-                supportFragmentManager.beginTransaction().replace(R.id.fl_container, listProjectCompanyFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                 if(sharedPref.getValueInt(Constant.prefLevel) == 0) {
+                    listHireEngineerFragment = ListHireEngineerFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, listHireEngineerFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                     binding.tvTitleToolbar.setText("List Hire")
                 } else if(sharedPref.getValueInt(Constant.prefLevel) == 1) {
+                    listProjectCompanyFragment = ListProjectCompanyFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.fl_container, listProjectCompanyFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                     binding.tvTitleToolbar.setText("List Project")
                 }
             }

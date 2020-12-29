@@ -191,7 +191,6 @@
                 android:layout_centerHorizontal="true"
                 android:text="Log Out"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="70dp"
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:textAllCaps="false"

@@ -70,16 +70,11 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("loginReq", result.toString())
 
                 if(result.success) {
-//                    sharedPref.putValue(Constant.prefId, result.data.accountId)
-//                    sharedPref.putValue(Constant.prefEmail, result.data.accountEmail)
-//                    sharedPref.putValue(Constant.prefToken, result.data.token)
-//                    sharedPref.putValue(Constant.prefLevel, result.data.accountLevel)
-//                    sharedPref.putValue(Constant.prefIsLogin, true)
                     saveSession(result.data.accountId, result.data.accountEmail, result.data.token, result.data.accountLevel)
                     showMessage("Login Success")
                     moveActivity()
                 } else {
-                    showMessage("Email/Password not registered")
+                    showMessage("Incorrect email or password")
                 }
             }
         }
