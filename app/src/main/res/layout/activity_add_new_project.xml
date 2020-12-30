@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".maincontent.hireengineer.FormHireActivity">
+        tools:context=".maincontent.projectcompany.AddNewProjectActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -18,7 +18,7 @@
 
             <TextView
                 android:id="@+id/tv_title_toolbar"
-                android:text="Process Hiring"
+                android:text="Add Project"
                 android:textSize="22sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -37,7 +37,7 @@
                 android:padding="20dp">
 
                 <ImageView
-                    android:src="@drawable/ic_img_hiring"
+                    android:src="@drawable/img_add_new_project"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center_horizontal"/>
@@ -50,25 +50,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <Spinner
-                    android:id="@+id/spinner_project"
+                <EditText
+                    android:id="@+id/et_project_name"
+                    android:hint="Input project name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:inputType="text"
                     android:background="@drawable/button_white_stroke_purple"
-                    />
+                    android:padding="10dp"/>
 
                 <TextView
-                    android:text="Message"
+                    android:text="Description"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <EditText
-                    android:id="@+id/et_hire_message"
-                    android:hint="Input message"
-                    android:gravity="top"
+                    android:id="@+id/et_project_desc"
+                    android:hint="Input description"
                     android:inputType="textLongMessage"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
@@ -77,16 +78,33 @@
                     android:padding="10dp"/>
 
                 <TextView
-                    android:text="Price"
+                    android:text="Deadline"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <EditText
-                    android:id="@+id/et_price"
-                    android:hint="Input price"
-                    android:inputType="number"
+                    android:id="@+id/et_deadline"
+                    android:hint="Input deadline"
+                    android:inputType="date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_white_stroke_purple"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:text="Image"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/et_image_project"
+                    android:hint="Upload image"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -94,8 +112,8 @@
                     android:padding="10dp"/>
 
                 <Button
-                    android:id="@+id/btn_hire"
-                    android:text="Hire Engineer"
+                    android:id="@+id/btn_add"
+                    android:text="Add Project"
                     android:textSize="18sp"
                     android:paddingHorizontal="20dp"
                     android:textAllCaps="false"
@@ -104,8 +122,7 @@
                     android:background="@drawable/bg_orange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    />
+                    android:layout_marginTop="50dp" />
 
                 <Button
                     android:id="@+id/btn_cancel"

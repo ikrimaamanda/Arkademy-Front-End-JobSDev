@@ -4,16 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ItemProjectCompanyBinding
 
-class ListProjectAdapter : RecyclerView.Adapter<ListProjectAdapter.ProjectHolder>() {
+class ListProjectAdapter(private val listProjectCompany : ArrayList<ProjectCompanyModel>, private val onListProjectCompany : OnListProjectCompanyClickListener) : RecyclerView.Adapter<ListProjectAdapter.ProjectHolder>() {
 
-    private var items = mutableListOf<ProjectCompanyModel>()
-
-    fun addList(list : List<ProjectCompanyModel>) {
-        items.clear()
-        items.addAll(list)
+    fun addListProjectCompany(list : List<ProjectCompanyModel>) {
+        listProjectCompany.clear()
+        listProjectCompany.addAll(list)
         notifyDataSetChanged()
     }
 
@@ -23,15 +22,29 @@ class ListProjectAdapter : RecyclerView.Adapter<ListProjectAdapter.ProjectHolder
         return ProjectHolder(DataBindingUtil.inflate((LayoutInflater.from(parent.context)), R.layout.item_project_company, parent, false))
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = listProjectCompany.size
 
     override fun onBindViewHolder(holder: ProjectHolder, position: Int) {
-        val item = items[position]
-        holder.binding.tvName.text = item.projectName
-        holder.binding.tvDecription.text = item.projectDesc
+        val item = listProjectCompany[position]
+        var img = "http://54.236.22.91:4000/image/${item.projectImage}"
+
+        holder.binding.tvProjectName.text = item.projectName
+        holder.binding.tvDescriptionProject.text = item.projectDesc
         holder.binding.tvDeadline.text = item.projectDeadline
-        holder.binding.tvImageProject.text = item.projectImage
-        holder.binding.tvCreateProject.text = item.projectCreateAt
-        holder.binding.tvUpdateProject.text = item.projectUpdateAt
+        holder.binding.tvDeadline.text = item.projectDeadline
+
+        Glide.with(holder.itemView)
+            .load(img)
+            .placeholder(R.drawable.profile_pict_base)
+            .error(R.drawable.profile_pict_base)
+            .into(holder.binding.ivImageProject)
+
+        holder.itemView.setOnClickListener {
+            onListProjectCompany.onProjectCompanyItemClicked(position)
+        }
+    }
+
+    interface OnListProjectCompanyClickListener {
+        fun onProjectCompanyItemClicked(position : Int)
     }
 }

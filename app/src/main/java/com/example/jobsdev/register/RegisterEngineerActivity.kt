@@ -17,7 +17,6 @@ import kotlinx.coroutines.*
 
 class RegisterEngineerActivity : AppCompatActivity() {
 
-    private lateinit var sharedPref : PreferencesHelper
     private lateinit var binding : ActivityRegisterEngineerBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : RegistrationApiService
@@ -26,7 +25,6 @@ class RegisterEngineerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_register_engineer)
 
-        sharedPref = PreferencesHelper(this)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(RegistrationApiService::class.java)
 

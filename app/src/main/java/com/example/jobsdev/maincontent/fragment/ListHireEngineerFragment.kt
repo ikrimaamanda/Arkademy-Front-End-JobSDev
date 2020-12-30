@@ -1,5 +1,6 @@
 package com.example.jobsdev.maincontent.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,10 +18,7 @@ import com.example.jobsdev.maincontent.listengineer.DetailEngineerModel
 import com.example.jobsdev.maincontent.listengineer.EngineerApiService
 import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
 import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
-import com.example.jobsdev.maincontent.listhireengineer.DetailHireEngineerModel
-import com.example.jobsdev.maincontent.listhireengineer.HireEngineerApiService
-import com.example.jobsdev.maincontent.listhireengineer.ListHireEngineerAdapter
-import com.example.jobsdev.maincontent.listhireengineer.ListHireEngineerResponse
+import com.example.jobsdev.maincontent.listhireengineer.*
 import com.example.jobsdev.remote.ApiClient
 import kotlinx.coroutines.*
 
@@ -85,5 +83,7 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
 
     override fun onHireEngineerItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listHireEngineer[position].projectName} clicked", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), DetailHireEngineerActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -4,26 +4,17 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/bg_color"
+        android:paddingVertical="20dp"
         tools:context=".maincontent.fragment.ListProjectCompanyFragment">
-
-        <SearchView
-            android:id="@+id/sv_search_box"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:iconifiedByDefault="false"
-            android:queryHint="Search"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list_project"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
+            tools:listitem="@layout/item_project_company"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sv_search_box"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ProgressBar
