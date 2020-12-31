@@ -10,9 +10,6 @@ import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityRegisterEngineerBinding
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantEngineer
-import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
 class RegisterEngineerActivity : AppCompatActivity() {

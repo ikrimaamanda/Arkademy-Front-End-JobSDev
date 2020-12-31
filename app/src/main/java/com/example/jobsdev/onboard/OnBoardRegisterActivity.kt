@@ -9,7 +9,6 @@ import com.example.jobsdev.databinding.ActivityOnBoardRegisterBinding
 import com.example.jobsdev.register.RegisterCompanyActivity
 import com.example.jobsdev.register.RegisterEngineerActivity
 import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
 class OnBoardRegisterActivity : AppCompatActivity() {

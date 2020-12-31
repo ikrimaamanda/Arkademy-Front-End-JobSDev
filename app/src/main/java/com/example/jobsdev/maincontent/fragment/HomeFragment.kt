@@ -12,20 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
-import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListEngineerAdapter
 import com.example.jobsdev.databinding.FragmentHomeBinding
-import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
 import com.example.jobsdev.maincontent.hireengineer.DetailEngineerActivity
 import com.example.jobsdev.maincontent.listengineer.DetailEngineerModel
 import com.example.jobsdev.maincontent.listengineer.EngineerApiService
 import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
 import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
-import com.example.jobsdev.maincontent.projectcompany.ListProjectAdapter
-import com.example.jobsdev.maincontent.projectcompany.ProjectCompanyModel
-import com.example.jobsdev.maincontent.projectcompany.ProjectResponse
-import com.example.jobsdev.maincontent.projectcompany.ProjectsCompanyApiService
 import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
 import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
+import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
 class HomeFragment : Fragment(), OnListEngineerClickListener {
@@ -33,6 +29,7 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
     private lateinit var binding : FragmentHomeBinding
     var listEngineer = ArrayList<DetailEngineerModel>()
     private lateinit var coroutineScope : CoroutineScope
+    private lateinit var sharedPref : PreferencesHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +37,7 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        sharedPref = PreferencesHelper(requireContext())
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
         getListEngineer()
@@ -86,14 +84,19 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
 
     override fun onEngineerItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listEngineer[position].accountName} clicked", Toast.LENGTH_SHORT).show()
+        sharedPref.putValue(ConstantDetailEngineer.engineerId, listEngineer[position].engineerId!!)
+        sharedPref.putValue(ConstantDetailEngineer.engineerName, listEngineer[position].accountName!!)
+        sharedPref.putValue(ConstantDetailEngineer.email, listEngineer[position].accountEmail!!)
+
+        if(listEngineer[position].engineerJobTitle != null && listEngineer[position].engineerJobType != null && listEngineer[position].engineerLocation != null && listEngineer[position].engineerDescription != null) {
+            sharedPref.putValue(ConstantDetailEngineer.engineerJobTitle, listEngineer[position].engineerJobTitle!!)
+            sharedPref.putValue(ConstantDetailEngineer.engineerJobType, listEngineer[position].engineerJobType!!)
+            sharedPref.putValue(ConstantDetailEngineer.location, listEngineer[position].engineerLocation!!)
+            sharedPref.putValue(ConstantDetailEngineer.description, listEngineer[position].engineerDescription!!)
+        }
+
         val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
-        intent.putExtra("name", listEngineer[position].accountName)
-        intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
-        intent.putExtra("jobType", listEngineer[position].engineerJobType)
         intent.putExtra("image", listEngineer[position].engineerProfilePict)
-        intent.putExtra("email", listEngineer[position].accountEmail)
-        intent.putExtra("location", listEngineer[position].engineerLocation)
-        intent.putExtra("description", listEngineer[position].engineerDescription)
 
         startActivity(intent)
     }

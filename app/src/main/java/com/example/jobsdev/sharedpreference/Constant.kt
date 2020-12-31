@@ -17,7 +17,21 @@ class Constant {
     }
 }
 
-class ConstantEngineer {
+class ConstantDetailEngineer {
     companion object {
+        val engineerId = "engineer id"
+        val engineerName = "engineer name"
+        val engineerJobTitle = "job title"
+        val engineerJobType = "job type"
+        val email = "email"
+        val location = "location"
+        val description = "description"
+    }
+}
+
+class ConstantProjectCompany {
+    companion object {
+        val projectId = "project id"
+        val projectCompany = "project name"
     }
 }

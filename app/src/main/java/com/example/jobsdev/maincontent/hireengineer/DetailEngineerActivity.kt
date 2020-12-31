@@ -10,20 +10,26 @@ import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityDetailEngineerBinding
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
+import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
+import com.example.jobsdev.sharedpreference.PreferencesHelper
 
 class DetailEngineerActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityDetailEngineerBinding
     private lateinit var pagerAdapter: TabPagerDetailEngineerAdapter
+    private lateinit var sharedPref : PreferencesHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail_engineer)
+        sharedPref = PreferencesHelper(this)
 
-        val name = intent.getStringExtra("name")
-        binding.tvFullName.text = name
-        val jobTitle = intent.getStringExtra("jobTitle")
-        binding.tvJobTitle.text = jobTitle
+        binding.tvFullName.text = sharedPref.getValueString(ConstantDetailEngineer.engineerName)
+        binding.tvJobTitle.text = sharedPref.getValueString(ConstantDetailEngineer.engineerJobTitle)
+        binding.tvJobType.text = sharedPref.getValueString(ConstantDetailEngineer.engineerJobType)
+        binding.tvLocation.text = sharedPref.getValueString(ConstantDetailEngineer.location)
+        binding.tvDesc.text = sharedPref.getValueString(ConstantDetailEngineer.description)
+        binding.tvEmailProfile.text = sharedPref.getValueString(ConstantDetailEngineer.email)
 
         val image = intent.getStringExtra("image")
         var img = "http://54.236.22.91:4000/image/$image"
@@ -34,10 +40,6 @@ class DetailEngineerActivity : AppCompatActivity() {
             .placeholder(R.drawable.profile_pict_base)
             .error(R.drawable.profile_pict_base)
             .into(binding.civProfilePict)
-
-        binding.tvEmailProfile.text = intent.getStringExtra("email")
-        binding.tvLocation.text = intent.getStringExtra("location")
-        binding.tvDesc.text = intent.getStringExtra("description")
 
         binding.btnHireEngineer.setOnClickListener {
             startActivity(Intent(this, FormHireActivity::class.java))

@@ -69,7 +69,7 @@ class RegisterCompanyActivity : AppCompatActivity() {
                     showMessage("Registration Success!")
                     moveActivity()
                 } else {
-                    showMessage("Email is already registered")
+                    showMessage(result.message)
                 }
             }
         }
