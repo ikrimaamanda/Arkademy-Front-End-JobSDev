@@ -9,10 +9,7 @@ class Constant {
         val prefPassword = "Pref Password"
         val prefLevel = "Pref level account"
         val prefToken = "Token Pref"
-        val prefId = "account id"
-        val prefIsRegis = "register"
-        val prefCreatedAt = "created account at"
-        val prefConfirmPassword = "confirm password"
+        val prefAccountId = "account id"
         val prefPhoneNumber = "089789908768"
     }
 }
@@ -33,5 +30,18 @@ class ConstantProjectCompany {
     companion object {
         val projectId = "project id"
         val projectCompany = "project name"
+    }
+}
+
+class ConstantAccountEngineer {
+    companion object {
+        val engineerId = "id of engineer"
+    }
+}
+
+class ConstantAccountCompany {
+    companion object {
+        val companyName = "name of company"
+        val companyId = "id of company"
     }
 }

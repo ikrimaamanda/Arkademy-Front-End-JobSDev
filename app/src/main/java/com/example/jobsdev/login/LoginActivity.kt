@@ -41,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 callLoginApi(binding.etEmail.text.toString(), binding.etPassword.text.toString())
                 sharedPref.putValue(Constant.prefPassword, binding.etPassword.text.toString())
+
             }
         }
 
@@ -56,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    fun callLoginApi(email : String, password : String) {
+    private fun callLoginApi(email : String, password : String) {
         coroutineScope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
@@ -71,11 +72,11 @@ class LoginActivity : AppCompatActivity() {
 
                 if(result.success) {
                     saveSession(result.data.accountId, result.data.accountEmail, result.data.token, result.data.accountLevel)
-                    showMessage("Login Success")
+                    showMessage(result.message)
                     moveActivity()
-                } else {
-                    showMessage("Incorrect email or password")
                 }
+            } else {
+                showMessage("Email / password not registered")
             }
         }
     }
@@ -88,11 +89,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun saveSession(accountId : String, email : String, token : String, level : Int) {
-        sharedPref.putValue(Constant.prefId, accountId)
+        sharedPref.putValue(Constant.prefAccountId, accountId)
         sharedPref.putValue(Constant.prefEmail, email)
         sharedPref.putValue(Constant.prefToken, token)
         sharedPref.putValue(Constant.prefLevel, level)
-//        sharedPref.putValue(Constant.prefPassword, password)
         sharedPref.putValue(Constant.prefIsLogin, true)
     }
 
@@ -103,6 +103,19 @@ class LoginActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         startActivity(Intent(this, OnBoardRegLogActivity::class.java))
+    }
+
+    private fun getEngineerId() {
+        coroutineScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+
+                } catch (e:Throwable) {
+                    Log.e("errorMessage : ", e.message.toString())
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
 }

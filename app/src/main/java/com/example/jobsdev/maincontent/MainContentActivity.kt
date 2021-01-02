@@ -17,7 +17,6 @@ class MainContentActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainContentBinding
     private lateinit var homeFragment : HomeFragment
     private lateinit var searchFragment: SearchFragment
-//    private lateinit var listFragment: ListFragment
     private lateinit var listProjectCompanyFragment : ListProjectCompanyFragment
     private lateinit var listHireEngineerFragment : ListHireEngineerFragment
     private lateinit var accountEngineerFragment: AccountEngineerFragment

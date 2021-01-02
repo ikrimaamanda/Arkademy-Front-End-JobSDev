@@ -62,8 +62,6 @@ class FormHireActivity : AppCompatActivity() {
     }
 
     private fun configSpinnerProject() {
-        binding.spinnerProject
-
         val service = ApiClient.getApiClient(context = this)?.create(ProjectsCompanyApiService::class.java)
 
         coroutineScope.launch {

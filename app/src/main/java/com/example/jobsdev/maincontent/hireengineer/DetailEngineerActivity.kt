@@ -4,12 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityDetailEngineerBinding
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
+import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
@@ -41,8 +43,13 @@ class DetailEngineerActivity : AppCompatActivity() {
             .error(R.drawable.profile_pict_base)
             .into(binding.civProfilePict)
 
-        binding.btnHireEngineer.setOnClickListener {
-            startActivity(Intent(this, FormHireActivity::class.java))
+        if(sharedPref.getValueInt(Constant.prefLevel) == 0) {
+            binding.btnHireEngineer.showOrGone(false)
+        } else {
+            binding.btnHireEngineer.showOrGone(true)
+            binding.btnHireEngineer.setOnClickListener {
+                startActivity(Intent(this, FormHireActivity::class.java))
+            }
         }
 
         val exampleListSkill = generateDummyList(10)
@@ -78,6 +85,14 @@ class DetailEngineerActivity : AppCompatActivity() {
             list += item
         }
         return list
+    }
+
+    fun View.showOrGone(show: Boolean) {
+        visibility = if(show) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
 }
