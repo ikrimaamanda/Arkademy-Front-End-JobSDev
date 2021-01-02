@@ -4,9 +4,9 @@ import com.example.jobsdev.maincontent.hireengineer.ItemSkillHireEngineerDataCla
 
 data class DetailEngineerModel(val engineerId : String?,
                                 val accountId : String?,
-                                val accountName : String?,
-                                val accountEmail : String?,
-                                val accountPhoneNumber : String?,
+                                val engineerName : String?,
+                                val engineerEmail : String?,
+                                val engineerPhoneNumber : String?,
                                 val engineerJobTitle : String?,
                                 val engineerJobType : String?,
                                 val engineerLocation : String?,

@@ -20,6 +20,7 @@ import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
 import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
 import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
 import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
@@ -39,6 +40,7 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         sharedPref = PreferencesHelper(requireContext())
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+//        Toast.makeText(requireContext(), "get engineer id ${sharedPref.getValueString(ConstantAccountEngineer.engineerId)}", Toast.LENGTH_SHORT).show()
 
         getListEngineer()
         return binding.root
@@ -83,20 +85,31 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
     }
 
     override fun onEngineerItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listEngineer[position].accountName} clicked", Toast.LENGTH_SHORT).show()
-        sharedPref.putValue(ConstantDetailEngineer.engineerId, listEngineer[position].engineerId!!)
-        sharedPref.putValue(ConstantDetailEngineer.engineerName, listEngineer[position].accountName!!)
-        sharedPref.putValue(ConstantDetailEngineer.email, listEngineer[position].accountEmail!!)
+        Toast.makeText(requireContext(), "${listEngineer[position].engineerName} clicked", Toast.LENGTH_SHORT).show()
 
-        if(listEngineer[position].engineerJobTitle != null && listEngineer[position].engineerJobType != null && listEngineer[position].engineerLocation != null && listEngineer[position].engineerDescription != null) {
-            sharedPref.putValue(ConstantDetailEngineer.engineerJobTitle, listEngineer[position].engineerJobTitle!!)
-            sharedPref.putValue(ConstantDetailEngineer.engineerJobType, listEngineer[position].engineerJobType!!)
-            sharedPref.putValue(ConstantDetailEngineer.location, listEngineer[position].engineerLocation!!)
-            sharedPref.putValue(ConstantDetailEngineer.description, listEngineer[position].engineerDescription!!)
-        }
+        sharedPref.putValue(ConstantDetailEngineer.engineerId, listEngineer[position].engineerId!!)
+//        sharedPref.putValue(ConstantDetailEngineer.engineerName, listEngineer[position].engineerName!!)
+//        sharedPref.putValue(ConstantDetailEngineer.email, listEngineer[position].engineerEmail!!)
+//
+//        if(listEngineer[position].engineerJobTitle != null && listEngineer[position].engineerJobType != null && listEngineer[position].engineerLocation != null && listEngineer[position].engineerDescription != null) {
+//            sharedPref.putValue(ConstantDetailEngineer.engineerJobTitle, listEngineer[position].engineerJobTitle!!)
+//            sharedPref.putValue(ConstantDetailEngineer.engineerJobType, listEngineer[position].engineerJobType!!)
+//            sharedPref.putValue(ConstantDetailEngineer.location, listEngineer[position].engineerLocation!!)
+//            sharedPref.putValue(ConstantDetailEngineer.description, listEngineer[position].engineerDescription!!)
+//        }
 
         val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
         intent.putExtra("image", listEngineer[position].engineerProfilePict)
+
+        intent.putExtra("enId", listEngineer[position].engineerId)
+        intent.putExtra("name", listEngineer[position].engineerName)
+        intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
+        intent.putExtra("jobType", listEngineer[position].engineerJobType)
+        intent.putExtra("image", listEngineer[position].engineerProfilePict)
+        intent.putExtra("location", listEngineer[position].engineerLocation)
+        intent.putExtra("engId", listEngineer[position].engineerId)
+        intent.putExtra("email", listEngineer[position].engineerEmail)
+        intent.putExtra("description", listEngineer[position].engineerDescription)
 
         startActivity(intent)
     }

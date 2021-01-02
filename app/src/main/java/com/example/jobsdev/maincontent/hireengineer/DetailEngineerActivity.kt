@@ -26,12 +26,20 @@ class DetailEngineerActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail_engineer)
         sharedPref = PreferencesHelper(this)
 
-        binding.tvFullName.text = sharedPref.getValueString(ConstantDetailEngineer.engineerName)
-        binding.tvJobTitle.text = sharedPref.getValueString(ConstantDetailEngineer.engineerJobTitle)
-        binding.tvJobType.text = sharedPref.getValueString(ConstantDetailEngineer.engineerJobType)
-        binding.tvLocation.text = sharedPref.getValueString(ConstantDetailEngineer.location)
-        binding.tvDesc.text = sharedPref.getValueString(ConstantDetailEngineer.description)
-        binding.tvEmailProfile.text = sharedPref.getValueString(ConstantDetailEngineer.email)
+        binding.tvFullName.text = intent.getStringExtra("name")
+        binding.tvJobTitle.text = intent.getStringExtra("jobTitle")
+        binding.tvJobType.text = intent.getStringExtra("jobType")
+        binding.tvLocation.text = intent.getStringExtra("location")
+        binding.tvDesc.text = intent.getStringExtra("description")
+        binding.tvEmailProfile.text = intent.getStringExtra("email")
+
+
+//        binding.tvFullName.text = sharedPref.getValueString(ConstantDetailEngineer.engineerName)
+//        binding.tvJobTitle.text = sharedPref.getValueString(ConstantDetailEngineer.engineerJobTitle)
+//        binding.tvJobType.text = sharedPref.getValueString(ConstantDetailEngineer.engineerJobType)
+//        binding.tvLocation.text = sharedPref.getValueString(ConstantDetailEngineer.location)
+//        binding.tvDesc.text = sharedPref.getValueString(ConstantDetailEngineer.description)
+//        binding.tvEmailProfile.text = sharedPref.getValueString(ConstantDetailEngineer.email)
 
         val image = intent.getStringExtra("image")
         var img = "http://54.236.22.91:4000/image/$image"

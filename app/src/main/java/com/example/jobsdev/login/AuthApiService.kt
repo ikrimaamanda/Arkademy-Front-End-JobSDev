@@ -10,7 +10,7 @@ interface AuthApiService {
                             @Field("accountPassword") password : String) : LoginResponse
 
     @GET("engineer/{acId}")
-    suspend fun getEngineerByAcId(@Path("acId") acId : Int) : DetailEngineerByAcIdResponse
+    suspend fun getEngineerByAcId(@Path("acId") enId : String?) : DetailEngineerByAcIdResponse
 
 //    @GET("company/{acId}")
 //    suspend fun getCompanyByAcId(@Path("acId") acId : Int) :

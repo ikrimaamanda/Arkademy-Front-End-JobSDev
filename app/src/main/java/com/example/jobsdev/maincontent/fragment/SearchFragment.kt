@@ -83,13 +83,13 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
     }
 
     override fun onEngineerItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listEngineer[position].accountName} clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "${listEngineer[position].engineerName} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
-        intent.putExtra("name", listEngineer[position].accountName)
+        intent.putExtra("name", listEngineer[position].engineerName)
         intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
         intent.putExtra("jobType", listEngineer[position].engineerJobType)
         intent.putExtra("image", listEngineer[position].engineerProfilePict)
-        intent.putExtra("email", listEngineer[position].accountEmail)
+        intent.putExtra("email", listEngineer[position].engineerEmail)
         intent.putExtra("location", listEngineer[position].engineerLocation)
         intent.putExtra("description", listEngineer[position].engineerDescription)
 

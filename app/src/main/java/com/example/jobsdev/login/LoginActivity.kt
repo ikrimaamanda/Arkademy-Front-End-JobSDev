@@ -14,6 +14,8 @@ import com.example.jobsdev.onboard.OnBoardRegisterActivity
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.reset_password.ResetPasswordSendEmailActivity
 import com.example.jobsdev.sharedpreference.Constant
+import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
+import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
@@ -68,10 +70,12 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if(result is LoginResponse) {
-                Log.d("loginReq", result.toString())
 
                 if(result.success) {
+                    Log.d("loginReq", result.toString())
+
                     saveSession(result.data.accountId, result.data.accountEmail, result.data.token, result.data.accountLevel)
+                    getEngineerId(result.data.accountId)
                     showMessage(result.message)
                     moveActivity()
                 }
@@ -105,14 +109,21 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, OnBoardRegLogActivity::class.java))
     }
 
-    private fun getEngineerId() {
+    private fun getEngineerId(acId : String) {
         coroutineScope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-
+                    service.getEngineerByAcId(acId)
                 } catch (e:Throwable) {
                     Log.e("errorMessage : ", e.message.toString())
                     e.printStackTrace()
+                }
+            }
+
+            if (result is DetailEngineerByAcIdResponse) {
+                Log.d("enIdReq", result.toString())
+                if (result.success) {
+                    sharedPref.putValue(ConstantAccountEngineer.engineerId, result.data.engineerId!!)
                 }
             }
         }

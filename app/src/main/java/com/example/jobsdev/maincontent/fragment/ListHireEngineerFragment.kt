@@ -20,6 +20,8 @@ import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
 import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
 import com.example.jobsdev.maincontent.listhireengineer.*
 import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
+import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
 class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireEngineerClickListener {
@@ -27,6 +29,7 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
     private lateinit var binding : FragmentListHireEngineerBinding
     private var listHireEngineer = ArrayList<DetailHireEngineerModel>()
     private lateinit var coroutineScope: CoroutineScope
+    private lateinit var sharedPref : PreferencesHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,13 +38,15 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_hire_engineer, container, false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        sharedPref = PreferencesHelper(requireContext())
 
-        getListHireEngineer()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getListHireEngineer()
+
         binding.recyclerViewHireEngineer.adapter = ListHireEngineerAdapter(listHireEngineer, this)
         binding.recyclerViewHireEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
@@ -56,7 +61,7 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
                 Log.d("listHireEngineer", "CallApi: ${Thread.currentThread().name}")
 
                 try {
-                    service?.getHireByEngineerId()
+                    service?.getHireByEngineerId(sharedPref.getValueString(ConstantAccountEngineer.engineerId))
                 } catch (e:Throwable) {
                     e.printStackTrace()
                 }
@@ -65,6 +70,8 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
             Log.d("HireResponse", response.toString())
 
             if(response is ListHireEngineerResponse) {
+                Log.d("HireResponse", response.toString())
+
                 val list = response.data?.map {
                     DetailHireEngineerModel(it.hireId, it.companyId, it.companyName, it.position,
                         it.companyFields, it.companyCity, it.companyDescription, it.companyInstagram,
@@ -72,6 +79,8 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
                         it.projectDeadline, it.projectImage, it.price, it.message, it.status, it.dateConfirm)
                 }
                 (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(list)
+            } else {
+                Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
             }
         }
     }
