@@ -13,10 +13,7 @@ import com.example.jobsdev.onboard.OnBoardRegLogActivity
 import com.example.jobsdev.onboard.OnBoardRegisterActivity
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.reset_password.ResetPasswordSendEmailActivity
-import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
-import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
-import com.example.jobsdev.sharedpreference.PreferencesHelper
+import com.example.jobsdev.sharedpreference.*
 import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
@@ -75,7 +72,11 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("loginReq", result.toString())
 
                     saveSession(result.data.accountId, result.data.accountEmail, result.data.token, result.data.accountLevel)
-                    getEngineerId(result.data.accountId)
+                    if (result.data.accountLevel == 0) {
+                        getEngineerId(result.data.accountId)
+                    } else {
+                        getCompanyId(result.data.accountId)
+                    }
                     showMessage(result.message)
                     moveActivity()
                 }
@@ -124,6 +125,26 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("enIdReq", result.toString())
                 if (result.success) {
                     sharedPref.putValue(ConstantAccountEngineer.engineerId, result.data.engineerId!!)
+                }
+            }
+        }
+    }
+
+    private fun getCompanyId(acId : String) {
+        coroutineScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    service.getCompanyByAcId(acId)
+                } catch (e:Throwable) {
+                    Log.e("errorMessage : ", e.message.toString())
+                    e.printStackTrace()
+                }
+            }
+
+            if (result is DetailCompanyByAcIdResponse) {
+                Log.d("enIdReqByCom", result.toString())
+                if (result.success) {
+                    sharedPref.putValue(ConstantAccountCompany.companyId, result.data.companyId!!)
                 }
             }
         }

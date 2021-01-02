@@ -6,8 +6,8 @@ import retrofit2.http.*
 
 interface ProjectsCompanyApiService {
 
-    @GET("project/getProjectByCnId/39")
-    suspend fun getProjectByCnId() : ProjectResponse
+    @GET("project/getProjectByCnId/{cnId}")
+    suspend fun getProjectByCnId(@Path("cnId") cnId : String?) : ProjectResponse
 
     @Multipart
     @POST("project")

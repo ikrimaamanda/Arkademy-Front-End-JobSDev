@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".maincontent.projectcompany.DetailProjectCompanyActivity">
+        tools:context=".maincontent.projectcompany.EditProjectActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,7 +21,7 @@
 
             <TextView
                 android:id="@+id/tv_title_toolbar"
-                android:text="Detail Project"
+                android:text="Edit Project"
                 android:textSize="22sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -47,15 +47,15 @@
                     android:padding="20dp"
                     android:background="@drawable/bg_white">
 
-                        <ImageView
-                            android:id="@+id/iv_project_image"
-                            android:layout_width="250dp"
-                            android:layout_height="250dp"
-                            android:src="@drawable/porto1"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            />
+                    <ImageView
+                        android:id="@+id/iv_project_image"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:src="@drawable/porto1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
 
                     <TextView
                         android:id="@+id/tv_project_name"
@@ -68,13 +68,35 @@
                         app:layout_constraintTop_toBottomOf="@id/iv_project_image"
                         app:layout_constraintStart_toStartOf="parent"/>
 
+                    <EditText
+                        android:id="@+id/et_project_name"
+                        android:hint="Input new project name"
+                        android:inputType="text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/tv_project_name"
+                        android:background="@drawable/button_white_stroke_purple"
+                        android:padding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_title_deadline"
+                        android:text="Deadline"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:layout_marginTop="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/et_project_name"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
                     <ImageView
                         android:id="@+id/iv_calendar_icon"
                         android:src="@drawable/ic_calendar"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="10dp"
-                        app:layout_constraintTop_toBottomOf="@id/tv_project_name"
+                        app:layout_constraintTop_toBottomOf="@id/tv_title_deadline"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tv_location"/>
 
@@ -87,68 +109,76 @@
                         app:layout_constraintTop_toTopOf="@id/iv_calendar_icon"
                         app:layout_constraintStart_toEndOf="@id/iv_calendar_icon"/>
 
-                    <TextView
-                        android:id="@+id/tv_title_created"
-                        android:text="Created At"
-                        android:textSize="14sp"
-                        android:textColor="@color/grey"
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/et_deadline"
+                        android:hint="Input new deadline"
+                        android:inputType="text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:layout_constraintTop_toBottomOf="@id/iv_calendar_icon"
+                        android:background="@drawable/button_white_stroke_purple"
+                        android:padding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_title_desc"
+                        android:text="Description"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:layout_marginTop="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/et_deadline"
                         app:layout_constraintStart_toStartOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tv_created_at"
-                        android:text="01-11-2020"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="@id/tv_title_created"
-                        app:layout_constraintStart_toEndOf="@id/tv_title_created"/>
-
-                    <TextView
-                        android:id="@+id/tv_title_updated"
-                        android:text="Updated At"
-                        android:textSize="14sp"
-                        android:textColor="@color/grey"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintTop_toBottomOf="@id/tv_title_created"
-                        app:layout_constraintStart_toStartOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tv_updated_at"
-                        android:text="21-11-2020"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="@id/tv_title_updated"
-                        app:layout_constraintStart_toEndOf="@id/tv_title_updated"/>
 
                     <TextView
                         android:id="@+id/tv_desc"
                         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_title_updated"
+                        app:layout_constraintTop_toBottomOf="@id/tv_title_desc"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="30dp"/>
+                        android:layout_marginTop="10dp"/>
+
+                    <EditText
+                        android:id="@+id/et_desc"
+                        android:hint="Input new description"
+                        android:inputType="textMultiLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:gravity="top"
+                        android:background="@drawable/button_white_stroke_purple"
+                        app:layout_constraintTop_toBottomOf="@id/tv_desc"/>
 
                     <Button
-                        android:id="@+id/btn_edit_project"
-                        android:text="Edit Project"
+                        android:id="@+id/btn_save_project"
+                        android:text="Save"
                         android:textSize="16sp"
                         android:textColor="@color/white"
                         android:textAllCaps="false"
                         android:background="@drawable/purple_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_desc"
+                        app:layout_constraintTop_toBottomOf="@id/et_desc"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="30dp"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:text="Cancel"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAllCaps="false"
+                        android:background="@drawable/button_white_stroke_purple"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/btn_save_project"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="parent"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

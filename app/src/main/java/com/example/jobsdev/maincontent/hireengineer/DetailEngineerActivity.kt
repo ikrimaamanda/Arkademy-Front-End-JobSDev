@@ -33,14 +33,6 @@ class DetailEngineerActivity : AppCompatActivity() {
         binding.tvDesc.text = intent.getStringExtra("description")
         binding.tvEmailProfile.text = intent.getStringExtra("email")
 
-
-//        binding.tvFullName.text = sharedPref.getValueString(ConstantDetailEngineer.engineerName)
-//        binding.tvJobTitle.text = sharedPref.getValueString(ConstantDetailEngineer.engineerJobTitle)
-//        binding.tvJobType.text = sharedPref.getValueString(ConstantDetailEngineer.engineerJobType)
-//        binding.tvLocation.text = sharedPref.getValueString(ConstantDetailEngineer.location)
-//        binding.tvDesc.text = sharedPref.getValueString(ConstantDetailEngineer.description)
-//        binding.tvEmailProfile.text = sharedPref.getValueString(ConstantDetailEngineer.email)
-
         val image = intent.getStringExtra("image")
         var img = "http://54.236.22.91:4000/image/$image"
         Log.d("image: ", img!!)

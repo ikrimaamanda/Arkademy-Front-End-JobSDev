@@ -15,6 +15,8 @@ import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentListProjectCompanyBinding
 import com.example.jobsdev.maincontent.projectcompany.*
 import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.sharedpreference.ConstantAccountCompany
+import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
 class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectCompanyClickListener {
@@ -22,6 +24,7 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
     private lateinit var binding : FragmentListProjectCompanyBinding
     private lateinit var coroutineScope : CoroutineScope
     private var listProjectCompany = ArrayList<ProjectCompanyModel>()
+    private lateinit var sharedPref : PreferencesHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +32,7 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_project_company, container, false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        sharedPref = PreferencesHelper(requireContext())
 
         binding.rvListProject.adapter = ListProjectAdapter(listProjectCompany, this)
         binding.rvListProject.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -51,7 +55,7 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
                 Log.d("ikrima", "CallApi: ${Thread.currentThread().name}")
 
                 try {
-                    service?.getProjectByCnId()
+                    service?.getProjectByCnId(sharedPref.getValueString(ConstantAccountCompany.companyId))
                 } catch (e:Throwable) {
                     e.printStackTrace()
                 }

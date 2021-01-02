@@ -16,6 +16,7 @@ import com.example.jobsdev.maincontent.projectcompany.ProjectCompanyModel
 import com.example.jobsdev.maincontent.projectcompany.ProjectResponse
 import com.example.jobsdev.maincontent.projectcompany.ProjectsCompanyApiService
 import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.sharedpreference.ConstantAccountCompany
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
@@ -73,7 +74,7 @@ class FormHireActivity : AppCompatActivity() {
                 Log.d("projectCom", "CallApi : ${Thread.currentThread().name}")
 
                 try {
-                    service?.getProjectByCnId()
+                    service?.getProjectByCnId(sharedPref.getValueString(ConstantAccountCompany.companyId))
                 } catch (e:Throwable) {
                     e.printStackTrace()
                 }

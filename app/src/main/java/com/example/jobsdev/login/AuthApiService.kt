@@ -12,6 +12,6 @@ interface AuthApiService {
     @GET("engineer/{acId}")
     suspend fun getEngineerByAcId(@Path("acId") enId : String?) : DetailEngineerByAcIdResponse
 
-//    @GET("company/{acId}")
-//    suspend fun getCompanyByAcId(@Path("acId") acId : Int) :
+    @GET("company/{acId}")
+    suspend fun getCompanyByAcId(@Path("acId") cnId : String?) : DetailCompanyByAcIdResponse
 }

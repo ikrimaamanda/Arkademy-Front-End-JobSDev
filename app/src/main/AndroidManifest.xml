@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".maincontent.projectcompany.AddNewProjectActivity"></activity>
+        <activity android:name=".maincontent.projectcompany.EditProjectActivity"></activity>
+        <activity android:name=".maincontent.projectcompany.AddNewProjectActivity" />
         <activity android:name=".maincontent.projectcompany.DetailProjectCompanyActivity" />
         <activity android:name=".maincontent.listhireengineer.DetailHireEngineerActivity" />
         <activity android:name=".maincontent.portfolioengineer.UpdatePortfolioTwoActivity" />
