@@ -54,7 +54,7 @@ class FormHireActivity : AppCompatActivity() {
                 showMessage("Please filled all field")
                 binding.etHireMessage.requestFocus()
             } else {
-                callHireApi(enId!!.toInt(), projectId!!.toInt(), binding.etPrice.text.toString(), binding.etHireMessage.toString())
+                callHireApi(enId!!.toInt(), projectId!!.toInt(), binding.etPrice.text.toString(), binding.etHireMessage.text.toString())
             }
         }
 

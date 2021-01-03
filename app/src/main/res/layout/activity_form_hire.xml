@@ -67,6 +67,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_hire_message"
+                    android:text=""
                     android:hint="Input message"
                     android:gravity="top"
                     android:inputType="textMultiLine"
