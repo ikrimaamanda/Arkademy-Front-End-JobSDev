@@ -34,9 +34,23 @@ class ListHireByProjectIdAdapter(private val listHireByProjectId: ArrayList<Hire
         holder.binding.tvEngineerName.text = item.acName
         holder.binding.tvJobTitle.text = item.enJobTitle
         holder.binding.tvJobType.text = item.enJobType
-        holder.binding.tvDateConfirm.text = item.dateConfirm
         holder.binding.tvPrice.text = item.hirePrice
-        holder.binding.tvStatus.text = item.hireStatus
+
+        var dateConfirm = item.dateConfirm
+        if (dateConfirm.isNullOrEmpty()) {
+            holder.binding.tvDateConfirm.text = dateConfirm
+        } else {
+            dateConfirm = item.dateConfirm!!.split("T")[0]
+            holder.binding.tvDateConfirm.text = dateConfirm
+        }
+
+        var status = item.hireStatus
+        if(status.isNullOrEmpty()) {
+            status = "wait"
+            holder.binding.tvStatus.text = status
+        }
+        holder.binding.tvStatus.text = status
+
 
         Glide.with(holder.itemView)
             .load(img)

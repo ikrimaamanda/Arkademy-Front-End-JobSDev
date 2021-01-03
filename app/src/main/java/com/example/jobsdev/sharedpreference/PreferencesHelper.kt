@@ -38,6 +38,10 @@ class PreferencesHelper(context: Context) {
         return sharedPref.getBoolean(key, false)
     }
 
+    fun getValueStatusHire(key: String) : String? {
+        return sharedPref.getString(key, "wait")
+    }
+
     fun clear() {
         editor.clear().apply()
     }

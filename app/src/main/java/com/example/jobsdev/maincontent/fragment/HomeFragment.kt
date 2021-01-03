@@ -40,7 +40,6 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         sharedPref = PreferencesHelper(requireContext())
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-//        Toast.makeText(requireContext(), "get engineer id ${sharedPref.getValueString(ConstantAccountEngineer.engineerId)}", Toast.LENGTH_SHORT).show()
 
         getListEngineer()
         return binding.root

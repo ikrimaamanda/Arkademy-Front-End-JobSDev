@@ -2,14 +2,12 @@ package com.example.jobsdev.maincontent
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityMainContentBinding
 import com.example.jobsdev.maincontent.fragment.*
 import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 
 class MainContentActivity : AppCompatActivity() {

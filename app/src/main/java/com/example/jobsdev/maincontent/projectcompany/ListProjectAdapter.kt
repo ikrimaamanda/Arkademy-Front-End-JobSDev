@@ -32,7 +32,7 @@ class ListProjectAdapter(private val listProjectCompany : ArrayList<ProjectCompa
 
         holder.binding.tvProjectName.text = item.projectName
         holder.binding.tvDescriptionProject.text = item.projectDesc
-        holder.binding.tvDeadline.text = item.projectDeadline
+        holder.binding.tvDeadline.text = item.projectDeadline.split("T")[0]
 
         Glide.with(holder.itemView)
             .load(img)

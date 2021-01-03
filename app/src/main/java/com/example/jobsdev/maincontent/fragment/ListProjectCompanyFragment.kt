@@ -16,6 +16,7 @@ import com.example.jobsdev.databinding.FragmentListProjectCompanyBinding
 import com.example.jobsdev.maincontent.projectcompany.*
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.sharedpreference.ConstantAccountCompany
+import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
@@ -79,7 +80,16 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
 
     override fun onProjectCompanyItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listProjectCompany[position].projectName} clicked", Toast.LENGTH_SHORT).show()
+        sharedPref.putValue(ConstantProjectCompany.projectId, listProjectCompany[position].projectId)
+
         val intent = Intent(requireContext(), DetailProjectCompanyActivity::class.java)
+        intent.putExtra("projectName", listProjectCompany[position].projectName)
+        intent.putExtra("deadline", listProjectCompany[position].projectDeadline)
+        intent.putExtra("createdAt", listProjectCompany[position].projectCreateAt)
+        intent.putExtra("updatedAt", listProjectCompany[position].projectUpdateAt)
+        intent.putExtra("description", listProjectCompany[position].projectDesc)
+        intent.putExtra("image", listProjectCompany[position].projectImage)
+
         startActivity(intent)
     }
 

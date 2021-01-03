@@ -1,10 +1,7 @@
 package com.example.jobsdev.maincontent.hireengineer
 
 import com.example.jobsdev.maincontent.projectcompany.listhirebyprojectid.HireByProjectResponse
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface HireApiService{
 
@@ -16,6 +13,6 @@ interface HireApiService{
                         @Field("hireMessage") hireMessage : String
     ) : HireResponse
 
-    @GET("hire/project/18")
-    suspend fun getListHireByProjectId() : HireByProjectResponse
+    @GET("hire/project/{pjId}")
+    suspend fun getListHireByProjectId(@Path("pjId") pjId : String?) : HireByProjectResponse
 }

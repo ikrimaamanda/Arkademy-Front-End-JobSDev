@@ -77,10 +77,10 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintTop_toBottomOf="@id/tv_project_name"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tv_location"/>
+                        app:layout_constraintEnd_toStartOf="@id/tv_deadline"/>
 
                     <TextView
-                        android:id="@+id/tv_location"
+                        android:id="@+id/tv_deadline"
                         android:text="01-12-2020"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -185,7 +185,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_hire_by_project_id"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_marginTop="20dp"
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/example_item_hire_by_project_id"
