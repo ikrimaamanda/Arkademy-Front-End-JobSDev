@@ -1,5 +1,6 @@
 package com.example.jobsdev.maincontent.projectcompany.listhirebyprojectid
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -48,6 +49,11 @@ class ListHireByProjectIdAdapter(private val listHireByProjectId: ArrayList<Hire
         if(status.isNullOrEmpty()) {
             status = "wait"
             holder.binding.tvStatus.text = status
+            holder.binding.tvStatus.setBackgroundResource(R.drawable.purple_button)
+        } else if(status.equals("wait")) {
+            holder.binding.tvStatus.setBackgroundResource(R.drawable.purple_button)
+        } else if(status.equals("reject")) {
+            holder.binding.tvStatus.setBackgroundResource(R.drawable.red_button)
         }
         holder.binding.tvStatus.text = status
 

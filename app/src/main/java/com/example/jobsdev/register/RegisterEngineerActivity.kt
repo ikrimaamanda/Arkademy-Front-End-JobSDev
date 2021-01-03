@@ -58,11 +58,13 @@ class RegisterEngineerActivity : AppCompatActivity() {
                 Log.d("registrationReq : ", result.toString())
 
                 if(result.success) {
-                    showMessage("Registration Success!")
+                    showMessage(result.message)
                     moveActivity()
                 } else {
-                    showMessage("Email is already registered")
+                    showMessage(result.message)
                 }
+            } else {
+                showMessage("Email is already registered")
             }
         }
     }

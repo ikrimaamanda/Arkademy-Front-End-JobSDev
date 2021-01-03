@@ -93,6 +93,17 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
     override fun onHireEngineerItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listHireEngineer[position].projectName} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), DetailHireEngineerActivity::class.java)
+        intent.putExtra("hireId", listHireEngineer[position].hireId)
+        intent.putExtra("projectName", listHireEngineer[position].projectName)
+        intent.putExtra("companyName", listHireEngineer[position].companyName)
+        intent.putExtra("location", listHireEngineer[position].companyCity)
+        intent.putExtra("hirePrice", listHireEngineer[position].price)
+        intent.putExtra("deadline", listHireEngineer[position].projectDeadline)
+        intent.putExtra("message", listHireEngineer[position].message)
+        intent.putExtra("description", listHireEngineer[position].projectDescription)
+        intent.putExtra("projectImage", listHireEngineer[position].projectImage)
+        intent.putExtra("status", listHireEngineer[position].status)
+
         startActivity(intent)
     }
 }

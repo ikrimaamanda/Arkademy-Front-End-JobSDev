@@ -125,9 +125,11 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("enIdReq", result.toString())
                 if (result.success) {
                     sharedPref.putValue(ConstantAccountEngineer.engineerId, result.data.engineerId!!)
-                    sharedPref.putValue(ConstantAccountEngineer.jobTitle, result.data.enJobTitle!!)
-                    sharedPref.putValue(ConstantAccountEngineer.jobType, result.data.enJobType!!)
-                    saveAccountData(result.data.enDescription!!, result.data.enProfilePict!!, result.data.accountName!!, result.data.accountPhoneNumber!!, result.data.enLocation!!)
+                    if (result.data.enJobTitle!!.isNotEmpty() && result.data.enJobType!!.isNotEmpty() && result.data.enDescription!!.isNotEmpty() && result.data.enProfilePict!!.isNotEmpty() && result.data.enLocation!!.isNotEmpty() || result.data.accountName!!.isNotEmpty() || result.data.accountPhoneNumber!!.isNotEmpty() ) {
+                        sharedPref.putValue(ConstantAccountEngineer.jobTitle, result.data.enJobTitle!!)
+                        sharedPref.putValue(ConstantAccountEngineer.jobType, result.data.enJobType!!)
+                        saveAccountData(result.data.enDescription!!, result.data.enProfilePict!!, result.data.accountName!!, result.data.accountPhoneNumber!!, result.data.enLocation!!)
+                    }
                 }
             }
         }

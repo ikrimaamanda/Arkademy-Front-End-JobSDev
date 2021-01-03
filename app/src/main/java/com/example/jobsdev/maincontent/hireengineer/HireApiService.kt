@@ -15,4 +15,10 @@ interface HireApiService{
 
     @GET("hire/project/{pjId}")
     suspend fun getListHireByProjectId(@Path("pjId") pjId : String?) : HireByProjectResponse
+
+    @FormUrlEncoded
+    @PUT("hire/{hireId}")
+    suspend fun updateHireStatus(@Path("hireId") hireId : Int?,
+                                 @Field("hr_status") hireStatus : String?
+    ) : HireResponse
 }
