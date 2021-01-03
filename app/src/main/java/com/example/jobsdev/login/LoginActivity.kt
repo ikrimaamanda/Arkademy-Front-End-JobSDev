@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                     saveSession(result.data.accountId, result.data.accountEmail, result.data.token, result.data.accountLevel)
                     if (result.data.accountLevel == 0) {
                         getEngineerId(result.data.accountId)
-                    } else {
+                    } else if (result.data.accountLevel == 1) {
                         getCompanyId(result.data.accountId)
                     }
                     showMessage(result.message)
@@ -125,6 +125,9 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("enIdReq", result.toString())
                 if (result.success) {
                     sharedPref.putValue(ConstantAccountEngineer.engineerId, result.data.engineerId!!)
+                    sharedPref.putValue(ConstantAccountEngineer.jobTitle, result.data.enJobTitle!!)
+                    sharedPref.putValue(ConstantAccountEngineer.jobType, result.data.enJobType!!)
+                    saveAccountData(result.data.enDescription!!, result.data.enProfilePict!!, result.data.accountName!!, result.data.accountPhoneNumber!!, result.data.enLocation!!)
                 }
             }
         }
@@ -142,12 +145,26 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (result is DetailCompanyByAcIdResponse) {
-                Log.d("enIdReqByCom", result.toString())
+                Log.d("cnIdReqByCom", result.toString())
                 if (result.success) {
                     sharedPref.putValue(ConstantAccountCompany.companyId, result.data.companyId!!)
+                    sharedPref.putValue(ConstantAccountCompany.companyName, result.data.companyName!!)
+                    sharedPref.putValue(ConstantAccountCompany.position, result.data.position!!)
+                    sharedPref.putValue(ConstantAccountCompany.fields, result.data.fields!!)
+                    sharedPref.putValue(ConstantAccountCompany.instagram, result.data.instagram!!)
+                    sharedPref.putValue(ConstantAccountCompany.linkedin, result.data.linkedin!!)
+                    saveAccountData(result.data.cnDescription!!, result.data.cnProfilePict!!, result.data.accountName!!, result.data.accountPhoneNumber!!, result.data.companyCity!!)
                 }
             }
         }
+    }
+
+    private fun saveAccountData(description : String, profilePict : String, name : String, phoneNumber : String, location : String) {
+        sharedPref.putValue(Constant.prefDescription, description)
+        sharedPref.putValue(Constant.prefProfilePict, profilePict)
+        sharedPref.putValue(Constant.prefName, name)
+        sharedPref.putValue(Constant.prefPhoneNumber, phoneNumber)
+        sharedPref.putValue(Constant.prefLocation, location)
     }
 
 }

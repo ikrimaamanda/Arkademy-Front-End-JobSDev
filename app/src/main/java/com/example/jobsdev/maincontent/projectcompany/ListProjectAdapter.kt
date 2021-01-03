@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ItemProjectCompanyBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ListProjectAdapter(private val listProjectCompany : ArrayList<ProjectCompanyModel>, private val onListProjectCompany : OnListProjectCompanyClickListener) : RecyclerView.Adapter<ListProjectAdapter.ProjectHolder>() {
 
@@ -31,7 +33,6 @@ class ListProjectAdapter(private val listProjectCompany : ArrayList<ProjectCompa
         holder.binding.tvProjectName.text = item.projectName
         holder.binding.tvDescriptionProject.text = item.projectDesc
         holder.binding.tvDeadline.text = item.projectDeadline
-        holder.binding.tvDeadline.text = item.projectDeadline
 
         Glide.with(holder.itemView)
             .load(img)
@@ -42,6 +43,14 @@ class ListProjectAdapter(private val listProjectCompany : ArrayList<ProjectCompa
         holder.itemView.setOnClickListener {
             onListProjectCompany.onProjectCompanyItemClicked(position)
         }
+    }
+
+    private fun formatDate(date : Long) : String {
+        val formatteDate : String
+        val c = Calendar.getInstance()
+        c.timeInMillis = date
+        formatteDate = "${c.get(Calendar.DAY_OF_MONTH)}-${c.get(Calendar.MONTH)}-${c.get(Calendar.YEAR)}"
+        return formatteDate
     }
 
     interface OnListProjectCompanyClickListener {

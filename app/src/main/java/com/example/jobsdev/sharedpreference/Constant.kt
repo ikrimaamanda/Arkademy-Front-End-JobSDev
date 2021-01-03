@@ -11,6 +11,9 @@ class Constant {
         val prefToken = "Token Pref"
         val prefAccountId = "account id"
         val prefPhoneNumber = "089789908768"
+        val prefProfilePict = "profile picture"
+        val prefDescription = "description"
+        val prefLocation = "location"
     }
 }
 
@@ -36,6 +39,9 @@ class ConstantProjectCompany {
 class ConstantAccountEngineer {
     companion object {
         val engineerId = "id of engineer"
+        val jobTitle = "job title"
+        val jobType = "job type"
+
     }
 }
 
@@ -43,5 +49,9 @@ class ConstantAccountCompany {
     companion object {
         val companyName = "name of company"
         val companyId = "id of company"
+        val position = "position"
+        val fields = "fields"
+        val instagram = "instagram"
+        val linkedin = "linkedin"
     }
 }

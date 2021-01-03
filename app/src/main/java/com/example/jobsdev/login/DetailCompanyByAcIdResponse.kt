@@ -12,7 +12,7 @@ data class DetailCompanyByAcIdResponse(val success : Boolean, val message : Stri
                        @SerializedName("cn_position") val position : String?,
                         @SerializedName("cn_fields") val fields : String?,
                         @SerializedName("cn_city") val companyCity : String?,
-                        @SerializedName("en_description") val enDescription : String?,
+                        @SerializedName("cn_description") val cnDescription : String?,
                        @SerializedName("cn_instagram") val instagram : String?,
                        @SerializedName("cn_linkedin") val linkedin : String?,
                         @SerializedName("cn_profile_pict") val cnProfilePict : String?
