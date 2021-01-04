@@ -25,12 +25,14 @@ class ListHireEngineerAdapter(private val listHireEngineer : ArrayList<DetailHir
 
     override fun onBindViewHolder(holder: ListHireEngineerViewHolder, position: Int) {
         val item = listHireEngineer[position]
-//        var img = "http://54.236.22.91:4000/image/${item.projectImage}"
 
         holder.binding.tvProjectName.text = item.projectName
         holder.binding.tvCompanyName.text = item.companyName
         holder.binding.tvLocation.text = item.companyCity
         holder.binding.tvPrice.text = item.price.toString()
+        holder.binding.btnSeeDetail.setOnClickListener {
+            onListHireEngineerClickListener.onHireEngineerItemClicked(position)
+        }
 
         holder.itemView.setOnClickListener {
             onListHireEngineerClickListener.onHireEngineerItemClicked(position)

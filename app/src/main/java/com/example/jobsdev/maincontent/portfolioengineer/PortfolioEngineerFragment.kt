@@ -11,10 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentPortfolioEngineerBinding
-import com.example.jobsdev.maincontent.skillengineer.AddSkillActivity
-import com.example.jobsdev.maincontent.skillengineer.ItemSkillEngineerDataClass
-import com.example.jobsdev.maincontent.skillengineer.RecyclerViewSkillEngineerAdapter
-import com.example.jobsdev.maincontent.skillengineer.UpdateSkillActivity
 
 class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener {
     private lateinit var binding : FragmentPortfolioEngineerBinding

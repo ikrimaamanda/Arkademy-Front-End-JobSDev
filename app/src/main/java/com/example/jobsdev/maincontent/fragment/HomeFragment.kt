@@ -20,6 +20,7 @@ import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
 import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
 import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
 import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
@@ -47,6 +48,7 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.recyclerViewListEngineer.adapter = ListEngineerAdapter(listEngineer,this)
         binding.recyclerViewListEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
@@ -55,19 +57,13 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         val service = ApiClient.getApiClient(requireContext())?.create(EngineerApiService::class.java)
 
         coroutineScope.launch {
-            Log.d("listengineer", "Start: ${Thread.currentThread().name}")
-
             val response = withContext(Dispatchers.IO) {
-                Log.d("listengineer", "CallApi: ${Thread.currentThread().name}")
-
                 try {
                     service?.getAllEngineer()
                 } catch (e:Throwable) {
                     e.printStackTrace()
                 }
             }
-
-            Log.d("listengineer Response", response.toString())
 
             if(response is ListEngineerResponse) {
                 val list = response.data?.map {
@@ -85,21 +81,10 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
 
     override fun onEngineerItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listEngineer[position].engineerName} clicked", Toast.LENGTH_SHORT).show()
-
         sharedPref.putValue(ConstantDetailEngineer.engineerId, listEngineer[position].engineerId!!)
-//        sharedPref.putValue(ConstantDetailEngineer.engineerName, listEngineer[position].engineerName!!)
-//        sharedPref.putValue(ConstantDetailEngineer.email, listEngineer[position].engineerEmail!!)
-//
-//        if(listEngineer[position].engineerJobTitle != null && listEngineer[position].engineerJobType != null && listEngineer[position].engineerLocation != null && listEngineer[position].engineerDescription != null) {
-//            sharedPref.putValue(ConstantDetailEngineer.engineerJobTitle, listEngineer[position].engineerJobTitle!!)
-//            sharedPref.putValue(ConstantDetailEngineer.engineerJobType, listEngineer[position].engineerJobType!!)
-//            sharedPref.putValue(ConstantDetailEngineer.location, listEngineer[position].engineerLocation!!)
-//            sharedPref.putValue(ConstantDetailEngineer.description, listEngineer[position].engineerDescription!!)
-//        }
 
         val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
         intent.putExtra("image", listEngineer[position].engineerProfilePict)
-
         intent.putExtra("enId", listEngineer[position].engineerId)
         intent.putExtra("name", listEngineer[position].engineerName)
         intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
@@ -109,6 +94,7 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         intent.putExtra("engId", listEngineer[position].engineerId)
         intent.putExtra("email", listEngineer[position].engineerEmail)
         intent.putExtra("description", listEngineer[position].engineerDescription)
+        intent.putExtra("phoneNumber", listEngineer[position].engineerPhoneNumber)
 
         startActivity(intent)
     }

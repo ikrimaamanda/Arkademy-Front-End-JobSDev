@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,22 +13,26 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentAccountEngineerBinding
 import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.maincontent.adapter.TabPagerAdapter
 import com.example.jobsdev.maincontent.editprofile.EditAccountEngineerActivity
-import com.example.jobsdev.maincontent.hireengineer.DetailEngineerActivity
-import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListEngineerAdapter
 import com.example.jobsdev.maincontent.skillengineer.AddSkillActivity
-import com.example.jobsdev.maincontent.skillengineer.ItemSkillEngineerDataClass
+import com.example.jobsdev.maincontent.skillengineer.ItemSkillEngineerModel
 import com.example.jobsdev.maincontent.skillengineer.RecyclerViewSkillEngineerAdapter
 import com.example.jobsdev.maincontent.skillengineer.UpdateSkillActivity
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
-import com.example.jobsdev.onboard.OnBoardLoginActivity
+import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.retfrofit.DetailEngineerByAcIdResponse
+import com.example.jobsdev.retfrofit.GetSkillByEnIdResponse
+import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.Constant
+import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.*
 
 class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnSkillClickListener {
 
@@ -36,7 +41,9 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
     private lateinit var viewPager : ViewPager
     private lateinit var tabLayout : TabLayout
     private lateinit var binding : FragmentAccountEngineerBinding
-    var listSkill = ArrayList<ItemSkillEngineerDataClass>()
+    var listSkill = ArrayList<ItemSkillEngineerModel>()
+    private lateinit var coroutineScope : CoroutineScope
+    val imageLink = "http://54.236.22.91:4000/image/"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,10 +51,16 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account_engineer, container, false)
+        coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
+        sharedPref = PreferencesHelper(requireContext())
+        val acId = sharedPref.getValueString(Constant.prefAccountId)
+        getEngineerId(acId!!)
         binding.btnEditProfile.setOnClickListener {
             startActivity(Intent(activity, EditAccountEngineerActivity::class.java))
         }
+
+        getListSkill()
 
         binding.btnLogout.setOnClickListener {
             showDialogLogOut()
@@ -72,15 +85,33 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedPref = PreferencesHelper(view.context)
-        binding.tvEmailProfile.text = sharedPref.getValueString(Constant.prefEmail )
 
-        listSkill = generateDummyList(10)
-
-        var skillAdapter = RecyclerViewSkillEngineerAdapter(listSkill, this)
+        binding.rvSkillEngineer.adapter = RecyclerViewSkillEngineerAdapter(listSkill, this)
         binding.rvSkillEngineer.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvSkillEngineer.adapter = skillAdapter
 
+    }
+
+    private fun getEngineerId(acId : String) {
+        val service = ApiClient.getApiClient(requireContext())?.create(JobSDevApiService::class.java)
+        coroutineScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    service?.getEngineerByAcId(acId)
+                } catch (e:Throwable) {
+                    Log.e("errorMessage : ", e.message.toString())
+                    e.printStackTrace()
+                }
+            }
+
+            if (result is DetailEngineerByAcIdResponse) {
+                Log.d("engineerResponse", result.toString())
+                binding.model = result.data
+                Glide.with(view!!.context)
+                    .load(imageLink + result.data.enProfilePict)
+                    .placeholder(R.drawable.profile_pict_base)
+                    .into(binding.civProfilePict)
+            }
+        }
     }
 
     private fun addFragment(view: View?) {
@@ -114,19 +145,35 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         builder.show()
     }
 
-    private fun generateDummyList(size : Int) : ArrayList<ItemSkillEngineerDataClass> {
-        val list = ArrayList<ItemSkillEngineerDataClass>()
+    private fun getListSkill() {
+        val service = ApiClient.getApiClient(requireContext())?.create(JobSDevApiService::class.java)
 
-        for (i in 0 until size) {
-            val skillName = when(i%3) {
-                0 -> "Kotlin"
-                1 -> "Java"
-                else -> "Laravel"
+        coroutineScope.launch {
+            Log.d("listSkill", "Start: ${Thread.currentThread().name}")
+
+            val response = withContext(Dispatchers.IO) {
+                Log.d("listSkill", "CallApi: ${Thread.currentThread().name}")
+
+                try {
+                    service?.getSkillByEnId(sharedPref.getValueString(ConstantAccountEngineer.engineerId)!!.toInt())
+                } catch (e:Throwable) {
+                    Log.e("errorM", e.message.toString())
+                    e.printStackTrace()
+                }
             }
-            val item = ItemSkillEngineerDataClass("${i + 1}", i, skillName)
-            list += item
+
+            Log.d("listSkillResponse", response.toString())
+
+            if(response is GetSkillByEnIdResponse) {
+                Log.d("listSkillResponse", response.toString())
+
+                val list = response.data.map {
+                    ItemSkillEngineerModel(it?.skId, it?.enId, it?.skillName)
+                }
+                (binding.rvSkillEngineer.adapter as RecyclerViewSkillEngineerAdapter).addSkill(list)
+            }
         }
-        return list
+
     }
 
     override fun onSkillItemClicked(position: Int) {

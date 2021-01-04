@@ -13,6 +13,9 @@ import com.example.jobsdev.onboard.OnBoardRegLogActivity
 import com.example.jobsdev.onboard.OnBoardRegisterActivity
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.reset_password.ResetPasswordSendEmailActivity
+import com.example.jobsdev.retfrofit.DetailCompanyByAcIdResponse
+import com.example.jobsdev.retfrofit.DetailEngineerByAcIdResponse
+import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.*
 import kotlinx.coroutines.*
 
@@ -21,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var binding : ActivityLoginBinding
     private lateinit var coroutineScope: CoroutineScope
-    private lateinit var service : AuthApiService
+    private lateinit var service : JobSDevApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
 
         sharedPref = PreferencesHelper(this)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        service = ApiClient.getApiClient(context = this)!!.create(AuthApiService::class.java)
+        service = ApiClient.getApiClient(context = this)!!.create(JobSDevApiService::class.java)
 
         binding.btnLogin.setOnClickListener {
             if(binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
@@ -125,11 +128,8 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("enIdReq", result.toString())
                 if (result.success) {
                     sharedPref.putValue(ConstantAccountEngineer.engineerId, result.data.engineerId!!)
-                    if (result.data.enJobTitle!!.isNotEmpty() || result.data.enJobType!!.isNotEmpty() || result.data.enDescription!!.isNotEmpty() || result.data.enProfilePict!!.isNotEmpty() || result.data.enLocation!!.isNotEmpty() || result.data.accountName!!.isNotEmpty() || result.data.accountPhoneNumber!!.isNotEmpty() ) {
-                        sharedPref.putValue(ConstantAccountEngineer.jobTitle, result.data.enJobTitle!!)
-                        sharedPref.putValue(ConstantAccountEngineer.jobType, result.data.enJobType!!)
-                        saveAccountData(result.data.enDescription!!, result.data.enProfilePict!!, result.data.accountName!!, result.data.accountPhoneNumber!!, result.data.enLocation!!)
-                    }
+                    sharedPref.putValue(Constant.prefName, result.data.accountName!!)
+                    sharedPref.putValue(Constant.prefPhoneNumber, result.data.accountPhoneNumber!!)
                 }
             }
         }
@@ -140,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
             val result = withContext(Dispatchers.IO) {
                 try {
                     service.getCompanyByAcId(acId)
-                } catch (e:Throwable) {
+                } catch (e: Throwable) {
                     Log.e("errorMessage : ", e.message.toString())
                     e.printStackTrace()
                 }
@@ -150,23 +150,12 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("cnIdReqByCom", result.toString())
                 if (result.success) {
                     sharedPref.putValue(ConstantAccountCompany.companyId, result.data.companyId!!)
+                    sharedPref.putValue(Constant.prefName, result.data.accountName!!)
+                    sharedPref.putValue(Constant.prefPhoneNumber, result.data.accountPhoneNumber!!)
                     sharedPref.putValue(ConstantAccountCompany.companyName, result.data.companyName!!)
                     sharedPref.putValue(ConstantAccountCompany.position, result.data.position!!)
-                    sharedPref.putValue(ConstantAccountCompany.fields, result.data.fields!!)
-                    sharedPref.putValue(ConstantAccountCompany.instagram, result.data.instagram!!)
-                    sharedPref.putValue(ConstantAccountCompany.linkedin, result.data.linkedin!!)
-                    saveAccountData(result.data.cnDescription!!, result.data.cnProfilePict!!, result.data.accountName!!, result.data.accountPhoneNumber!!, result.data.companyCity!!)
                 }
             }
         }
     }
-
-    private fun saveAccountData(description : String, profilePict : String, name : String, phoneNumber : String, location : String) {
-        sharedPref.putValue(Constant.prefDescription, description)
-        sharedPref.putValue(Constant.prefProfilePict, profilePict)
-        sharedPref.putValue(Constant.prefName, name)
-        sharedPref.putValue(Constant.prefPhoneNumber, phoneNumber)
-        sharedPref.putValue(Constant.prefLocation, location)
-    }
-
 }

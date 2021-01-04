@@ -44,6 +44,4 @@ class ListEngineerAdapter(private val listEngineer : ArrayList<DetailEngineerMod
             onListEngineerClickListener.onEngineerItemClicked(position)
         }
     }
-
-
 }

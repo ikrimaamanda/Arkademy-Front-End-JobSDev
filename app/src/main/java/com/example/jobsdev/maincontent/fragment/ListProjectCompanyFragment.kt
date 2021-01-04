@@ -69,6 +69,8 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
                     ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
                 }
                 (binding.rvListProject.adapter as ListProjectAdapter).addListProjectCompany(list)
+            } else {
+                Toast.makeText(requireContext(), "Hello, your list project is empty!", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -20,7 +20,7 @@
             android:id="@+id/tv_greet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hi, Ikrima!"
+            android:text="Have a nice day!"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@color/white"

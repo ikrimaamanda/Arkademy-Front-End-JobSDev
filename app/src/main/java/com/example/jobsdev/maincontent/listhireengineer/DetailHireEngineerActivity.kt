@@ -3,19 +3,16 @@ package com.example.jobsdev.maincontent.listhireengineer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityDetailHireEngineerBinding
-import com.example.jobsdev.login.AuthApiService
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.maincontent.hireengineer.HireApiService
 import com.example.jobsdev.maincontent.hireengineer.HireResponse
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.sharedpreference.Constant
 import kotlinx.coroutines.*
 
 class DetailHireEngineerActivity : AppCompatActivity() {
@@ -60,7 +57,6 @@ class DetailHireEngineerActivity : AppCompatActivity() {
             binding.btnApprove.showOrGone(false)
             binding.btnReject.showOrGone(false)
         }
-
 
         val image = intent.getStringExtra("projectImage")
         var img = "http://54.236.22.91:4000/image/$image"

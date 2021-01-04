@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="model"
+            type="com.example.jobsdev.retfrofit.DetailCompanyByAcIdResponse.Company" />
+    </data>
+
     <ScrollView
         android:id="@+id/sv_profile"
         android:layout_width="match_parent"
@@ -32,7 +38,7 @@
 
                 <TextView
                     android:id="@+id/tv_company_name"
-                    android:text="Kompas Group"
+                    android:text="@{model.companyName}"
                     android:textColor="@color/black"
                     android:textSize="22sp"
                     android:layout_marginTop="30dp"
@@ -43,7 +49,7 @@
 
                 <TextView
                     android:id="@+id/tv_field"
-                    android:text="Information Technology"
+                    android:text="@{model.fields}"
                     android:textSize="14sp"
                     android:textColor="@color/grey"
                     android:layout_width="wrap_content"
@@ -54,7 +60,7 @@
 
                 <TextView
                     android:id="@+id/tv_position"
-                    android:text="Manager"
+                    android:text="@{model.position}"
                     android:textSize="14sp"
                     android:textColor="@color/grey"
                     android:layout_width="wrap_content"
@@ -75,7 +81,7 @@
 
                 <TextView
                     android:id="@+id/tv_location"
-                    android:text="Jakarta"
+                    android:text="@{model.companyCity}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -84,7 +90,7 @@
 
                 <TextView
                     android:id="@+id/tv_desc"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    android:text="@{model.cnDescription}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/iv_location_icon"
@@ -118,7 +124,7 @@
 
                 <TextView
                     android:id="@+id/tv_email_profile"
-                    android:text="email@gmail.com"
+                    android:text="@{model.accountEmail}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="@id/iv_email_icon"
@@ -138,7 +144,7 @@
 
                 <TextView
                     android:id="@+id/tv_instagram"
-                    android:text="\@instagrammer"
+                    android:text="@{model.instagram}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="@id/iv_instagram_icon"
@@ -156,7 +162,7 @@
 
                 <TextView
                     android:id="@+id/tv_phone_number"
-                    android:text="085765743721"
+                    android:text="@{model.accountPhoneNumber}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="@id/iv_phone_icon"
@@ -177,7 +183,7 @@
 
                 <TextView
                     android:id="@+id/tv_linkedin"
-                    android:text="\@linkedin"
+                    android:text="@{model.linkedin}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="@id/iv_linkedin_icon"

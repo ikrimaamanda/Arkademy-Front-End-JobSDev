@@ -68,19 +68,13 @@ class FormHireActivity : AppCompatActivity() {
         val service = ApiClient.getApiClient(context = this)?.create(ProjectsCompanyApiService::class.java)
 
         coroutineScope.launch {
-            Log.d("projectCom", "Start : ${Thread.currentThread().name}")
-
             val response = withContext(Dispatchers.IO) {
-                Log.d("projectCom", "CallApi : ${Thread.currentThread().name}")
-
                 try {
                     service?.getProjectByCnId(sharedPref.getValueString(ConstantAccountCompany.companyId))
                 } catch (e:Throwable) {
                     e.printStackTrace()
                 }
             }
-
-            Log.d("projectResponse", response.toString())
 
             if(response is ProjectResponse) {
                 val list = response.data?.map {

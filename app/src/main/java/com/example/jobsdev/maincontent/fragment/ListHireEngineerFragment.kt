@@ -80,7 +80,7 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
                 }
                 (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(list)
             } else {
-                Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Hello, your list hire is empty!", Toast.LENGTH_SHORT).show()
             }
         }
     }
