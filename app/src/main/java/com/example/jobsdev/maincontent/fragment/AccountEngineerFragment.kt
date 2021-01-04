@@ -170,6 +170,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
                 val list = response.data.map {
                     ItemSkillEngineerModel(it?.skId, it?.enId, it?.skillName)
                 }
+
                 (binding.rvSkillEngineer.adapter as RecyclerViewSkillEngineerAdapter).addSkill(list)
             }
         }
@@ -177,9 +178,10 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
     }
 
     override fun onSkillItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "Skill $position clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "${listSkill[position].skillName} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), UpdateSkillActivity::class.java)
-        intent.putExtra("skillName", listSkill[position].SkillName)
+        intent.putExtra("skillName", listSkill[position].skillName)
+        intent.putExtra("skillId", listSkill[position].skillId)
         startActivity(intent)
     }
 

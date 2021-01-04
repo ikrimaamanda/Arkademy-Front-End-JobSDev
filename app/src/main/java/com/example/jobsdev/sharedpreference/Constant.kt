@@ -28,7 +28,6 @@ class ConstantDetailEngineer {
 class ConstantProjectCompany {
     companion object {
         val projectId = "project id"
-        val projectCompany = "project name"
     }
 }
 
@@ -37,7 +36,6 @@ class ConstantAccountEngineer {
         val engineerId = "id of engineer"
         val jobTitle = "job title"
         val jobType = "job type"
-
     }
 }
 

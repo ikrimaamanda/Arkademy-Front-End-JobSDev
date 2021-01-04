@@ -2,6 +2,8 @@ package com.example.jobsdev.retfrofit
 
 import com.google.gson.annotations.SerializedName
 
+data class GeneralResponse(val success : Boolean, val message : String)
+
 data class DetailEngineerByAcIdResponse(val success : Boolean, val message : String, val data : Engineer) {
     data class Engineer(@SerializedName("en_id") val engineerId : String?,
                         @SerializedName("ac_id") val accountId : Int?,

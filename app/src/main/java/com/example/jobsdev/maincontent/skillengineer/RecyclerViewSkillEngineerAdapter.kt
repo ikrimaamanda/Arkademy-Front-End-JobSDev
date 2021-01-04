@@ -31,7 +31,7 @@ class RecyclerViewSkillEngineerAdapter(private val listSkill : ArrayList<ItemSki
     override fun onBindViewHolder(holder: SkillViewHolder, position: Int) {
         val currentItem = listSkill[position]
 
-        holder.binding.tvSkillName.text = currentItem.SkillName
+        holder.binding.tvSkillName.text = currentItem.skillName
 
         holder.itemView.setOnClickListener {
             onSkillClickListener.onSkillItemClicked(position)

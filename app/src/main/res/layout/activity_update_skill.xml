@@ -80,7 +80,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_current_skill_name"/>
 
             <Button
-                android:id="@+id/btn_add_skill"
+                android:id="@+id/btn_update_skill"
                 android:text="Update"
                 android:textSize="18sp"
                 android:layout_marginTop="30dp"
@@ -91,8 +91,22 @@
                 android:paddingHorizontal="20dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/et_update_skill_name"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_delete"
                 app:layout_constraintStart_toStartOf="parent"/>
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:text="Delete"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:background="@drawable/white_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_update_skill"
+                app:layout_constraintStart_toEndOf="@id/btn_update_skill"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
