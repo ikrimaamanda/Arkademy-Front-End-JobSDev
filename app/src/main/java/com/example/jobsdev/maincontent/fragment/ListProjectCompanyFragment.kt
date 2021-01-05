@@ -35,6 +35,11 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(requireContext())
 
+//        if (listProjectCompany.isNullOrEmpty()) {
+//            binding.ivEmptyIllustration.showOrGone(true)
+//            binding.rvListProject.showOrGone(false)
+//        }
+
         binding.rvListProject.adapter = ListProjectAdapter(listProjectCompany, this)
         binding.rvListProject.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
@@ -69,6 +74,7 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
                     ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
                 }
                 (binding.rvListProject.adapter as ListProjectAdapter).addListProjectCompany(list)
+                
             } else {
                 Toast.makeText(requireContext(), "Hello, your list project is empty!", Toast.LENGTH_SHORT).show()
             }
@@ -78,6 +84,14 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
     override fun onDestroy() {
         coroutineScope.cancel()
         super.onDestroy()
+    }
+
+    private fun View.showOrGone(show: Boolean) {
+        visibility = if(show) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     override fun onProjectCompanyItemClicked(position: Int) {

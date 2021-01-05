@@ -70,16 +70,6 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
         binding.rvSkillEngineer.adapter = RecyclerViewSkillEngineerAdapter(listSkill, this)
         binding.rvSkillEngineer.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-
-//        val exampleListSkill = generateDummyList(10)
-//        binding.rvSkillEngineer.apply {
-//            adapter =
-//                RecyclerViewSkillHireEngineerAdapter(
-//                    exampleListSkill
-//                )
-//            layoutManager = LinearLayoutManager(this@DetailEngineerActivity, LinearLayoutManager.HORIZONTAL, false)
-//        }
-
         pagerAdapter = TabPagerDetailEngineerAdapter(supportFragmentManager)
         binding.viewPager.adapter = pagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
@@ -90,21 +80,6 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
             onBackPressed()
         }
     }
-
-//    private fun generateDummyList(size : Int) : List<ItemSkillHireEngineerDataClass> {
-//        val list = ArrayList<ItemSkillHireEngineerDataClass>()
-//
-//        for (i in 0 until size) {
-//            val skillName = when(i%3) {
-//                0 -> "Kotlin"
-//                1 -> "Java"
-//                else -> "Laravel"
-//            }
-//            val item = ItemSkillHireEngineerDataClass("${i + 1}",i, skillName)
-//            list += item
-//        }
-//        return list
-//    }
 
     private fun getListSkill() {
         val service = ApiClient.getApiClient(this)?.create(JobSDevApiService::class.java)
@@ -137,7 +112,7 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
 
     }
 
-    fun View.showOrGone(show: Boolean) {
+    private fun View.showOrGone(show: Boolean) {
         visibility = if(show) {
             View.VISIBLE
         } else {
@@ -146,7 +121,7 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
     }
 
     override fun onSkillItemClicked(position: Int) {
-        Toast.makeText(this, "Skill $position clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Skill ${listSkill[position].skillName} clicked", Toast.LENGTH_SHORT).show()
     }
 
 }

@@ -2,7 +2,6 @@ package com.example.jobsdev.maincontent.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +19,6 @@ import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
 import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
 import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
@@ -53,7 +50,7 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         binding.recyclerViewListEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
 
-    fun getListEngineer() {
+    private fun getListEngineer() {
         val service = ApiClient.getApiClient(requireContext())?.create(EngineerApiService::class.java)
 
         coroutineScope.launch {

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,10 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentListHireEngineerBinding
-import com.example.jobsdev.maincontent.listengineer.DetailEngineerModel
-import com.example.jobsdev.maincontent.listengineer.EngineerApiService
-import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
-import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
 import com.example.jobsdev.maincontent.listhireengineer.*
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
