@@ -2,6 +2,7 @@ package com.example.jobsdev.maincontent.portfolioengineer
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentPortfolioEngineerBinding
+import com.example.jobsdev.maincontent.experienceengineer.ItemExperienceModel
+import com.example.jobsdev.maincontent.experienceengineer.RecyclerViewListExperienceAdapter
+import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.retfrofit.GetExperienceByEnIdResponse
+import com.example.jobsdev.retfrofit.GetPortfolioByEnIdResponse
+import com.example.jobsdev.retfrofit.JobSDevApiService
+import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
+import com.example.jobsdev.sharedpreference.PreferencesHelper
+import kotlinx.coroutines.*
 
 class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener {
+
     private lateinit var binding : FragmentPortfolioEngineerBinding
-    var listPortfolio = ArrayList<ItemPortfolioDataClass>()
+    var listPortfolio = ArrayList<ItemPortfolioModel>()
+    private lateinit var coroutineScope : CoroutineScope
+    private lateinit var sharedPref : PreferencesHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,6 +35,8 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_portfolio_engineer, container, false)
+        coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        sharedPref = PreferencesHelper(requireContext())
 
         binding.btnAddPortfolio.setOnClickListener {
             startActivity(Intent(activity, AddPortfolioActivity::class.java))
@@ -32,41 +47,42 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listPortfolio = generateDummyList(15)
+
+        val enId = sharedPref.getValueString(ConstantAccountEngineer.engineerId)
+        getListPortfolio(enId!!.toInt())
 
         var portfolioAdapter = RecyclerViewListPortfolioAdapter(listPortfolio, this)
         binding.recyclerViewPortfolio.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewPortfolio.adapter = portfolioAdapter
 
-//        binding.recyclerView.apply {
-//            adapter =
-//                RecyclerViewListPortfolioAdapter(
-//                    exampleListPortfolio
-//                )
-//            layoutManager = LinearLayoutManager(activity)
-//        }
     }
 
-    private fun generateDummyList(size : Int) : ArrayList<ItemPortfolioDataClass> {
-        val list = ArrayList<ItemPortfolioDataClass>()
+    private fun getListPortfolio(enId : Int) {
+        val service = ApiClient.getApiClient(requireContext())?.create(JobSDevApiService::class.java)
 
-        for (i in 0 until size) {
-            val drawable = when(i%2) {
-                0 -> R.drawable.porto1
-                else -> R.drawable.porto2
+        coroutineScope.launch {
+            val response = withContext(Dispatchers.IO) {
+                try {
+                    service?.getListPortfolioByEnId(enId)
+                } catch (e:Throwable) {
+                    e.printStackTrace()
+                }
             }
 
-            val item =
-                ItemPortfolioDataClass(
-                    drawable
-                )
-            list += item
+            if(response is GetPortfolioByEnIdResponse) {
+                val list = response.data?.map {
+                    ItemPortfolioModel(it.enId, it.portfolioId, it.portfolioprAppName, it.portfolioDesc, it.portfolioLinkPub, it.portfolioLinkRepo, it.portfolioWorkPlace, it.portfolioType, it.portfolioImage)
+                }
+                (binding.recyclerViewPortfolio.adapter as RecyclerViewListPortfolioAdapter).addListPortfolio(list)
+            } else {
+                Toast.makeText(requireContext(), "Hello, your list portfolio is empty!", Toast.LENGTH_SHORT).show()
+            }
         }
-        return list
+
     }
 
     override fun onPortfolioItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "Portfolio $position clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "${listPortfolio[position].appName} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), UpdatePortfolioTwoActivity::class.java)
         startActivity(intent)
     }

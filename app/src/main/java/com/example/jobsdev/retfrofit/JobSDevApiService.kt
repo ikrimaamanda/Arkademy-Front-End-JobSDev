@@ -41,4 +41,7 @@ interface JobSDevApiService {
 
     @GET("experience/getExperienceByEnId/{enId}")
     suspend fun getListExperienceByEnId(@Path("enId") enId : Int?) : GetExperienceByEnIdResponse
+
+    @GET("portfolio/getPortfolioByEnId/{enId}")
+    suspend fun getListPortfolioByEnId(@Path("enId") enId : Int?) : GetPortfolioByEnIdResponse
 }

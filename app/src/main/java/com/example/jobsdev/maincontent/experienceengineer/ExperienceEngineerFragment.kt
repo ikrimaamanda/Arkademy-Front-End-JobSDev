@@ -17,6 +17,7 @@ import com.example.jobsdev.maincontent.listhireengineer.DetailHireEngineerModel
 import com.example.jobsdev.maincontent.listhireengineer.HireEngineerApiService
 import com.example.jobsdev.maincontent.listhireengineer.ListHireEngineerAdapter
 import com.example.jobsdev.maincontent.listhireengineer.ListHireEngineerResponse
+import com.example.jobsdev.maincontent.portfolioengineer.UpdatePortfolioTwoActivity
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.retfrofit.GetExperienceByEnIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
@@ -61,11 +62,7 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
         val service = ApiClient.getApiClient(requireContext())?.create(JobSDevApiService::class.java)
 
         coroutineScope.launch {
-            Log.d("listExp", "Start: ${Thread.currentThread().name}")
-
             val response = withContext(Dispatchers.IO) {
-                Log.d("listExp", "CallApi: ${Thread.currentThread().name}")
-
                 try {
                     service?.getListExperienceByEnId(enId)
                 } catch (e:Throwable) {
@@ -79,7 +76,7 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
                 Log.d("ExpResponse", response.toString())
 
                 val list = response.data?.map {
-                    ItemExperienceModel(it?.exPosition, it?.exCompany, it?.exStartDate, it?.exEndDate, it?.exDesc)
+                    ItemExperienceModel(it.enId, it.exId, it.exPosition, it.exCompany, it.exStartDate, it.exEndDate, it?.exDesc)
                 }
                 (binding.recyclerViewExperience.adapter as RecyclerViewListExperienceAdapter).addListExperience(list)
             } else {
@@ -91,5 +88,7 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
 
     override fun onExperienceItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listExperience[position].position} clicked", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), UpdateExperienceActivity::class.java)
+        startActivity(intent)
     }
 }

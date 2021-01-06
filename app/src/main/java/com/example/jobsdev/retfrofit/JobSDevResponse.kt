@@ -42,7 +42,7 @@ data class GetSkillByEnIdResponse(val success : Boolean, val message : String, v
     )
 }
 
-data class GetExperienceByEnIdResponse(val success : Boolean, val message : String, val data : ArrayList<Experience?>) {
+data class GetExperienceByEnIdResponse(val success : Boolean, val message : String, val data : ArrayList<Experience>) {
     data class Experience(@SerializedName("ex_id") val exId : Int?,
                           @SerializedName("en_id") val enId : Int?,
                           @SerializedName("ex_position") val exPosition : String?,
@@ -50,5 +50,18 @@ data class GetExperienceByEnIdResponse(val success : Boolean, val message : Stri
                           @SerializedName("ex_start_date") val exStartDate : String?,
                           @SerializedName("ex_end_date") val exEndDate : String?,
                           @SerializedName("ex_description") val exDesc : String?
+    )
+}
+
+data class GetPortfolioByEnIdResponse(val success : Boolean, val message : String, val data : ArrayList<Portfolio>) {
+    data class Portfolio(@SerializedName("pr_id") val portfolioId : Int?,
+                          @SerializedName("en_id") val enId : Int?,
+                          @SerializedName("pr_app_name") val portfolioprAppName : String?,
+                          @SerializedName("pr_description") val portfolioDesc : String?,
+                          @SerializedName("pr_link_pub") val portfolioLinkPub : String?,
+                          @SerializedName("pr_link_repo") val portfolioLinkRepo : String?,
+                          @SerializedName("pr_workplace") val portfolioWorkPlace : String?,
+                         @SerializedName("pr_type") val portfolioType : String?,
+                         @SerializedName("pr_image") val portfolioImage : String?
     )
 }

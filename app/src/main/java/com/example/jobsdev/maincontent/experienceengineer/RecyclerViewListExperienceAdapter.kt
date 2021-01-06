@@ -34,8 +34,8 @@ class RecyclerViewListExperienceAdapter(private val listExperience : ArrayList<I
 
         holder.binding.tvExperiencePosition.text = currentItem.position
         holder.binding.tvExperienceCompany.text = currentItem.company
-        holder.binding.tvStartDate.text = currentItem.startDate
-        holder.binding.tvEndDate.text = currentItem.endDate
+        holder.binding.tvStartDate.text = dateStart
+        holder.binding.tvEndDate.text = dateEnd
         holder.binding.tvExperienceMonths.text = "$sum Month"
         holder.binding.tvExperienceDesc.text = currentItem.description
 

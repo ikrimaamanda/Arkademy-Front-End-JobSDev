@@ -70,7 +70,7 @@ class ExperienceDetailEngineerFragment : Fragment(), RecyclerViewListExperienceA
                 Log.d("ExpResponse", response.toString())
 
                 val list = response.data?.map {
-                    ItemExperienceModel(it?.exPosition, it?.exCompany, it?.exStartDate, it?.exEndDate, it?.exDesc)
+                    ItemExperienceModel(it.enId, it.exId, it.exPosition, it.exCompany, it.exStartDate, it.exEndDate, it.exDesc)
                 }
                 (binding.recyclerViewExperience.adapter as RecyclerViewListExperienceAdapter).addListExperience(list)
             } else {

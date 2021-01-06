@@ -4,22 +4,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.jobsdev.R
+import com.example.jobsdev.databinding.ExampleItemPortfolioBinding
 
-class RecyclerViewListPortfolioAdapter(private val exampleList: ArrayList<ItemPortfolioDataClass>, private val onPortfolioClickListener : OnPortfolioClickListener) : RecyclerView.Adapter<RecyclerViewListPortfolioAdapter.PortfolioViewHolder>() {
+class RecyclerViewListPortfolioAdapter(private val listPortfolio: ArrayList<ItemPortfolioModel>, private val onPortfolioClickListener : OnPortfolioClickListener) : RecyclerView.Adapter<RecyclerViewListPortfolioAdapter.PortfolioViewHolder>() {
+
+    fun addListPortfolio(list : List<ItemPortfolioModel>) {
+        listPortfolio.clear()
+        listPortfolio.addAll(list)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PortfolioViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.example_item_portfolio, parent, false)
         return PortfolioViewHolder(
-            itemView
+            DataBindingUtil.inflate((LayoutInflater.from(parent.context)),
+            R.layout.example_item_portfolio, parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: PortfolioViewHolder, position: Int) {
-        val currentItem = exampleList[position]
+        val currentItem = listPortfolio[position]
+        var img = "http://54.236.22.91:4000/image/${currentItem.portfolioImage}"
 
-        holder.imageView.setImageResource(currentItem.imageProfile)
+        Glide.with(holder.itemView)
+            .load(img)
+            .placeholder(R.drawable.profile_pict_base)
+            .error(R.drawable.profile_pict_base)
+            .into(holder.binding.ivImagePortofolio)
 
         holder.itemView.setOnClickListener {
             onPortfolioClickListener.onPortfolioItemClicked(position)
@@ -27,13 +41,9 @@ class RecyclerViewListPortfolioAdapter(private val exampleList: ArrayList<ItemPo
 
     }
 
-    override fun getItemCount(): Int = exampleList.size
+    override fun getItemCount(): Int = listPortfolio.size
 
-    class PortfolioViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-
-        val imageView : ImageView = itemView.findViewById(R.id.iv_image_portofolio)
-
-    }
+    class PortfolioViewHolder(val binding : ExampleItemPortfolioBinding) : RecyclerView.ViewHolder(binding.root)
 
     interface OnPortfolioClickListener {
         fun onPortfolioItemClicked(position: Int)

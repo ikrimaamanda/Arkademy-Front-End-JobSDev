@@ -45,14 +45,6 @@ class ListProjectAdapter(private val listProjectCompany : ArrayList<ProjectCompa
         }
     }
 
-    private fun formatDate(date : Long) : String {
-        val formatteDate : String
-        val c = Calendar.getInstance()
-        c.timeInMillis = date
-        formatteDate = "${c.get(Calendar.DAY_OF_MONTH)}-${c.get(Calendar.MONTH)}-${c.get(Calendar.YEAR)}"
-        return formatteDate
-    }
-
     interface OnListProjectCompanyClickListener {
         fun onProjectCompanyItemClicked(position : Int)
     }
