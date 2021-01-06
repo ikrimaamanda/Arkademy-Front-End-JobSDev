@@ -41,3 +41,14 @@ data class GetSkillByEnIdResponse(val success : Boolean, val message : String, v
                      @SerializedName("sk_skill_name") val skillName : String?
     )
 }
+
+data class GetExperienceByEnIdResponse(val success : Boolean, val message : String, val data : ArrayList<Experience?>) {
+    data class Experience(@SerializedName("ex_id") val exId : Int?,
+                          @SerializedName("en_id") val enId : Int?,
+                          @SerializedName("ex_position") val exPosition : String?,
+                          @SerializedName("ex_company") val exCompany : String?,
+                          @SerializedName("ex_start_date") val exStartDate : String?,
+                          @SerializedName("ex_end_date") val exEndDate : String?,
+                          @SerializedName("ex_description") val exDesc : String?
+    )
+}

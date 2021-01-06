@@ -21,10 +21,6 @@ interface JobSDevApiService {
 
 
 
-
-
-
-
     @FormUrlEncoded
     @POST("skill")
     suspend fun addSkill(@Field("skillName") skillName : String?,
@@ -42,4 +38,7 @@ interface JobSDevApiService {
 
     @DELETE("skill/{skId}")
     suspend fun deleteSkillBySkId(@Path("skId") skId : Int?) : GeneralResponse
+
+    @GET("experience/getExperienceByEnId/{enId}")
+    suspend fun getListExperienceByEnId(@Path("enId") enId : Int?) : GetExperienceByEnIdResponse
 }
