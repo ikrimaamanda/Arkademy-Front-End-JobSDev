@@ -90,6 +90,12 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
         Toast.makeText(requireContext(), "${listExperience[position].exId} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), UpdateExperienceActivity::class.java)
         intent.putExtra("exId", listExperience[position].exId)
+        intent.putExtra("exPosition", listExperience[position].position)
+        intent.putExtra("exCompany", listExperience[position].company)
+        intent.putExtra("exStartDate", listExperience[position].startDate)
+        intent.putExtra("exEndDate", listExperience[position].endDate)
+        intent.putExtra("exDesc", listExperience[position].description)
+
         startActivity(intent)
     }
 }

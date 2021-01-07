@@ -65,6 +65,10 @@ interface JobSDevApiService {
                                        @Field("ex_description") exDesc : String?
     ) : GeneralResponse
 
+    @DELETE("experience/{exId}")
+    suspend fun deleteExperienceByExId(@Path("exId") exId : Int?) : GeneralResponse
+
+
 
 
 

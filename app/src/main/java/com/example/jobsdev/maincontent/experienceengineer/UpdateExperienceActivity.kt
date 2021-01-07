@@ -34,9 +34,18 @@ class UpdateExperienceActivity : AppCompatActivity() {
         }
 
         val exId = intent.getIntExtra("exId", 0)
+        binding.tvPositionNow.text = intent.getStringExtra("exPosition")
+        binding.tvCompanyNow.text = intent.getStringExtra("exCompany")
+        binding.tvStartDateNow.text = intent.getStringExtra("exStartDate")!!.split("T")[0]
+        binding.tvEndDateNow.text = intent.getStringExtra("exEndDate")!!.split("T")[0]
+        binding.tvDescriptionNow.text = intent.getStringExtra("exDesc")
 
         binding.btnUpdateExperience.setOnClickListener {
             callUpdateExperienceApi(exId, binding.etUpdatePositionExperience.text.toString(), binding.etUpdateCompanyExperience.text.toString(), binding.etUpdateStartDateExperience.text.toString(),binding.etUpdateEndDateExperience.text.toString(), binding.etUpdateDescriptionExperience.text.toString())
+        }
+
+        binding.btnDeleteExp.setOnClickListener {
+            callDeleteExpApi(exId)
         }
 
     }
@@ -55,6 +64,32 @@ class UpdateExperienceActivity : AppCompatActivity() {
 
             if(results is GeneralResponse) {
                 Log.d("updateExp", results.toString())
+
+                if(results.success) {
+                    showMessage(results.message)
+                    moveActivity()
+                } else {
+                    showMessage(results.message)
+                }
+            }
+            showMessage("Something wrong ...")
+        }
+    }
+
+    private fun callDeleteExpApi(exId : Int) {
+        coroutineScope.launch {
+            val results = withContext(Dispatchers.IO){
+                try {
+                    service.deleteExperienceByExId(exId)
+                } catch (e:Throwable) {
+                    Log.e("errorM", e.message.toString())
+                    e.printStackTrace()
+                }
+            }
+            Log.d("deleteExp", results.toString())
+
+            if(results is GeneralResponse) {
+                Log.d("deleteExp", results.toString())
 
                 if(results.success) {
                     showMessage(results.message)

@@ -46,6 +46,10 @@ class AddExperienceActivity : AppCompatActivity() {
             }
             callAddExperienceApi(binding.etPositionExperience.text.toString(),  binding.etCompanyExperience.text.toString(), binding.etStartDateExperience.text.toString(), binding.etEndDateExperience.text.toString(), binding.etDescriptionExperience.text.toString(), enId!!.toInt())
         }
+
+        binding.btnCancel.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun callAddExperienceApi(exPosition : String, exCompany : String, exStartDate : String, exEndDate : String, exDesc : String, enId : Int) {
