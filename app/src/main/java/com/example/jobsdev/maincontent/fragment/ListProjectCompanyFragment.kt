@@ -20,12 +20,13 @@ import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectCompanyClickListener {
+class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectCompanyClickListener, ListProjectContract.ListProjectView {
 
     private lateinit var binding : FragmentListProjectCompanyBinding
     private lateinit var coroutineScope : CoroutineScope
     private var listProjectCompany = ArrayList<ProjectCompanyModel>()
     private lateinit var sharedPref : PreferencesHelper
+    private var presenter : ListProjectPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +34,9 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_project_company, container, false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        val service = ApiClient.getApiClient(requireContext())?.create(ProjectsCompanyApiService::class.java)
         sharedPref = PreferencesHelper(requireContext())
+        presenter = ListProjectPresenter(coroutineScope, service, sharedPref)
 
 //        if (listProjectCompany.isNullOrEmpty()) {
 //            binding.ivEmptyIllustration.showOrGone(true)
@@ -47,43 +50,7 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
             startActivity(Intent(context, AddNewProjectActivity::class.java))
         }
 
-        getProjectByCnId()
         return binding.root
-    }
-
-    fun getProjectByCnId() {
-        val service = ApiClient.getApiClient(requireContext())?.create(ProjectsCompanyApiService::class.java)
-
-        coroutineScope.launch {
-            Log.d("ikrima", "Start: ${Thread.currentThread().name}")
-
-            val response = withContext(Dispatchers.IO) {
-                Log.d("ikrima", "CallApi: ${Thread.currentThread().name}")
-
-                try {
-                    service?.getProjectByCnId(sharedPref.getValueString(ConstantAccountCompany.companyId))
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            Log.d("Ikrima Response", response.toString())
-
-            if(response is ProjectResponse) {
-                val list = response.data?.map {
-                    ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
-                }
-                (binding.rvListProject.adapter as ListProjectAdapter).addListProjectCompany(list)
-
-            } else {
-                Toast.makeText(requireContext(), "Hello, your list project is empty!", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        coroutineScope.cancel()
-        super.onDestroy()
     }
 
     private fun View.showOrGone(show: Boolean) {
@@ -107,6 +74,31 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
         intent.putExtra("image", listProjectCompany[position].projectImage)
 
         startActivity(intent)
+    }
+
+    override fun addListProject(list: List<ProjectCompanyModel>) {
+        (binding.rvListProject.adapter as ListProjectAdapter).addListProjectCompany(list)
+    }
+
+    override fun showProgressBar(msg : String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindToView(this)
+        presenter?.callProjectApiByCnId()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
     }
 
 }

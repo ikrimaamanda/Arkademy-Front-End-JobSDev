@@ -87,8 +87,9 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
     }
 
     override fun onExperienceItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listExperience[position].position} clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "${listExperience[position].exId} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), UpdateExperienceActivity::class.java)
+        intent.putExtra("exId", listExperience[position].exId)
         startActivity(intent)
     }
 }

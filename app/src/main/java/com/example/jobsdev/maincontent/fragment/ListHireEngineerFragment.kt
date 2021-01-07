@@ -9,22 +9,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentListHireEngineerBinding
 import com.example.jobsdev.maincontent.listhireengineer.*
+import com.example.jobsdev.maincontent.projectcompany.ProjectCompanyModel
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireEngineerClickListener {
+class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireEngineerClickListener, ListHireEngineerView {
 
     private lateinit var binding : FragmentListHireEngineerBinding
     private var listHireEngineer = ArrayList<DetailHireEngineerModel>()
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var viewModel : ListHireEngineerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,50 +37,42 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_hire_engineer, container, false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(requireContext())
+        viewModel = ViewModelProvider(this).get(ListHireEngineerViewModel::class.java)
+        val service = ApiClient.getApiClient(requireContext())?.create(HireEngineerApiService::class.java)
+
+        viewModel.setSharedPrefHire(sharedPref)
+
+        if (service != null) {
+            viewModel.setListHireEngineerService(service)
+        }
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getListHireEngineer()
 
         binding.recyclerViewHireEngineer.adapter = ListHireEngineerAdapter(listHireEngineer, this)
         binding.recyclerViewHireEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
     }
 
-    private fun getListHireEngineer() {
-        val service = ApiClient.getApiClient(requireContext())?.create(HireEngineerApiService::class.java)
+    override fun addListHireEngineer(list: List<DetailHireEngineerModel>) {
+        (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(list)
+    }
 
-        coroutineScope.launch {
-            Log.d("listHireEngineer", "Start: ${Thread.currentThread().name}")
+    override fun showProgressBar(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    }
 
-            val response = withContext(Dispatchers.IO) {
-                Log.d("listHireEngineer", "CallApi: ${Thread.currentThread().name}")
+    override fun onStart() {
+        super.onStart()
+        viewModel.bindToView(this)
+        viewModel.callListHireEngineerApi()
+    }
 
-                try {
-                    service?.getHireByEngineerId(sharedPref.getValueString(ConstantAccountEngineer.engineerId))
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            Log.d("HireResponse", response.toString())
-
-            if(response is ListHireEngineerResponse) {
-                Log.d("HireResponse", response.toString())
-
-                val list = response.data?.map {
-                    DetailHireEngineerModel(it.hireId, it.companyId, it.companyName, it.position,
-                        it.companyFields, it.companyCity, it.companyDescription, it.companyInstagram,
-                        it.companyLinkedIn, it.engineerId, it.projectId, it.projectName, it.projectDescription,
-                        it.projectDeadline, it.projectImage, it.price, it.message, it.status, it.dateConfirm)
-                }
-                (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(list)
-            } else {
-                Toast.makeText(requireContext(), "Hello, your list hire is empty!", Toast.LENGTH_SHORT).show()
-            }
-        }
+    override fun onStop() {
+        super.onStop()
+        viewModel.unbind()
     }
 
     override fun onDestroy() {
@@ -101,4 +96,10 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
 
         startActivity(intent)
     }
+
+}
+
+interface ListHireEngineerView {
+    fun addListHireEngineer(list : List<DetailHireEngineerModel>)
+    fun showProgressBar(msg : String)
 }

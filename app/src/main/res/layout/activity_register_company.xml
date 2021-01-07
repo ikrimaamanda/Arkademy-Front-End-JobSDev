@@ -33,7 +33,7 @@
 
             <TextView
                 android:id="@+id/tv_desc"
-                android:text="Lorem ipsum dulur si amet uegas anet."
+                android:text="Please sign up first, so that you can login and enjoy this application"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"/>

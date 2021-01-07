@@ -55,6 +55,7 @@
                 <EditText
                     android:id="@+id/et_update_position_experience"
                     android:hint="Input position"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -71,6 +72,7 @@
                 <EditText
                     android:id="@+id/et_update_company_experience"
                     android:hint="Input company"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -87,6 +89,7 @@
                 <EditText
                     android:id="@+id/et_update_start_date_experience"
                     android:hint="Input start date"
+                    android:inputType="date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -103,6 +106,7 @@
                 <EditText
                     android:id="@+id/et_update_end_date_experience"
                     android:hint="Input end date"
+                    android:inputType="date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -120,6 +124,8 @@
                 <EditText
                     android:id="@+id/et_update_description_experience"
                     android:hint="Input description"
+                    android:inputType="textMultiLine"
+                    android:gravity="top"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="10dp"
