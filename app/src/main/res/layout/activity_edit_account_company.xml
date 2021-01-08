@@ -6,6 +6,12 @@
     tools:context=".maincontent.editprofile.EditAccountCompanyActivity"
     >
 
+    <data>
+        <variable
+            name="model"
+            type="com.example.jobsdev.retfrofit.DetailCompanyByAcIdResponse.Company" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,249 +60,238 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/tv_tap_image"
+                    android:text="Tap to choose image"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/iv_edit_profile_pict"
-                        android:src="@drawable/icon_edit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tv_edit"/>
-
-                    <TextView
-                        android:id="@+id/tv_edit"
-                        android:text="Edit"
-                        android:textSize="18sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="@id/iv_edit_profile_pict"
-                        app:layout_constraintStart_toEndOf="@id/iv_edit_profile_pict"
-                        app:layout_constraintBottom_toBottomOf="@id/iv_edit_profile_pict"
-                        />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/tv_company_name"
                     android:text="Company Name"
                     android:textSize="20sp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:id="@+id/tv_name_now"
-                    android:text="Kompas Group"
-                    android:textSize="16sp"
+                <EditText
+                    android:id="@+id/et_company_name"
+                    android:hint="Edit your name"
+                    android:text="@{model.companyName}"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_account_name"
+                    android:text="Account Name"
+                    android:textSize="20sp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText
-                    android:id="@+id/et_edit_name"
+                    android:id="@+id/et_ac_name"
                     android:hint="Edit your name"
+                    android:text="@{model.accountName}"
+                    android:inputType="text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"
+                    />
 
                 <TextView
                     android:id="@+id/tv_phone_number"
                     android:text="Phone Number"
                     android:textSize="20sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_phone_number_now"
-                    android:text="+6285409307208"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/et_edit_phone_number"
                     android:hint="Edit your phone number"
+                    android:text="@{model.accountPhoneNumber}"
+                    android:inputType="phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"/>
 
                 <TextView
                     android:id="@+id/tv_password"
                     android:text="Password"
                     android:textSize="20sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/tv_password_now"
-                    android:text="**********"
-                    android:textSize="16sp"
+                    android:text="Old Password"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
                 <EditText
-                    android:id="@+id/et_edit_password"
-                    android:hint="Edit your password"
+                    android:id="@+id/et_old_password"
+                    android:hint="Input your last password"
+                    android:inputType="textPassword"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"/>
+
+                <TextView
+                    android:text="New Password"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/et_new_password"
+                    android:hint="Input your new password"
+                    android:inputType="textPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"/>
 
                 <TextView
                     android:id="@+id/tv_position"
                     android:text="Position"
                     android:textSize="20sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_position_now"
-                    android:text="Manager"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/et_edit_position"
                     android:hint="Edit your position"
+                    android:text="@{model.position}"
+                    android:inputType="text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"/>
 
                 <TextView
                     android:id="@+id/tv_field"
                     android:text="Field"
                     android:textSize="20sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_fields_now"
-                    android:text="Information Technology"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/et_edit_fields"
                     android:hint="Edit your fields"
+                    android:text="@{model.fields}"
+                    android:inputType="text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"/>
 
                 <TextView
                     android:id="@+id/tv_location"
                     android:text="Location"
                     android:textSize="20sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_location_now"
-                    android:text="Jakarta"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/et_edit_location"
                     android:hint="Edit your location"
+                    android:text="@{model.companyCity}"
+                    android:inputType="text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"/>
 
                 <TextView
                     android:id="@+id/tv_description"
                     android:text="Description"
                     android:textSize="20sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_description_now"
-                    android:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum"
-                    android:textSize="14sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/et_edit_description"
                     android:hint="Edit description"
+                    android:text="@{model.cnDescription}"
+                    android:inputType="textMultiLine"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"
                     />
 
                 <TextView
                     android:id="@+id/tv_instagram"
                     android:text="Instagram"
                     android:textSize="20sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_instagram_now"
-                    android:text="\@KompasGroup"
-                    android:textSize="14sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/et_instagram"
                     android:hint="Edit instagram"
+                    android:text="@{model.instagram}"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"
                     />
 
                 <TextView
                     android:id="@+id/tv_linkedin"
                     android:text="LinkedIn"
                     android:textSize="20sp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_linkedin_now"
-                    android:text="Kompas Group"
-                    android:textSize="14sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/et_edit_linkedin"
                     android:hint="Edit LinkedIn"
+                    android:text="@{model.linkedin}"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_white_stroke_purple"
                     />
 
                 <Button

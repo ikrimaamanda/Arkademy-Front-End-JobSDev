@@ -53,13 +53,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:id="@+id/tv_position_now"
-                    android:text="Position Now"
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
                 <EditText
                     android:id="@+id/et_update_position_experience"
                     android:hint="Input position"
@@ -75,13 +68,6 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_marginTop="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_company_now"
-                    android:text="Company Now"
-                    android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -103,12 +89,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:id="@+id/tv_start_date_now"
-                    android:text="0000-00-00"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
                 <EditText
                     android:id="@+id/et_update_start_date_experience"
                     android:hint="Input start date"
@@ -124,12 +104,6 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_marginTop="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_end_date_now"
-                    android:text="0000-00-00"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -149,12 +123,6 @@
                     android:textSize="20sp"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/tv_description_now"
-                    android:text="Description Now..."
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
                 <EditText

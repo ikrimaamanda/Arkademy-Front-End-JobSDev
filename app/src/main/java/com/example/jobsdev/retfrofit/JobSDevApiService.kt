@@ -11,12 +11,32 @@ interface JobSDevApiService {
     suspend fun loginRequest(@Field("accountEmail") email : String,
                              @Field("accountPassword") password : String) : LoginResponse
 
+    @FormUrlEncoded
+    @PUT("account/{acId}")
+    suspend fun updateAccountByAcId(@Path("acId") acId : Int?,
+                                    @Field("accountName") accountName : String?,
+                                    @Field("accountPhoneNumber") accountPhoneNumber : String?,
+                                    @Field("accountPassword") accountPassword : String?
+    ) : GeneralResponse
+
     @GET("engineer/{acId}")
     suspend fun getEngineerByAcId(@Path("acId") enId : String?) : DetailEngineerByAcIdResponse
 
 
     @GET("company/{acId}")
     suspend fun getCompanyByAcId(@Path("acId") cnId : String?) : DetailCompanyByAcIdResponse
+
+    @Multipart
+    @PUT("company/{cnId}")
+    suspend fun updateCompany(@Path("cnId") cnId : Int?,
+                              @Part("cn_position") position : RequestBody,
+                              @Part("cn_fields") fields : RequestBody,
+                              @Part("cn_city") location : RequestBody,
+                              @Part("cn_description") description : RequestBody,
+                              @Part("cn_instagram") instagram : RequestBody,
+                              @Part("cn_linkedin") linkedin : RequestBody,
+                              @Part("cn_company") companyName : RequestBody
+    ) : GeneralResponse
 
 
 

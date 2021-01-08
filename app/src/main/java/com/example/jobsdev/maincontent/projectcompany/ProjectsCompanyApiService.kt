@@ -26,4 +26,7 @@ interface ProjectsCompanyApiService {
                                   @Part("pj_description") projectDesc : RequestBody,
                                   @Part("pj_deadline") projectDeadline : RequestBody
     ) : GeneralResponse
+
+    @DELETE("project/{projectId}")
+    suspend fun deleteProjectById(@Path("projectId") projectId : Int?) : GeneralResponse
 }

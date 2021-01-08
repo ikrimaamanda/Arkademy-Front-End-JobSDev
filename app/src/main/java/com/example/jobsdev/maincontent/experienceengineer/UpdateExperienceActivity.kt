@@ -34,11 +34,13 @@ class UpdateExperienceActivity : AppCompatActivity() {
         }
 
         val exId = intent.getIntExtra("exId", 0)
-        binding.tvPositionNow.text = intent.getStringExtra("exPosition")
-        binding.tvCompanyNow.text = intent.getStringExtra("exCompany")
-        binding.tvStartDateNow.text = intent.getStringExtra("exStartDate")!!.split("T")[0]
-        binding.tvEndDateNow.text = intent.getStringExtra("exEndDate")!!.split("T")[0]
-        binding.tvDescriptionNow.text = intent.getStringExtra("exDesc")
+        binding.etUpdatePositionExperience.setText(intent.getStringExtra("exPosition"))
+        binding.etUpdateCompanyExperience.setText(intent.getStringExtra("exCompany"))
+        val startDate = intent.getStringExtra("exStartDate")!!.split("T")[0]
+        binding.etUpdateStartDateExperience.setText(startDate)
+        val endDate = intent.getStringExtra("exEndDate")!!.split("T")[0]
+        binding.etUpdateEndDateExperience.setText(endDate)
+        binding.etUpdateDescriptionExperience.setText(intent.getStringExtra("exDesc"))
 
         binding.btnUpdateExperience.setOnClickListener {
             callUpdateExperienceApi(exId, binding.etUpdatePositionExperience.text.toString(), binding.etUpdateCompanyExperience.text.toString(), binding.etUpdateStartDateExperience.text.toString(),binding.etUpdateEndDateExperience.text.toString(), binding.etUpdateDescriptionExperience.text.toString())
