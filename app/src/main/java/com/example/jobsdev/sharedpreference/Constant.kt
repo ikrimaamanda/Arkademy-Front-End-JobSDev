@@ -28,6 +28,16 @@ class ConstantDetailEngineer {
 class ConstantProjectCompany {
     companion object {
         val projectId = "project id"
+        val projectName = "project name"
+        val projectDeadline = "project deadline"
+        val projectDesc = "project description"
+        val projectImage = "project image"
+    }
+}
+
+class ConstantPortfolio {
+    companion object {
+        val typeApp = "type of app"
     }
 }
 

@@ -121,7 +121,7 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
     }
 
     override fun onSkillItemClicked(position: Int) {
-        Toast.makeText(this, "Skill ${listSkill[position].skillName} clicked", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Skill ${listSkill[position].skillName} clicked", Toast.LENGTH_SHORT).show()
     }
 
 }

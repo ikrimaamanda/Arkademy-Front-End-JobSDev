@@ -42,10 +42,19 @@
                 android:padding="20dp">
 
                 <ImageView
+                    android:id="@+id/iv_upload_portfolio_image"
                     android:src="@drawable/ic_img_add_portfolio"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:id="@+id/tv_upload"
+                    android:text="Tap to choose image"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:text="App Name"
@@ -57,6 +66,7 @@
                 <EditText
                     android:id="@+id/et_app_name"
                     android:hint="Input app name"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -73,6 +83,8 @@
                 <EditText
                     android:id="@+id/et_description_portfolio"
                     android:hint="Input description"
+                    android:inputType="textMultiLine"
+                    android:gravity="top"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="10dp"
@@ -89,6 +101,7 @@
                 <EditText
                     android:id="@+id/et_link_pub_portfolio"
                     android:hint="Input link publication"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -105,6 +118,7 @@
                 <EditText
                     android:id="@+id/et_link_repo_portfolio"
                     android:hint="Input link repository"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -121,6 +135,7 @@
                 <EditText
                     android:id="@+id/et_workplace_portfolio"
                     android:hint="Input workplace"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -134,44 +149,52 @@
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <EditText
-                    android:id="@+id/et_type_portfolio"
-                    android:hint="Input type of portfolio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                <Spinner
+                    android:id="@+id/spinner_type_app"
                     android:background="@drawable/button_white_stroke_purple"
-                    android:padding="10dp"/>
-
-                <TextView
-                    android:text="Image"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
                     android:layout_height="wrap_content"/>
-                <EditText
-                    android:id="@+id/et_upload_img_portfolio"
-                    android:hint="Upload image"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/button_white_stroke_purple"
-                    android:padding="10dp"/>
-
-                <Button
-                    android:id="@+id/btn_add_portfolio"
-                    android:text="Add Portfolio"
-                    android:textSize="18sp"
-                    android:paddingHorizontal="20dp"
-                    android:textAllCaps="false"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/white"
-                    android:background="@drawable/bg_orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="30dp"/>
+                    android:layout_marginBottom="30dp">
+
+                    <Button
+                        android:id="@+id/btn_add_portfolio"
+                        android:text="Add \nPortfolio"
+                        android:textSize="18sp"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="5dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:background="@drawable/bg_orange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/btn_cancel"
+                        />
+
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:text="Cancel"
+                        android:textSize="18sp"
+                        android:paddingHorizontal="20dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:background="@drawable/purple_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/btn_add_portfolio"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
         </ScrollView>

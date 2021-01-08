@@ -1,5 +1,6 @@
 package com.example.jobsdev.maincontent.projectcompany
 
+import com.example.jobsdev.retfrofit.GeneralResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -12,10 +13,17 @@ interface ProjectsCompanyApiService {
 
     @Multipart
     @POST("project")
-    suspend fun addNewProject(@Part image : MultipartBody.Part,
-                              @Part("projectName") projectName : RequestBody,
+    suspend fun addNewProject(@Part("projectName") projectName : RequestBody,
                               @Part("projectDesc") projectDesc : RequestBody,
                               @Part("projectDeadline") projectDeadline : RequestBody,
-                              @Part("companyId") companyId : RequestBody
+                              @Part("cnId") companyId : RequestBody
     ) : AddProjectResponse
+
+    @Multipart
+    @PUT("project/{projectId}")
+    suspend fun updateProjectById(@Path("projectId") projectId : Int?,
+                                  @Part("pj_project_name") projectName : RequestBody,
+                                  @Part("pj_description") projectDesc : RequestBody,
+                                  @Part("pj_deadline") projectDeadline : RequestBody
+    ) : GeneralResponse
 }

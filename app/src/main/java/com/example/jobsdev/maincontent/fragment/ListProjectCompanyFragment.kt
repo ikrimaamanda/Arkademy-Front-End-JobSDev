@@ -64,6 +64,10 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
     override fun onProjectCompanyItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listProjectCompany[position].projectName} clicked", Toast.LENGTH_SHORT).show()
         sharedPref.putValue(ConstantProjectCompany.projectId, listProjectCompany[position].projectId)
+        sharedPref.putValue(ConstantProjectCompany.projectName, listProjectCompany[position].projectName)
+        sharedPref.putValue(ConstantProjectCompany.projectDeadline, listProjectCompany[position].projectDeadline)
+        sharedPref.putValue(ConstantProjectCompany.projectDesc, listProjectCompany[position].projectDesc)
+        sharedPref.putValue(ConstantProjectCompany.projectImage, listProjectCompany[position].projectImage)
 
         val intent = Intent(requireContext(), DetailProjectCompanyActivity::class.java)
         intent.putExtra("projectName", listProjectCompany[position].projectName)

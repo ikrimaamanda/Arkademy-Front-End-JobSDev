@@ -1,6 +1,7 @@
 package com.example.jobsdev.retfrofit
 
 import com.example.jobsdev.login.LoginResponse
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface JobSDevApiService {
@@ -72,6 +73,31 @@ interface JobSDevApiService {
 
 
 
+    @Multipart
+    @POST("portfolio")
+    suspend fun addPortfolio(@Part("prAppName") prAppName : RequestBody,
+                             @Part("prDesc") prDesc : RequestBody,
+                             @Part("prLinkPub") prLinkPub : RequestBody,
+                             @Part("prLinkRepo") prLinkRepo : RequestBody,
+                             @Part("prWorkplace") prWorkplace : RequestBody,
+                             @Part("prType") prType : RequestBody,
+                             @Part("enId") enId : RequestBody
+    ) : GeneralResponse
+
     @GET("portfolio/getPortfolioByEnId/{enId}")
     suspend fun getListPortfolioByEnId(@Path("enId") enId : Int?) : GetPortfolioByEnIdResponse
+
+    @Multipart
+    @PUT("portfolio/{portfolioId}")
+    suspend fun updatePortfolio(@Path("portfolioId") portfolioId : Int,
+                            @Part("pr_app_name") prAppName : RequestBody,
+                             @Part("pr_description") prDesc : RequestBody,
+                             @Part("pr_link_pub") prLinkPub : RequestBody,
+                             @Part("pr_link_repo") prLinkRepo : RequestBody,
+                             @Part("pr_workplace") prWorkplace : RequestBody,
+                             @Part("pr_type") prType : RequestBody
+    ) : GeneralResponse
+
+    @DELETE("portfolio/{portfolioId}")
+    suspend fun deletePortfolioByPrId(@Path("portfolioId") portfolioId: Int?) : GeneralResponse
 }
