@@ -38,14 +38,14 @@ class ConstantProjectCompany {
 class ConstantPortfolio {
     companion object {
         val typeApp = "type of app"
+        val portfolioImage = "image"
     }
 }
 
 class ConstantAccountEngineer {
     companion object {
         val engineerId = "id of engineer"
-        val jobTitle = "job title"
-        val jobType = "job type"
+        val jobType = "type of job"
     }
 }
 

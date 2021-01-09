@@ -1,8 +1,11 @@
 package com.example.jobsdev.maincontent.projectcompany
 
+import android.Manifest
 import android.app.Activity
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +17,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.loader.content.CursorLoader
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityAddNewProjectBinding
@@ -28,6 +32,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import okhttp3.Call
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -39,16 +44,18 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 
-class AddNewProjectActivity : AppCompatActivity(), UploadRequestBody.UploadCallBack {
+class AddNewProjectActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityAddNewProjectBinding
     private lateinit var service : ProjectsCompanyApiService
     private lateinit var coroutineScope : CoroutineScope
-    private var selectedImage : Uri? = null
     private lateinit var sharedPref : PreferencesHelper
-    private lateinit var imageName: MultipartBody.Part
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    companion object {
+        private const val IMAGE_PICK_CODE = 1000
+        private const val PERMISSION_CODE = 1001
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_new_project)
@@ -63,14 +70,15 @@ class AddNewProjectActivity : AppCompatActivity(), UploadRequestBody.UploadCallB
         }
 
         binding.ivAddProjectImage.setOnClickListener {
-        }
-
-        binding.btnAdd.setOnClickListener {
-            if(binding.etProjectName.text.isEmpty() || binding.etProjectDesc.text.isEmpty() || binding.etDeadline.text.isEmpty()) {
-                Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
-                binding.etProjectName.requestFocus()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    requestPermissions(permissions, PERMISSION_CODE)
+                } else {
+                    pickImageFromGalery()
+                }
             } else {
-                callAddProjectApi()
+                pickImageFromGalery()
             }
         }
 
@@ -79,7 +87,77 @@ class AddNewProjectActivity : AppCompatActivity(), UploadRequestBody.UploadCallB
         }
     }
 
-    private fun callAddProjectApi() {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode) {
+            PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickImageFromGalery()
+                } else {
+                    showMessage("Permission Denied")
+                }
+            }
+        }
+    }
+
+    private fun pickImageFromGalery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            binding.ivAddProjectImage.setImageURI(data?.data)
+
+            val filePath = data?.data?.let { getPath(this, it) }
+            val file = File(filePath)
+
+            var img : MultipartBody.Part? = null
+            val mediaTypeImg = "image/jpeg".toMediaType()
+            val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
+            val reqFile : RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
+
+            img = reqFile?.let { it1 ->
+                MultipartBody.Part.createFormData("image", file.name, it1)
+            }
+
+            binding.btnAdd.setOnClickListener {
+                if(binding.etProjectName.text.isEmpty() || binding.etProjectDesc.text.isEmpty() || binding.etDeadline.text.isEmpty()) {
+                    Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
+                    binding.etProjectName.requestFocus()
+                } else {
+                    if (img != null) {
+                        callAddProjectApi(img)
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun getPath(context : Context, contentUri : Uri) : String? {
+        var result : String? = null
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+
+        val cursorLoader = CursorLoader(context, contentUri, proj, null, null, null)
+        val cursor = cursorLoader.loadInBackground()
+
+        if (cursor != null) {
+            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            result = cursor.getString(columnIndex)
+            cursor.close()
+        }
+        return result
+    }
+
+    private fun callAddProjectApi(image : MultipartBody.Part) {
         coroutineScope.launch {
             val results = withContext(Dispatchers.IO){
                 try {
@@ -91,7 +169,7 @@ class AddNewProjectActivity : AppCompatActivity(), UploadRequestBody.UploadCallB
                     val projectDeadline = binding.etDeadline.text.toString()
                         .toRequestBody("text/plain".toMediaTypeOrNull())
 
-                    service.addNewProject(projectName, projectDesc, projectDeadline, cnId)
+                    service.addNewProject(projectName, projectDesc, projectDeadline, image, cnId)
                 } catch (e:Throwable) {
                     Log.e("error?", e.message.toString())
                     e.printStackTrace()
@@ -130,7 +208,4 @@ class AddNewProjectActivity : AppCompatActivity(), UploadRequestBody.UploadCallB
         }.show()
     }
 
-    override fun onProgressUpdate(percentage: Int) {
-        binding.progressBar.progress = percentage
-    }
 }

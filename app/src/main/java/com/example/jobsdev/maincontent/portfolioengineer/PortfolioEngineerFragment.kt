@@ -19,6 +19,7 @@ import com.example.jobsdev.retfrofit.GetExperienceByEnIdResponse
 import com.example.jobsdev.retfrofit.GetPortfolioByEnIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
+import com.example.jobsdev.sharedpreference.ConstantPortfolio
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
@@ -84,6 +85,7 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
     override fun onPortfolioItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listPortfolio[position].portfolioId} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), UpdatePortfolioTwoActivity::class.java)
+        sharedPref.putValue(ConstantPortfolio.portfolioImage, listPortfolio[position].portfolioImage!!)
         intent.putExtra("updatePortfolioId", listPortfolio[position].portfolioId)
         intent.putExtra("appName", listPortfolio[position].appName)
         intent.putExtra("portfolioDesc", listPortfolio[position].portfolioDesc)

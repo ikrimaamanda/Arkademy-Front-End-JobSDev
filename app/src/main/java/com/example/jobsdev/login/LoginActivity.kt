@@ -119,13 +119,11 @@ class LoginActivity : AppCompatActivity() {
                 try {
                     service.getEngineerByAcId(acId)
                 } catch (e:Throwable) {
-                    Log.e("errorMessage : ", e.message.toString())
                     e.printStackTrace()
                 }
             }
 
             if (result is DetailEngineerByAcIdResponse) {
-                Log.d("enIdReq", result.toString())
                 if (result.success) {
                     sharedPref.putValue(ConstantAccountEngineer.engineerId, result.data.engineerId!!)
                     sharedPref.putValue(Constant.prefName, result.data.accountName!!)
@@ -141,13 +139,11 @@ class LoginActivity : AppCompatActivity() {
                 try {
                     service.getCompanyByAcId(acId)
                 } catch (e: Throwable) {
-                    Log.e("errorMessage : ", e.message.toString())
                     e.printStackTrace()
                 }
             }
 
             if (result is DetailCompanyByAcIdResponse) {
-                Log.d("cnIdReqByCom", result.toString())
                 if (result.success) {
                     sharedPref.putValue(ConstantAccountCompany.companyId, result.data.companyId!!)
                     sharedPref.putValue(Constant.prefName, result.data.accountName!!)

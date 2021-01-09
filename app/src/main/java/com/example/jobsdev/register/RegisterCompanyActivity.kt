@@ -72,6 +72,7 @@ class RegisterCompanyActivity : AppCompatActivity() {
                     showMessage(result.message)
                 }
             }
+            showMessage("Email already registered")
         }
     }
 

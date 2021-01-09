@@ -22,13 +22,11 @@ class OnBoardLoginActivity : AppCompatActivity() {
         sharedPref = PreferencesHelper(this)
 
         binding.btnLoginAsEngineer.setOnClickListener {
-//            sharedPref.putValue(Constant.acLevel.toString(), 0)
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 
         binding.btnLoginAsCompany.setOnClickListener {
-//            sharedPref.putValue(Constant.acLevel.toString(), 1)
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }

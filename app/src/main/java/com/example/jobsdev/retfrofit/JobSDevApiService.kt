@@ -1,6 +1,7 @@
 package com.example.jobsdev.retfrofit
 
 import com.example.jobsdev.login.LoginResponse
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -22,6 +23,15 @@ interface JobSDevApiService {
     @GET("engineer/{acId}")
     suspend fun getEngineerByAcId(@Path("acId") enId : String?) : DetailEngineerByAcIdResponse
 
+    @Multipart
+    @PUT("engineer/{enId}")
+    suspend fun updateEngineerById(@Path("enId") enId : Int?,
+                                   @Part("en_job_title") jobTitle : RequestBody,
+                                   @Part("en_job_type") jobType : RequestBody,
+                                   @Part("en_location") location : RequestBody,
+                                   @Part("en_description") enDesc : RequestBody,
+                                   @Part image : MultipartBody.Part
+    ) : GeneralResponse
 
     @GET("company/{acId}")
     suspend fun getCompanyByAcId(@Path("acId") cnId : String?) : DetailCompanyByAcIdResponse
@@ -35,6 +45,7 @@ interface JobSDevApiService {
                               @Part("cn_description") description : RequestBody,
                               @Part("cn_instagram") instagram : RequestBody,
                               @Part("cn_linkedin") linkedin : RequestBody,
+                              @Part image : MultipartBody.Part,
                               @Part("cn_company") companyName : RequestBody
     ) : GeneralResponse
 
@@ -101,6 +112,7 @@ interface JobSDevApiService {
                              @Part("prLinkRepo") prLinkRepo : RequestBody,
                              @Part("prWorkplace") prWorkplace : RequestBody,
                              @Part("prType") prType : RequestBody,
+                             @Part image : MultipartBody.Part,
                              @Part("enId") enId : RequestBody
     ) : GeneralResponse
 
@@ -115,7 +127,8 @@ interface JobSDevApiService {
                              @Part("pr_link_pub") prLinkPub : RequestBody,
                              @Part("pr_link_repo") prLinkRepo : RequestBody,
                              @Part("pr_workplace") prWorkplace : RequestBody,
-                             @Part("pr_type") prType : RequestBody
+                             @Part("pr_type") prType : RequestBody,
+                                @Part image : MultipartBody.Part
     ) : GeneralResponse
 
     @DELETE("portfolio/{portfolioId}")

@@ -56,6 +56,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         sharedPref = PreferencesHelper(requireContext())
         val acId = sharedPref.getValueString(Constant.prefAccountId)
         getEngineerId(acId!!)
+
         binding.btnEditProfile.setOnClickListener {
             startActivity(Intent(activity, EditAccountEngineerActivity::class.java))
         }
@@ -110,6 +111,9 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
                     .load(imageLink + result.data.enProfilePict)
                     .placeholder(R.drawable.profile_pict_base)
                     .into(binding.civProfilePict)
+                if (result.data.enProfilePict != null) {
+                    sharedPref.putValue(Constant.prefProfilePict, result.data.enProfilePict!!)
+                }
             }
         }
     }

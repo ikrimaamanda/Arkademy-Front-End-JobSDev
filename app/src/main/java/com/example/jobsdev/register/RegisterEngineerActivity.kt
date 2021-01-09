@@ -64,7 +64,7 @@ class RegisterEngineerActivity : AppCompatActivity() {
                     showMessage(result.message)
                 }
             } else {
-                showMessage("Email is already registered")
+                showMessage("Email already registered")
             }
         }
     }

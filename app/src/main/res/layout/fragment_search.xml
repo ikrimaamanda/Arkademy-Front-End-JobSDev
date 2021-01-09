@@ -8,17 +8,16 @@
         android:orientation="vertical"
         android:background="@color/bg_color">
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/sv_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_white"
-            android:queryHint="Search"
-            android:iconifiedByDefault="false"
             android:layout_marginHorizontal="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
-            />
+            android:background="@drawable/button_white_stroke_purple"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search" />
 
         <ScrollView
             android:layout_width="match_parent"

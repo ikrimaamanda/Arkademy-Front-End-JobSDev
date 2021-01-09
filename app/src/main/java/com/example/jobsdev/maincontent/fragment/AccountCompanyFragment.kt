@@ -43,9 +43,6 @@ class AccountCompanyFragment : Fragment() {
         val acId = sharedPref.getValueString(Constant.prefAccountId)
         getCompanyId(acId!!)
 
-        binding.tvField.text = sharedPref.getValueString(ConstantAccountCompany.fields)
-        binding.tvLocation.text = sharedPref.getValueString(Constant.prefLocation)
-
         binding.btnEditProfile.setOnClickListener {
             startActivity(Intent(activity, EditAccountCompanyActivity::class.java))
         }
@@ -75,7 +72,10 @@ class AccountCompanyFragment : Fragment() {
                     .load(imageLink + response.data.cnProfilePict)
                     .placeholder(R.drawable.profile_pict_base)
                     .into(binding.civProfilePict)
-                Log.d("cnIdReqByCom", response.toString())
+
+                if (response.data.cnProfilePict != null) {
+                    sharedPref.putValue(Constant.prefProfilePict, response.data.cnProfilePict!!)
+                }
             }
         }
     }

@@ -56,7 +56,7 @@
                     android:id="@+id/civ_edit_profile_pict"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@drawable/profile_pict"
+                    android:src="@drawable/profile_pict_base"
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp" />
 

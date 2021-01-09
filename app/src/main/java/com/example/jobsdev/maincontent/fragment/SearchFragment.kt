@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +24,14 @@ import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
 import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListEngineerAdapter
 import com.example.jobsdev.remote.ApiClient
 import kotlinx.coroutines.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchFragment : Fragment(), OnListEngineerClickListener {
 
     private lateinit var binding : FragmentSearchBinding
-    var listEngineer = ArrayList<DetailEngineerModel>()
+    private var listEngineer = ArrayList<DetailEngineerModel>()
+    private var displayList = ArrayList<DetailEngineerModel>()
     private lateinit var coroutineScope : CoroutineScope
 
     override fun onCreateView(
@@ -39,6 +43,7 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
         getListEngineer()
+//        displayList.addAll(listEngineer)
         return binding.root
     }
 
@@ -47,6 +52,38 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
 
         binding.recyclerViewSearchEngineer.adapter = ListEngineerAdapter(listEngineer,this)
         binding.recyclerViewSearchEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+
+        if(binding.svSearch != null) {
+            var searchView = binding.svSearch
+
+            searchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText!!.isNotEmpty()) {
+                        displayList.clear()
+
+                        var search = newText.toLowerCase(Locale.getDefault())
+
+                        for (engineer in listEngineer) {
+                            if (engineer.engineerName!!.toLowerCase(Locale.getDefault())!!.contains(search)) {
+                                displayList.add(engineer)
+                            }
+                            binding.recyclerViewSearchEngineer.adapter!!.notifyDataSetChanged()
+                        }
+                    } else {
+                        displayList.clear()
+                        displayList.addAll(listEngineer)
+                        binding.recyclerViewSearchEngineer.adapter!!.notifyDataSetChanged()
+                    }
+                    return true
+                }
+
+            })
+
+        }
 
     }
 
@@ -73,6 +110,7 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
                     DetailEngineerModel(it.engineerId, it.accountId, it.accountName, it.accountEmail, it.accountPhoneNumber, it.engineerJobTitle, it.engineerJobType, it.engineerLocation, it.engineerDescription, it.engineerProfilePict, it.skillEngineer)
                 }
                 (binding.recyclerViewSearchEngineer.adapter as ListEngineerAdapter).addListEngineer(list)
+
             }
         }
     }

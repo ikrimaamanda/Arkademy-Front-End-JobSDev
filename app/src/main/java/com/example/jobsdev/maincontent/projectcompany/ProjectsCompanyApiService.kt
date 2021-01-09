@@ -16,6 +16,7 @@ interface ProjectsCompanyApiService {
     suspend fun addNewProject(@Part("projectName") projectName : RequestBody,
                               @Part("projectDesc") projectDesc : RequestBody,
                               @Part("projectDeadline") projectDeadline : RequestBody,
+                              @Part image : MultipartBody.Part,
                               @Part("cnId") companyId : RequestBody
     ) : AddProjectResponse
 
@@ -24,7 +25,8 @@ interface ProjectsCompanyApiService {
     suspend fun updateProjectById(@Path("projectId") projectId : Int?,
                                   @Part("pj_project_name") projectName : RequestBody,
                                   @Part("pj_description") projectDesc : RequestBody,
-                                  @Part("pj_deadline") projectDeadline : RequestBody
+                                  @Part("pj_deadline") projectDeadline : RequestBody,
+                                  @Part image : MultipartBody.Part
     ) : GeneralResponse
 
     @DELETE("project/{projectId}")
