@@ -147,7 +147,6 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
                     .placeholder(R.drawable.profile_pict_base)
                     .into(binding.civProfilePict)
         binding.progressBar.showOrGone(false)
-        binding.tvEmpty.showOrGone(false)
     }
 
     override fun addSkill(list: List<ItemSkillEngineerModel>) {
@@ -167,7 +166,6 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         if (message == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
         }
-        binding.tvEmpty.showOrGone(true)
         binding.progressBar.showOrGone(false)
     }
 
@@ -175,7 +173,6 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         binding.rvSkillEngineer.showOrGone(false)
         binding.progressBar.showOrGone(true)
         binding.progressBarSkill.showOrGone(true)
-        binding.tvEmpty.showOrGone(false)
         binding.tvEmptyListSkill.showOrGone(false)
 
     }

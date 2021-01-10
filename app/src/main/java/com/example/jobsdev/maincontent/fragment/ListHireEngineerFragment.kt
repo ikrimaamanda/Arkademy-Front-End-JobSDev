@@ -58,10 +58,31 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
 
     override fun addListHireEngineer(list: List<DetailHireEngineerModel>) {
         (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(list)
+        binding.recyclerViewHireEngineer.showOrGone(true)
+        binding.progressBar.showOrGone(false)
+        binding.ivEmptyIllustration.showOrGone(false)
+        binding.tvEmptyList.showOrGone(false)
     }
 
-    override fun showProgressBar(msg: String) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    override fun failedAdd(message: String) {
+        binding.recyclerViewHireEngineer.showOrGone(false)
+        if (message == "expired") {
+            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        binding.ivEmptyIllustration.showOrGone(true)
+        binding.tvEmptyList.showOrGone(true)
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun showProgressBar() {
+        binding.recyclerViewHireEngineer.showOrGone(false)
+        binding.progressBar.showOrGone(true)
+        binding.ivEmptyIllustration.showOrGone(false)
+        binding.tvEmptyList.showOrGone(false)
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBar.showOrGone(false)
     }
 
     override fun onStart() {
@@ -97,9 +118,19 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
         startActivity(intent)
     }
 
+    private fun View.showOrGone(show: Boolean) {
+        visibility = if(show) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
 }
 
 interface ListHireEngineerView {
     fun addListHireEngineer(list : List<DetailHireEngineerModel>)
-    fun showProgressBar(msg : String)
+    fun failedAdd(message : String)
+    fun showProgressBar()
+    fun hideProgressBar()
 }
