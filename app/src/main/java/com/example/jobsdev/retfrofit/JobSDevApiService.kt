@@ -1,6 +1,7 @@
 package com.example.jobsdev.retfrofit
 
 import com.example.jobsdev.login.LoginResponse
+import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -49,6 +50,21 @@ interface JobSDevApiService {
                               @Part("cn_company") companyName : RequestBody
     ) : GeneralResponse
 
+
+
+
+
+    @GET("engineer")
+    suspend fun searchEngineer(@Query("search") search: String? = null,
+                               @Query("limit") limit: Int? = null,
+                               @Query("page") page: Int? = null
+    ): ListEngineerResponse
+
+    @GET("engineer/filter")
+    suspend fun filterEngineer(@Query("limit") limit: Int? = null,
+                               @Query("page") page: Int? = null,
+                               @Query("filter") filter: Int? = null
+    ): ListEngineerResponse
 
 
 

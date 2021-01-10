@@ -1,5 +1,6 @@
 package com.example.jobsdev.maincontent.hireengineer
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -86,7 +87,16 @@ class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAda
 
     override fun onPortfolioItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listPortfolio[position].appName} clicked", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), DetailPortfolioEngineerActivity::class.java)
+        intent.putExtra("portfolioImage", listPortfolio[position].portfolioImage)
+        intent.putExtra("appName", listPortfolio[position].appName)
+        intent.putExtra("linkPub", listPortfolio[position].linkPublication)
+        intent.putExtra("linkRepo", listPortfolio[position].linkRepo)
+        intent.putExtra("workplace", listPortfolio[position].workPlace)
+        intent.putExtra("typeApp", listPortfolio[position].portfolioType)
+        intent.putExtra("desc", listPortfolio[position].portfolioDesc)
 
+        startActivity(intent)
     }
 
 }

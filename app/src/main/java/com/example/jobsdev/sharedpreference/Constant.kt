@@ -46,6 +46,7 @@ class ConstantAccountEngineer {
     companion object {
         val engineerId = "id of engineer"
         val jobType = "type of job"
+        val jobTitle = "job title"
     }
 }
 

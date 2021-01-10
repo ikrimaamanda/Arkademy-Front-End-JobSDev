@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -22,17 +23,24 @@ import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
 import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
 import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
 import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListEngineerAdapter
+import com.example.jobsdev.maincontent.search.SearchContract
+import com.example.jobsdev.maincontent.search.SearchPresenter
 import com.example.jobsdev.remote.ApiClient
+import com.example.jobsdev.retfrofit.JobSDevApiService
+import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
+import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SearchFragment : Fragment(), OnListEngineerClickListener {
+class SearchFragment : Fragment(), OnListEngineerClickListener, SearchContract.View {
 
     private lateinit var binding : FragmentSearchBinding
     private var listEngineer = ArrayList<DetailEngineerModel>()
-    private var displayList = ArrayList<DetailEngineerModel>()
     private lateinit var coroutineScope : CoroutineScope
+    private lateinit var service : JobSDevApiService
+    private var presenter : SearchPresenter? = null
+    private lateinit var sharedPref : PreferencesHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,9 +49,11 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        service = ApiClient.getApiClient(requireContext())!!.create(JobSDevApiService::class.java)
+        sharedPref = PreferencesHelper(requireContext())
 
-        getListEngineer()
-//        displayList.addAll(listEngineer)
+        presenter = SearchPresenter(coroutineScope, service)
+
         return binding.root
     }
 
@@ -53,75 +63,14 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
         binding.recyclerViewSearchEngineer.adapter = ListEngineerAdapter(listEngineer,this)
         binding.recyclerViewSearchEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
-        if(binding.svSearch != null) {
-            var searchView = binding.svSearch
-
-            searchView.setOnQueryTextListener( object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText!!.isNotEmpty()) {
-                        displayList.clear()
-
-                        var search = newText.toLowerCase(Locale.getDefault())
-
-                        for (engineer in listEngineer) {
-                            if (engineer.engineerName!!.toLowerCase(Locale.getDefault())!!.contains(search)) {
-                                displayList.add(engineer)
-                            }
-                            binding.recyclerViewSearchEngineer.adapter!!.notifyDataSetChanged()
-                        }
-                    } else {
-                        displayList.clear()
-                        displayList.addAll(listEngineer)
-                        binding.recyclerViewSearchEngineer.adapter!!.notifyDataSetChanged()
-                    }
-                    return true
-                }
-
-            })
-
-        }
-
-    }
-
-    fun getListEngineer() {
-        val service = ApiClient.getApiClient(requireContext())?.create(EngineerApiService::class.java)
-
-        coroutineScope.launch {
-            Log.d("listengineer", "Start: ${Thread.currentThread().name}")
-
-            val response = withContext(Dispatchers.IO) {
-                Log.d("listengineer", "CallApi: ${Thread.currentThread().name}")
-
-                try {
-                    service?.getAllEngineer()
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            Log.d("listengineer Response", response.toString())
-
-            if(response is ListEngineerResponse) {
-                val list = response.data?.map {
-                    DetailEngineerModel(it.engineerId, it.accountId, it.accountName, it.accountEmail, it.accountPhoneNumber, it.engineerJobTitle, it.engineerJobType, it.engineerLocation, it.engineerDescription, it.engineerProfilePict, it.skillEngineer)
-                }
-                (binding.recyclerViewSearchEngineer.adapter as ListEngineerAdapter).addListEngineer(list)
-
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        coroutineScope.cancel()
-        super.onDestroy()
+        setSearchView()
+        setFilter()
     }
 
     override fun onEngineerItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listEngineer[position].engineerName} clicked", Toast.LENGTH_SHORT).show()
+        sharedPref.putValue(ConstantDetailEngineer.engineerId, listEngineer[position].engineerId!!)
+
         val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
         intent.putExtra("name", listEngineer[position].engineerName)
         intent.putExtra("jobTitle", listEngineer[position].engineerJobTitle)
@@ -133,4 +82,96 @@ class SearchFragment : Fragment(), OnListEngineerClickListener {
 
         startActivity(intent)
     }
+
+    override fun onResultSuccess(list: List<DetailEngineerModel>) {
+        (binding.recyclerViewSearchEngineer.adapter as ListEngineerAdapter).addListEngineer(list)
+        binding.recyclerViewSearchEngineer.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+        binding.ivEmpty.visibility = View.GONE
+    }
+
+    override fun onResultFail(message: String) {
+        binding.recyclerViewSearchEngineer.visibility = View.GONE
+        if (message == "expired") {
+            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        binding.ivEmpty.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun showLoading() {
+        binding.recyclerViewSearchEngineer.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+        binding.ivEmpty.visibility = View.GONE
+    }
+
+    override fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindToView(this)
+        presenter?.callServiceSearch(null)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
+        presenter = null
+    }
+
+    private fun setSearchView() {
+        binding.svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener, android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText == "") {
+                    presenter?.callServiceSearch(null)
+                } else {
+                    if (newText?.length == 3) {
+                        presenter?.callServiceSearch(newText)
+                    }
+                }
+                return true
+            }
+
+        })
+    }
+
+    private fun setFilter() {
+        binding.tvFilter.setOnClickListener {
+            var popup = PopupMenu(requireContext(), binding.tvFilter)
+            popup.inflate(R.menu.menu_filter)
+            popup.setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.item_0 -> {
+                        presenter?.callServiceFilter(0)
+                    }
+                    R.id.item_1 -> {
+                        presenter?.callServiceFilter(1)
+                    }
+                    R.id.item_2 -> {
+                        presenter?.callServiceFilter(2)
+                    }
+                    R.id.item_3 -> {
+                        presenter?.callServiceFilter(3)
+                    }
+                    R.id.item_4 -> {
+                        presenter?.callServiceFilter(4)
+                    }
+            }
+                true
+            }
+            popup.show()
+        }
+    }
+
 }

@@ -6,11 +6,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +21,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".maincontent.projectcompany.EditProjectActivity"></activity>
+        <activity android:name=".maincontent.hireengineer.DetailPortfolioEngineerActivity"></activity>
+        <activity android:name=".maincontent.projectcompany.EditProjectActivity" />
         <activity android:name=".maincontent.projectcompany.AddNewProjectActivity" />
         <activity android:name=".maincontent.projectcompany.DetailProjectCompanyActivity" />
         <activity android:name=".maincontent.listhireengineer.DetailHireEngineerActivity" />

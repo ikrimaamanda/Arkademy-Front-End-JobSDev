@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentHomeBinding
 import com.example.jobsdev.maincontent.hireengineer.DetailEngineerActivity
+import com.example.jobsdev.maincontent.home.HomeContract
+import com.example.jobsdev.maincontent.home.HomePresenter
 import com.example.jobsdev.maincontent.listengineer.DetailEngineerModel
 import com.example.jobsdev.maincontent.listengineer.EngineerApiService
 import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
@@ -23,12 +25,14 @@ import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class HomeFragment : Fragment(), OnListEngineerClickListener {
+class HomeFragment : Fragment(), OnListEngineerClickListener, HomeContract.ViewHome {
 
     private lateinit var binding : FragmentHomeBinding
     var listEngineer = ArrayList<DetailEngineerModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var service : EngineerApiService
+    private var presenter : HomePresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +42,10 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         sharedPref = PreferencesHelper(requireContext())
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        service = ApiClient.getApiClient(requireContext())!!.create(EngineerApiService::class.java)
 
-        getListEngineer()
+        presenter = HomePresenter(coroutineScope, service)
+
         return binding.root
     }
 
@@ -48,32 +54,6 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
 
         binding.recyclerViewListEngineer.adapter = ListEngineerAdapter(listEngineer,this)
         binding.recyclerViewListEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-    }
-
-    private fun getListEngineer() {
-        val service = ApiClient.getApiClient(requireContext())?.create(EngineerApiService::class.java)
-
-        coroutineScope.launch {
-            val response = withContext(Dispatchers.IO) {
-                try {
-                    service?.getAllEngineer()
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if(response is ListEngineerResponse) {
-                val list = response.data?.map {
-                    DetailEngineerModel(it.engineerId, it.accountId, it.accountName, it.accountEmail, it.accountPhoneNumber, it.engineerJobTitle, it.engineerJobType, it.engineerLocation, it.engineerDescription, it.engineerProfilePict, it.skillEngineer)
-                }
-                (binding.recyclerViewListEngineer.adapter as ListEngineerAdapter).addListEngineer(list)
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        coroutineScope.cancel()
-        super.onDestroy()
     }
 
     override fun onEngineerItemClicked(position: Int) {
@@ -95,4 +75,48 @@ class HomeFragment : Fragment(), OnListEngineerClickListener {
 
         startActivity(intent)
     }
+
+    override fun onResultSuccess(list: List<DetailEngineerModel>) {
+        (binding.recyclerViewListEngineer.adapter as ListEngineerAdapter).addListEngineer(list)
+        binding.recyclerViewListEngineer.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+        binding.ivEmpty.visibility = View.GONE
+    }
+
+    override fun onResultFail(message: String) {
+        binding.recyclerViewListEngineer.visibility = View.GONE
+        if (message == "expired") {
+            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        binding.ivEmpty.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun showLoading() {
+        binding.recyclerViewListEngineer.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+        binding.ivEmpty.visibility = View.GONE
+    }
+
+    override fun hideLoading() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindToView(this)
+        presenter?.callListEngineerService()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        super.onDestroy()
+        presenter = null
+    }
+
 }

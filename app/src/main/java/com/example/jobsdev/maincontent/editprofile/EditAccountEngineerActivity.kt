@@ -71,8 +71,6 @@ class EditAccountEngineerActivity : AppCompatActivity() {
         binding.etNewPassword.setText(newPassword)
 
         val image = sharedPref.getValueString(Constant.prefProfilePict)
-//        var imgLink = "http://54.236.22.91:4000/image/$image"
-
         Glide.with(binding.civEditProfilePict)
             .load(imageLink+image)
             .placeholder(R.drawable.profile_pict_base)
