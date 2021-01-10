@@ -38,11 +38,6 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
         sharedPref = PreferencesHelper(requireContext())
         presenter = ListProjectPresenter(coroutineScope, service, sharedPref)
 
-//        if (listProjectCompany.isNullOrEmpty()) {
-//            binding.ivEmptyIllustration.showOrGone(true)
-//            binding.rvListProject.showOrGone(false)
-//        }
-
         binding.rvListProject.adapter = ListProjectAdapter(listProjectCompany, this)
         binding.rvListProject.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
 
@@ -82,10 +77,31 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
 
     override fun addListProject(list: List<ProjectCompanyModel>) {
         (binding.rvListProject.adapter as ListProjectAdapter).addListProjectCompany(list)
+        binding.rvListProject.showOrGone(true)
+        binding.progressBar.showOrGone(false)
+        binding.ivEmptyIllustration.showOrGone(false)
+        binding.tvEmptyList.showOrGone(false)
     }
 
-    override fun showProgressBar(msg : String) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    override fun failedAdd(message: String) {
+        binding.rvListProject.showOrGone(false)
+        if (message == "expired") {
+            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        binding.ivEmptyIllustration.showOrGone(true)
+        binding.tvEmptyList.showOrGone(true)
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun showProgressBar() {
+        binding.rvListProject.showOrGone(false)
+        binding.progressBar.showOrGone(true)
+        binding.ivEmptyIllustration.showOrGone(false)
+        binding.tvEmptyList.showOrGone(false)
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBar.showOrGone(false)
     }
 
     override fun onStart() {

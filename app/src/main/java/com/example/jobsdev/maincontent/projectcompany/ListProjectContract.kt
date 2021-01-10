@@ -4,7 +4,9 @@ interface ListProjectContract {
 
     interface ListProjectView {
         fun addListProject(list : List<ProjectCompanyModel>)
-        fun showProgressBar(msg : String)
+        fun failedAdd(message : String)
+        fun showProgressBar()
+        fun hideProgressBar()
     }
 
     interface ListProjectPresenter {

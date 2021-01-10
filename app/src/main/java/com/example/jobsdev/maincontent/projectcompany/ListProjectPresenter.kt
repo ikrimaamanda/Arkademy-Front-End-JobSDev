@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 
 class ListProjectPresenter(private val coroutineScope: CoroutineScope,
                            private val service: ProjectsCompanyApiService?,
@@ -24,25 +25,42 @@ class ListProjectPresenter(private val coroutineScope: CoroutineScope,
 
     override fun callProjectApiByCnId() {
         coroutineScope.launch {
+
+            view?.showProgressBar()
+
             val response = withContext(Dispatchers.IO) {
                 try {
                     service?.getProjectByCnId(sharedPref.getValueString(ConstantAccountCompany.companyId))
-                } catch (e:Throwable) {
-                    e.printStackTrace()
+                } catch (e: HttpException) {
+                    withContext(Dispatchers.Main) {
+                        view?.hideProgressBar()
+
+                        when {
+                            e.code() == 404 -> {
+                                view?.failedAdd("No data engineer!")
+                            }
+                            e.code() == 400 -> {
+                                view?.failedAdd("expired")
+                            }
+                            else -> {
+                                view?.failedAdd("Server under maintenance!")
+                            }
+                        }
+                    }
                 }
             }
 
-            Log.d("Ikrima Response", response.toString())
-
             if(response is ProjectResponse) {
-                view?.showProgressBar("Hello, These is your list project")
-                val list = response.data?.map {
-                    ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
+                if (response.success) {
+                    val list = response.data?.map {
+                        ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
+                    }
+                    view?.addListProject(list)
+                } else {
+                    view?.failedAdd(response.message)
                 }
-                view?.addListProject(list)
-
             } else {
-                view?.showProgressBar("Hello, your list project is empty!")
+                view?.failedAdd("Hello, your list project is empty!")
             }
         }
     }

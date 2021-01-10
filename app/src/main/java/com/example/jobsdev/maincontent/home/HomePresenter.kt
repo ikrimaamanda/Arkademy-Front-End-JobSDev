@@ -56,7 +56,6 @@ class HomePresenter(private val coroutineScope: CoroutineScope,
                         DetailEngineerModel(it.engineerId, it.accountId, it.accountName, it.accountEmail, it.accountPhoneNumber, it.engineerJobTitle, it.engineerJobType, it.engineerLocation, it.engineerDescription, it.engineerProfilePict, it.skillEngineer)
                     }
                     view?.onResultSuccess(list)
-                    //                (binding.recyclerViewListEngineer.adapter as ListEngineerAdapter).addListEngineer(list)
 
                 } else {
                     view?.onResultFail(response.message)
