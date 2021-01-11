@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,21 +14,24 @@ import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentAccountCompanyBinding
 import com.example.jobsdev.login.LoginActivity
+import com.example.jobsdev.maincontent.account.AccountCompanyContract
+import com.example.jobsdev.maincontent.account.AccountCompanyPresenter
 import com.example.jobsdev.maincontent.editprofile.EditAccountCompanyActivity
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.retfrofit.DetailCompanyByAcIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantAccountCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class AccountCompanyFragment : Fragment() {
+class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany {
 
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var binding : FragmentAccountCompanyBinding
     private lateinit var coroutineScope : CoroutineScope
     val imageLink = "http://54.236.22.91:4000/image/"
+    private lateinit var service : JobSDevApiService
+    private var presenter : AccountCompanyPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +42,8 @@ class AccountCompanyFragment : Fragment() {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
 
         sharedPref = PreferencesHelper(requireContext())
-        val acId = sharedPref.getValueString(Constant.prefAccountId)
-        getCompanyId(acId!!)
+        service = ApiClient.getApiClient(requireContext())!!.create(JobSDevApiService::class.java)
+        presenter = AccountCompanyPresenter(coroutineScope, service, sharedPref)
 
         binding.btnEditProfile.setOnClickListener {
             startActivity(Intent(activity, EditAccountCompanyActivity::class.java))
@@ -52,32 +54,6 @@ class AccountCompanyFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun getCompanyId(acId : String) {
-        val service = ApiClient.getApiClient(requireContext())?.create(JobSDevApiService::class.java)
-        coroutineScope.launch {
-            val response = withContext(Dispatchers.IO) {
-                try {
-                    service?.getCompanyByAcId(acId)
-                } catch (e: Throwable) {
-                    Log.e("errorMessage : ", e.message.toString())
-                    e.printStackTrace()
-                }
-            }
-
-            if (response is DetailCompanyByAcIdResponse) {
-                binding.model = response.data
-                Glide.with(view!!.context)
-                    .load(imageLink + response.data.cnProfilePict)
-                    .placeholder(R.drawable.profile_pict_base)
-                    .into(binding.civProfilePict)
-
-                if (response.data.cnProfilePict != null) {
-                    sharedPref.putValue(Constant.prefProfilePict, response.data.cnProfilePict!!)
-                }
-            }
-        }
     }
 
     private fun showMessage(message : String) {
@@ -101,6 +77,57 @@ class AccountCompanyFragment : Fragment() {
     private fun moveActivity() {
         val  intent = Intent(activity, LoginActivity::class.java)
         activity!!.startActivity(intent)
+    }
+
+    override fun setDataCompany(data: DetailCompanyByAcIdResponse.Company) {
+        binding.model = data
+        Glide.with(view!!.context)
+            .load(imageLink + data.cnProfilePict)
+            .placeholder(R.drawable.img_loading)
+            .error(R.drawable.profile_pict_base)
+            .into(binding.civProfilePict)
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun failedSetData(msg: String) {
+        if (msg == "expired") {
+            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun showProgressBar() {
+        binding.progressBar.showOrGone(true)
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBar.showOrGone(false)
+    }
+
+    private fun View.showOrGone(show: Boolean) {
+        visibility = if(show) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindView(this)
+        presenter?.callCompanyIdApi()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbindView()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
     }
 
 }

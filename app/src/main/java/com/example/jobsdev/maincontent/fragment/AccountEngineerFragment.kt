@@ -142,10 +142,11 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
 
     override fun setDataEngineer(data: DetailEngineerByAcIdResponse.Engineer) {
         binding.model = data
-                Glide.with(view!!.context)
-                    .load(imageLink + data.enProfilePict)
-                    .placeholder(R.drawable.profile_pict_base)
-                    .into(binding.civProfilePict)
+        Glide.with(view!!.context)
+            .load(imageLink + data.enProfilePict)
+            .placeholder(R.drawable.img_loading)
+            .error(R.drawable.profile_pict_base)
+            .into(binding.civProfilePict)
         binding.progressBar.showOrGone(false)
     }
 

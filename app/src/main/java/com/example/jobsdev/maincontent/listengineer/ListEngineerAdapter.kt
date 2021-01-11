@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ExampleItemEngineerBinding
-import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
-import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
 
 class ListEngineerAdapter(private val listEngineer : ArrayList<DetailEngineerModel>, private val onListEngineerClickListener: OnListEngineerClickListener) : RecyclerView.Adapter<ListEngineerAdapter.ListEngineerViewHolder>() {
 
@@ -36,7 +34,7 @@ class ListEngineerAdapter(private val listEngineer : ArrayList<DetailEngineerMod
 
         Glide.with(holder.itemView)
             .load(img)
-            .placeholder(R.drawable.profile_pict_base)
+            .placeholder(R.drawable.img_loading)
             .error(R.drawable.profile_pict_base)
             .into(holder.binding.civProfilePict)
 

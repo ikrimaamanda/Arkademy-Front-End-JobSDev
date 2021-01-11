@@ -53,7 +53,7 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
 
         Glide.with(binding.civProfilePict)
             .load(img)
-            .placeholder(R.drawable.profile_pict_base)
+            .placeholder(R.drawable.img_loading)
             .error(R.drawable.profile_pict_base)
             .into(binding.civProfilePict)
 

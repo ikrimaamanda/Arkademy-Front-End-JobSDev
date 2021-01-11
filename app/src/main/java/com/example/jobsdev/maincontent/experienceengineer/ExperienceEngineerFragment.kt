@@ -25,12 +25,14 @@ import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter.OnListExperienceClickListener {
+class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter.OnListExperienceClickListener, ExperienceEngineerContract.ViewExperienceEngineer {
 
     private lateinit var binding : FragmentExperienceEngineerBinding
     private val listExperience = ArrayList<ItemExperienceModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var service : JobSDevApiService
+    private var presenter : ExperienceEngineerContract.PresenterExperienceEngineer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +42,8 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_experience_engineer, container, false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(requireContext())
+        service = ApiClient.getApiClient(requireContext())!!.create(JobSDevApiService::class.java)
+        presenter = ExperienceEngineerPresenter(coroutineScope, service, sharedPref)
 
         binding.btnAddExperience.setOnClickListener {
             startActivity(Intent(activity, AddExperienceActivity::class.java))
@@ -51,39 +55,8 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val enId = sharedPref.getValueString(ConstantAccountEngineer.engineerId)
-        getListExperience(enId!!.toInt())
-
         binding.recyclerViewExperience.adapter = RecyclerViewListExperienceAdapter(listExperience, this)
         binding.recyclerViewExperience.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-    }
-
-    private fun getListExperience(enId : Int) {
-        val service = ApiClient.getApiClient(requireContext())?.create(JobSDevApiService::class.java)
-
-        coroutineScope.launch {
-            val response = withContext(Dispatchers.IO) {
-                try {
-                    service?.getListExperienceByEnId(enId)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            Log.d("ExpResponse", response.toString())
-
-            if(response is GetExperienceByEnIdResponse) {
-                Log.d("ExpResponse", response.toString())
-
-                val list = response.data?.map {
-                    ItemExperienceModel(it.enId, it.exId, it.exPosition, it.exCompany, it.exStartDate, it.exEndDate, it?.exDesc)
-                }
-                (binding.recyclerViewExperience.adapter as RecyclerViewListExperienceAdapter).addListExperience(list)
-            } else {
-                Toast.makeText(requireContext(), "Hello, your list experience is empty!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
     }
 
     override fun onExperienceItemClicked(position: Int) {
@@ -97,5 +70,53 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
         intent.putExtra("exDesc", listExperience[position].description)
 
         startActivity(intent)
+    }
+
+    private fun View.showOrGone(show : Boolean) {
+        if (show) {
+            visibility = View.VISIBLE
+        } else {
+            visibility = View.GONE
+        }
+    }
+
+    override fun addListExperience(list: List<ItemExperienceModel>) {
+        (binding.recyclerViewExperience.adapter as RecyclerViewListExperienceAdapter).addListExperience(list)
+        binding.recyclerViewExperience.showOrGone(true)
+        binding.ivEmptyIllustration.showOrGone(false)
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun failedAdd(msg: String) {
+        if (msg == "expired") {
+            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun showProgressBar() {
+        binding.progressBar.showOrGone(true)
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindView(this)
+        presenter?.callListExperienceApi()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
     }
 }

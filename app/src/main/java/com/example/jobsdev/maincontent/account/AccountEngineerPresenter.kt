@@ -29,6 +29,8 @@ class AccountEngineerPresenter(private val coroutineScope: CoroutineScope,
 
     override fun callEngineerIdApi() {
         coroutineScope.launch {
+            view?.showProgressBar()
+
             val result = withContext(Dispatchers.IO) {
                 try {
                     service?.getEngineerByAcId(sharedPref.getValueString(Constant.prefAccountId))

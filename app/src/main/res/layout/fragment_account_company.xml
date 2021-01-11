@@ -36,6 +36,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="30dp"/>
 
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+
                 <TextView
                     android:id="@+id/tv_company_name"
                     android:text="@{model.companyName}"

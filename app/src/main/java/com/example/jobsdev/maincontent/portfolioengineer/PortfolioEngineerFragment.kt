@@ -23,12 +23,14 @@ import com.example.jobsdev.sharedpreference.ConstantPortfolio
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener {
+class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener, PortfolioContract.ViewPortfolio {
 
     private lateinit var binding : FragmentPortfolioEngineerBinding
     var listPortfolio = ArrayList<ItemPortfolioModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var service : JobSDevApiService
+    private var presenter : PortfolioContract.PresenterPortfolio? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +40,8 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_portfolio_engineer, container, false)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(requireContext())
+        service = ApiClient.getApiClient(requireContext())!!.create(JobSDevApiService::class.java)
+        presenter = PortfolioEngineerPresenter(coroutineScope, service, sharedPref)
 
         binding.btnAddPortfolio.setOnClickListener {
             startActivity(Intent(activity, AddPortfolioActivity::class.java))
@@ -49,36 +53,9 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val enId = sharedPref.getValueString(ConstantAccountEngineer.engineerId)
-        getListPortfolio(enId!!.toInt())
-
         var portfolioAdapter = RecyclerViewListPortfolioAdapter(listPortfolio, this)
         binding.recyclerViewPortfolio.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewPortfolio.adapter = portfolioAdapter
-
-    }
-
-    private fun getListPortfolio(enId : Int) {
-        val service = ApiClient.getApiClient(requireContext())?.create(JobSDevApiService::class.java)
-
-        coroutineScope.launch {
-            val response = withContext(Dispatchers.IO) {
-                try {
-                    service?.getListPortfolioByEnId(enId)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if(response is GetPortfolioByEnIdResponse) {
-                val list = response.data?.map {
-                    ItemPortfolioModel(it.enId, it.portfolioId, it.portfolioprAppName, it.portfolioDesc, it.portfolioLinkPub, it.portfolioLinkRepo, it.portfolioWorkPlace, it.portfolioType, it.portfolioImage)
-                }
-                (binding.recyclerViewPortfolio.adapter as RecyclerViewListPortfolioAdapter).addListPortfolio(list)
-            } else {
-                Toast.makeText(requireContext(), "Hello, your list portfolio is empty!", Toast.LENGTH_SHORT).show()
-            }
-        }
 
     }
 
@@ -93,5 +70,53 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
         intent.putExtra("linkRepo", listPortfolio[position].linkRepo)
         intent.putExtra("workPlace", listPortfolio[position].workPlace)
         startActivity(intent)
+    }
+
+    override fun addListPortfolio(list: List<ItemPortfolioModel>) {
+        (binding.recyclerViewPortfolio.adapter as RecyclerViewListPortfolioAdapter).addListPortfolio(list)
+        binding.recyclerViewPortfolio.showOrGone(true)
+        binding.ivEmptyIllustration.showOrGone(false)
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun failedAdd(msg: String) {
+        if (msg == "expired") {
+            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+        binding.progressBar.showOrGone(false)
+    }
+
+    override fun showProgressBar() {
+        binding.progressBar.showOrGone(true)
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBar.showOrGone(false)
+    }
+
+    private fun View.showOrGone(show : Boolean) {
+        if (show) {
+            visibility = View.VISIBLE
+        } else {
+            visibility = View.GONE
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindView(this)
+        presenter?.callListPortfolioApi()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
     }
 }

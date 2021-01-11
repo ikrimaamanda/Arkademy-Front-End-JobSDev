@@ -2,7 +2,6 @@ package com.example.jobsdev.maincontent.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentSearchBinding
-import com.example.jobsdev.maincontent.dataclass.ItemEngineerDataClass
 import com.example.jobsdev.maincontent.hireengineer.DetailEngineerActivity
 import com.example.jobsdev.maincontent.listengineer.DetailEngineerModel
-import com.example.jobsdev.maincontent.listengineer.EngineerApiService
 import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
-import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
-import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
-import com.example.jobsdev.maincontent.recyclerview.RecyclerViewListEngineerAdapter
+import com.example.jobsdev.maincontent.listengineer.OnListEngineerClickListener
 import com.example.jobsdev.maincontent.search.SearchContract
 import com.example.jobsdev.maincontent.search.SearchPresenter
 import com.example.jobsdev.remote.ApiClient
@@ -30,10 +25,10 @@ import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
-import java.util.*
 import kotlin.collections.ArrayList
 
-class SearchFragment : Fragment(), OnListEngineerClickListener, SearchContract.View {
+class SearchFragment : Fragment(),
+    OnListEngineerClickListener, SearchContract.View {
 
     private lateinit var binding : FragmentSearchBinding
     private var listEngineer = ArrayList<DetailEngineerModel>()

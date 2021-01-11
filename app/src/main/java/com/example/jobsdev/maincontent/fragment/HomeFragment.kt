@@ -18,14 +18,14 @@ import com.example.jobsdev.maincontent.home.HomePresenter
 import com.example.jobsdev.maincontent.listengineer.DetailEngineerModel
 import com.example.jobsdev.maincontent.listengineer.EngineerApiService
 import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
-import com.example.jobsdev.maincontent.listengineer.ListEngineerResponse
-import com.example.jobsdev.maincontent.recyclerview.OnListEngineerClickListener
+import com.example.jobsdev.maincontent.listengineer.OnListEngineerClickListener
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class HomeFragment : Fragment(), OnListEngineerClickListener, HomeContract.ViewHome {
+class HomeFragment : Fragment(),
+    OnListEngineerClickListener, HomeContract.ViewHome {
 
     private lateinit var binding : FragmentHomeBinding
     var listEngineer = ArrayList<DetailEngineerModel>()
