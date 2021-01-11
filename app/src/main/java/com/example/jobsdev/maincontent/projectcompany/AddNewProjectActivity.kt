@@ -118,7 +118,7 @@ class AddNewProjectActivity : AppCompatActivity() {
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
 
-            var img : MultipartBody.Part? = null
+            var img : MultipartBody.Part?
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile : RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
@@ -133,6 +133,11 @@ class AddNewProjectActivity : AppCompatActivity() {
                     binding.etProjectName.requestFocus()
                 } else {
                     if (img != null) {
+                        Glide.with(binding.ivAddProjectImage)
+                            .load(img)
+                            .placeholder(R.drawable.img_add_new_project)
+                            .error(R.drawable.img_add_new_project)
+                            .into(binding.ivAddProjectImage)
                         callAddProjectApi(img)
                     }
                 }

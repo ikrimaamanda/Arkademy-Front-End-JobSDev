@@ -126,6 +126,11 @@ class EditAccountCompanyActivity : AppCompatActivity() {
                     showMessage("Please filled all fields")
                 }
                 if (img != null) {
+                    Glide.with(binding.civEditProfilePict)
+                        .load(img)
+                        .placeholder(R.drawable.profile_pict_base)
+                        .error(R.drawable.profile_pict_base)
+                        .into(binding.civEditProfilePict)
                     callUpdateAccount(sharedPref.getValueString(Constant.prefAccountId)!!.toInt(), binding.etAcName.text.toString(), binding.etEditPhoneNumber.text.toString(), binding.etNewPassword.text.toString())
                     callUpdateCompany(img)
                 }
