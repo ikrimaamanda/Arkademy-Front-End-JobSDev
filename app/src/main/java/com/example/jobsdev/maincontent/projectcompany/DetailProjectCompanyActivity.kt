@@ -3,7 +3,7 @@ package com.example.jobsdev.maincontent.projectcompany
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,28 +11,29 @@ import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityDetailProjectCompanyBinding
 import com.example.jobsdev.maincontent.hireengineer.HireApiService
-import com.example.jobsdev.maincontent.projectcompany.listhirebyprojectid.HireByProjectIdModel
-import com.example.jobsdev.maincontent.projectcompany.listhirebyprojectid.HireByProjectResponse
-import com.example.jobsdev.maincontent.projectcompany.listhirebyprojectid.ListHireByProjectIdAdapter
+import com.example.jobsdev.maincontent.projectcompany.listhirebyprojectid.*
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
 class DetailProjectCompanyActivity : AppCompatActivity(),
-    ListHireByProjectIdAdapter.OnHireByProjectIdClickListener {
+    ListHireByProjectIdAdapter.OnHireByProjectIdClickListener, DetailProjectCompanyContract.ViewDetailProjectCompany {
 
     private lateinit var binding : ActivityDetailProjectCompanyBinding
     var listHireProject = ArrayList<HireByProjectIdModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
+    private var imgLink = "http://54.236.22.91:4000/image/"
+    private lateinit var service : HireApiService
+    private var presenter : DetailProjectCompanyContract.PresenterDetailProjectCompany? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail_project_company)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(this)
+        service = ApiClient.getApiClient(this)!!.create(HireApiService::class.java)
+        presenter = DetailProjectCompanyPresenter(coroutineScope, service, sharedPref)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -41,11 +42,10 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
         }
 
         val image = intent.getStringExtra("image")
-        var img = "http://54.236.22.91:4000/image/$image"
 
         Glide.with(binding.ivProjectImage)
-            .load(img)
-            .placeholder(R.drawable.profile_pict_base)
+            .load(imgLink + image)
+            .placeholder(R.drawable.img_loading)
             .error(R.drawable.profile_pict_base)
             .into(binding.ivProjectImage)
 
@@ -63,46 +63,57 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
             startActivity(intent)
         }
 
-        getList()
-
         var listHireProjectAdapter = ListHireByProjectIdAdapter(listHireProject, this)
         binding.rvHireByProjectId.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvHireByProjectId.adapter = listHireProjectAdapter
     }
 
-    private fun getList() {
-        val service = ApiClient.getApiClient(this)?.create(HireApiService::class.java)
-
-        coroutineScope.launch {
-            Log.d("listHireProject", "Start: ${Thread.currentThread().name}")
-
-            val response = withContext(Dispatchers.IO) {
-                Log.d("listHireProject", "CallApi: ${Thread.currentThread().name}")
-
-                try {
-                    service?.getListHireByProjectId(sharedPref.getValueString(ConstantProjectCompany.projectId))
-                } catch (e:Throwable) {
-                    Log.e("errorM", e.message.toString())
-                    e.printStackTrace()
-                }
-            }
-
-            Log.d("listHireProjectResponse", response.toString())
-
-            if(response is HireByProjectResponse) {
-                Log.d("listHireProjectResponse", response.toString())
-
-                val list = response.data.map {
-                    HireByProjectIdModel(it.hrId, it.cnId, it.enId, it.enJobTitle, it.enJobType, it.enProfilePict, it.projectId, it.projectName,
-                    it.projectDesc, it.projectDeadline, it.projectImage, it.hirePrice, it.hireMessage, it.hireStatus, it.hireDateConfirm, it.hireCreatedAt, it.projectCreateAt, it.projectUpdateAt, it.name, it.email, it.pHoneNumber)
-                }
-                (binding.rvHireByProjectId.adapter as ListHireByProjectIdAdapter).addListHireByProject(list)
-            }
-        }
-
-    }
-
     override fun onHireByProjectIdItemClicked(position: Int) {
         Toast.makeText(this, "${listHireProject[position].acName} clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun addListHireByPjId(list: List<HireByProjectIdModel>) {
+        (binding.rvHireByProjectId.adapter as ListHireByProjectIdAdapter).addListHireByProject(list)
+        binding.rvHireByProjectId.visibility = View.VISIBLE
+        binding.progressBarList.visibility = View.GONE
+        binding.progressBarBtn.visibility = View.GONE
+        binding.ivEmptyIllustration.visibility = View.GONE
+        binding.btnEditProject.visibility = View.GONE
+    }
+
+    override fun failedAdd(msg: String) {
+        if (msg == "expired") {
+            Toast.makeText(this, "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+        binding.progressBarList.visibility = View.GONE
+        binding.btnEditProject.visibility = View.VISIBLE
+    }
+
+    override fun showProgressBar() {
+        binding.progressBarList.visibility = View.VISIBLE
+        binding.progressBarBtn.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBarList.visibility = View.GONE
+        binding.progressBarBtn.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindView(this)
+        presenter?.callListHireByPjIdApi()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
     }
 }
