@@ -171,11 +171,9 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
     }
 
     override fun showProgressBar() {
-        binding.rvSkillEngineer.showOrGone(false)
         binding.progressBar.showOrGone(true)
         binding.progressBarSkill.showOrGone(true)
         binding.tvEmptyListSkill.showOrGone(false)
-
     }
 
     override fun hideProgressBar() {

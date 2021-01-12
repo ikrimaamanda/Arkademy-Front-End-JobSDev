@@ -1,8 +1,10 @@
-package com.example.jobsdev.maincontent.experienceengineer
+package com.example.jobsdev.maincontent.hireengineer
 
-import com.example.jobsdev.retfrofit.GetExperienceByEnIdResponse
+import android.util.Log
+import com.example.jobsdev.maincontent.portfolioengineer.ItemPortfolioModel
+import com.example.jobsdev.retfrofit.GetPortfolioByEnIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
+import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,14 +12,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
-class ExperienceEngineerPresenter(private val coroutineScope: CoroutineScope,
-                                  private val service : JobSDevApiService,
-                                  private val sharedPref : PreferencesHelper
-) : ExperienceEngineerContract.PresenterExperienceEngineer {
+class PortfolioDetailEngineerPresenter (private val coroutineScope: CoroutineScope,
+                                        private val service : JobSDevApiService,
+                                        private val sharedPref : PreferencesHelper
+) : PortfolioDetailEngineerContract.PresenterPortfolioDetailEngineer {
 
-    private var view : ExperienceEngineerContract.ViewExperienceEngineer? = null
+    private var view : PortfolioDetailEngineerContract.ViewPortfolioDetailEngineer? = null
 
-    override fun bindView(view: ExperienceEngineerContract.ViewExperienceEngineer) {
+    override fun bindView(view: PortfolioDetailEngineerContract.ViewPortfolioDetailEngineer) {
         this.view = view
     }
 
@@ -25,12 +27,13 @@ class ExperienceEngineerPresenter(private val coroutineScope: CoroutineScope,
         this.view = null
     }
 
-    override fun callListExperienceApi() {
+    override fun callListPortfolioApi() {
         coroutineScope.launch {
             view?.showProgressBar()
             val response = withContext(Dispatchers.IO) {
+
                 try {
-                    service?.getListExperienceByEnId(sharedPref.getValueString(ConstantAccountEngineer.engineerId)!!.toInt())
+                    service?.getListPortfolioByEnId(sharedPref.getValueString(ConstantDetailEngineer.engineerId)!!.toInt())
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         view?.hideProgressBar()
@@ -50,17 +53,19 @@ class ExperienceEngineerPresenter(private val coroutineScope: CoroutineScope,
                 }
             }
 
-            if(response is GetExperienceByEnIdResponse) {
+            Log.d("PortResponse", response.toString())
+
+            if(response is GetPortfolioByEnIdResponse) {
                 if (response.success) {
                     val list = response.data?.map {
-                        ItemExperienceModel(it.enId, it.exId, it.exPosition, it.exCompany, it.exStartDate, it.exEndDate, it?.exDesc)
+                        ItemPortfolioModel(it.enId, it.portfolioId, it.portfolioprAppName, it.portfolioDesc, it.portfolioLinkPub, it.portfolioLinkRepo, it.portfolioWorkPlace, it.portfolioType, it.portfolioImage)
                     }
-                    view?.addListExperience(list)
+                    view?.addListPortfolioDetailEngineer(list)
                 } else {
                     view?.failedAdd(response.message)
                 }
-                } else {
-                view?.failedAdd("Hello, your list experience is empty!")
+            } else {
+                view?.failedAdd("Hello, your list portfolio is empty!")
             }
         }
 

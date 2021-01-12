@@ -2,7 +2,6 @@ package com.example.jobsdev.maincontent.hireengineer
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,18 +14,17 @@ import com.example.jobsdev.databinding.FragmentPortfolioDetailEngineerBinding
 import com.example.jobsdev.maincontent.portfolioengineer.ItemPortfolioModel
 import com.example.jobsdev.maincontent.portfolioengineer.RecyclerViewListPortfolioAdapter
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GetPortfolioByEnIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
-import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener {
+class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener, PortfolioDetailEngineerContract.ViewPortfolioDetailEngineer {
     private lateinit var binding : FragmentPortfolioDetailEngineerBinding
     var listPortfolio = ArrayList<ItemPortfolioModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var service : JobSDevApiService
+    private var presenter : PortfolioDetailEngineerContract.PresenterPortfolioDetailEngineer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,9 +32,10 @@ class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAda
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_portfolio_detail_engineer, container, false)
-
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(requireContext())
+        service = ApiClient.getApiClient(requireContext())!!.create(JobSDevApiService::class.java)
+        presenter = PortfolioDetailEngineerPresenter(coroutineScope, service, sharedPref)
 
         return binding.root
     }
@@ -44,44 +43,9 @@ class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAda
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val enId = sharedPref.getValueString(ConstantDetailEngineer.engineerId)
-        getListPortfolio(enId!!.toInt())
-
         var portfolioAdapter = RecyclerViewListPortfolioAdapter(listPortfolio, this)
         binding.recyclerViewPortfolio.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewPortfolio.adapter = portfolioAdapter
-
-    }
-
-    private fun getListPortfolio(enId : Int) {
-        val service = ApiClient.getApiClient(requireContext())?.create(JobSDevApiService::class.java)
-
-        coroutineScope.launch {
-            Log.d("listPort", "Start: ${Thread.currentThread().name}")
-
-            val response = withContext(Dispatchers.IO) {
-                Log.d("listPort", "CallApi: ${Thread.currentThread().name}")
-
-                try {
-                    service?.getListPortfolioByEnId(enId)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            Log.d("PortResponse", response.toString())
-
-            if(response is GetPortfolioByEnIdResponse) {
-                Log.d("PortResponse", response.toString())
-
-                val list = response.data?.map {
-                    ItemPortfolioModel(it.enId, it.portfolioId, it.portfolioprAppName, it.portfolioDesc, it.portfolioLinkPub, it.portfolioLinkRepo, it.portfolioWorkPlace, it.portfolioType, it.portfolioImage)
-                }
-                (binding.recyclerViewPortfolio.adapter as RecyclerViewListPortfolioAdapter).addListPortfolio(list)
-            } else {
-                Toast.makeText(requireContext(), "Hello, your list portfolio is empty!", Toast.LENGTH_SHORT).show()
-            }
-        }
 
     }
 
@@ -97,6 +61,47 @@ class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAda
         intent.putExtra("desc", listPortfolio[position].portfolioDesc)
 
         startActivity(intent)
+    }
+
+    override fun addListPortfolioDetailEngineer(list: List<ItemPortfolioModel>) {
+        (binding.recyclerViewPortfolio.adapter as RecyclerViewListPortfolioAdapter).addListPortfolio(list)
+        binding.recyclerViewPortfolio.visibility = View.VISIBLE
+        binding.ivEmptyIllustration.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+
+    }
+
+    override fun failedAdd(msg: String) {
+        if (msg == "expired") {
+            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        }
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindView(this)
+        presenter?.callListPortfolioApi()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
     }
 
 }

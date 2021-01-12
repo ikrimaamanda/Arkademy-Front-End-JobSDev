@@ -22,7 +22,11 @@ interface JobSDevApiService {
     ) : GeneralResponse
 
     @GET("engineer/{acId}")
-    suspend fun getEngineerByAcId(@Path("acId") enId : String?) : DetailEngineerByAcIdResponse
+    suspend fun getEngineerByAcId(@Path("acId") acId : String?) : DetailEngineerByAcIdResponse
+
+    @GET("engineer/{acId}")
+    suspend fun getDetailEngineerByAcId(@Path("acId") acId : String?) : DetailEngineerByAcIdResponse
+
 
     @Multipart
     @PUT("engineer/{enId}")

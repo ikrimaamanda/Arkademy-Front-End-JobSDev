@@ -20,8 +20,10 @@ class Constant {
 class ConstantDetailEngineer {
     companion object {
         val engineerId = "engineer id"
+        val accountId = "account id"
         val email = "email"
         val description = "description"
+        val profilePict = "profile pict"
     }
 }
 

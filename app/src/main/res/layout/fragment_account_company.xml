@@ -30,7 +30,6 @@
                     android:id="@+id/civ_profile_pict"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@drawable/profile_pict_base"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
