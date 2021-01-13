@@ -47,34 +47,14 @@
                     android:padding="20dp"
                     android:background="@drawable/bg_white">
 
-                    <ImageView
-                        android:id="@+id/iv_project_image"
-                        android:layout_width="250dp"
-                        android:layout_height="250dp"
-                        android:src="@drawable/porto1"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_tap_image"
-                        android:text="Tap to choose image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/iv_project_image"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
-
                     <TextView
                         android:id="@+id/tv_project_name"
                         android:text="Project Name"
                         android:textColor="@color/black"
                         android:textSize="22sp"
-                        android:layout_marginTop="30dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_tap_image"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
                     <EditText

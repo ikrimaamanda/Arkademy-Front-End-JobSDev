@@ -37,11 +37,6 @@ class EditProjectActivity : AppCompatActivity() {
     private lateinit var service : ProjectsCompanyApiService
     private lateinit var coroutineScope: CoroutineScope
 
-    companion object {
-        private const val IMAGE_PICK_CODE = 1000
-        private const val PERMISSION_CODE = 1001
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_project)
@@ -57,95 +52,23 @@ class EditProjectActivity : AppCompatActivity() {
 
         val projectId = sharedPref.getValueString(ConstantProjectCompany.projectId)!!.toInt()
 
-        val image = sharedPref.getValueString(ConstantProjectCompany.projectImage)
-        var imgLink = "http://54.236.22.91:4000/image/$image"
-
-        Glide.with(binding.ivProjectImage)
-            .load(imgLink)
-            .placeholder(R.drawable.img_add_new_project)
-            .error(R.drawable.img_add_new_project)
-            .into(binding.ivProjectImage)
-
         binding.etProjectName.setText(sharedPref.getValueString(ConstantProjectCompany.projectName))
         val deadline = sharedPref.getValueString(ConstantProjectCompany.projectDeadline)!!.split("T")[0]
         binding.etDeadline.setText(deadline)
         binding.etDesc.setText(sharedPref.getValueString(ConstantProjectCompany.projectDesc))
 
-        binding.ivProjectImage.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    requestPermissions(permissions, PERMISSION_CODE)
-                } else {
-                    pickImageFromGalery()
-                }
-            } else {
-                pickImageFromGalery()
+        binding.btnUpdate.setOnClickListener {
+            if(binding.etProjectName.text.isNullOrEmpty() || binding.etDeadline.text.isNullOrEmpty() || binding.etDesc.text.isNullOrEmpty()) {
+                showMessage("Please filled all fields")
+                binding.etProjectName.requestFocus()
             }
+            callUpdateProjectApi(projectId)
         }
 
         binding.btnDelete.setOnClickListener {
             callDeleteProjectApi(projectId)
         }
 
-    }
-
-    private fun pickImageFromGalery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            binding.ivProjectImage.setImageURI(data?.data)
-
-            val filePath = data?.data?.let { getPath(this, it) }
-            val file = File(filePath)
-
-            var img : MultipartBody.Part?
-            val mediaTypeImg = "image/jpeg".toMediaType()
-            val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
-            val reqFile : RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
-
-            img = reqFile?.let { it1 ->
-                MultipartBody.Part.createFormData("image", file.name, it1)
-            }
-
-            binding.btnUpdate.setOnClickListener {
-                if(binding.etProjectName.text.isNullOrEmpty() || binding.etDeadline.text.isNullOrEmpty() || binding.etDesc.text.isNullOrEmpty()) {
-                    showMessage("Please filled all fields")
-                    binding.etProjectName.requestFocus()
-                }
-                if (img != null) {
-                    Glide.with(binding.ivProjectImage)
-                        .load(img)
-                        .placeholder(R.drawable.img_add_new_project)
-                        .error(R.drawable.img_add_new_project)
-                        .into(binding.ivProjectImage)
-                    callUpdateProjectApi(sharedPref.getValueString(ConstantProjectCompany.projectId)!!.toInt(), img)
-                }
-            }
-
-        }
-    }
-
-    private fun getPath(context : Context, contentUri : Uri) : String? {
-        var result : String? = null
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-
-        val cursorLoader = CursorLoader(context, contentUri, proj, null, null, null)
-        val cursor = cursorLoader.loadInBackground()
-
-        if (cursor != null) {
-            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            cursor.moveToFirst()
-            result = cursor.getString(columnIndex)
-            cursor.close()
-        }
-        return result
     }
 
     private fun callDeleteProjectApi(projectId: Int) {
@@ -177,7 +100,7 @@ class EditProjectActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun callUpdateProjectApi(projectId : Int, image : MultipartBody.Part) {
+    private fun callUpdateProjectApi(projectId : Int) {
         coroutineScope.launch {
             val response = withContext(Dispatchers.IO) {
                 try {
@@ -188,17 +111,14 @@ class EditProjectActivity : AppCompatActivity() {
                     val projectDeadline = binding.etDeadline.text.toString()
                         .toRequestBody("text/plain".toMediaTypeOrNull())
 
-                    service.updateProjectById(projectId, projectName, projectDesc, projectDeadline, image)
+                    service.updateProjectById(projectId, projectName, projectDesc, projectDeadline)
                 } catch (e : Throwable) {
-                    Log.e("errorM", e.message.toString())
                     e.printStackTrace()
                 }
             }
 
-            Log.d("updateProject", response.toString())
 
             if (response is GeneralResponse) {
-                Log.d("updateProject", response.toString())
                 showMessage(response.message)
                 moveActivity()
             } else {

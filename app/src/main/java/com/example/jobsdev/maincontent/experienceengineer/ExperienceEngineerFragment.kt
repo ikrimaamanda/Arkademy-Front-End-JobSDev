@@ -2,7 +2,6 @@ package com.example.jobsdev.maincontent.experienceengineer
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentExperienceEngineerBinding
-import com.example.jobsdev.maincontent.listhireengineer.DetailHireEngineerModel
-import com.example.jobsdev.maincontent.listhireengineer.HireEngineerApiService
-import com.example.jobsdev.maincontent.listhireengineer.ListHireEngineerAdapter
-import com.example.jobsdev.maincontent.listhireengineer.ListHireEngineerResponse
-import com.example.jobsdev.maincontent.portfolioengineer.UpdatePortfolioTwoActivity
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GetExperienceByEnIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 

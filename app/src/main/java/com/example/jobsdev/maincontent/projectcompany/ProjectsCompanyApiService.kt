@@ -25,7 +25,12 @@ interface ProjectsCompanyApiService {
     suspend fun updateProjectById(@Path("projectId") projectId : Int?,
                                   @Part("pj_project_name") projectName : RequestBody,
                                   @Part("pj_description") projectDesc : RequestBody,
-                                  @Part("pj_deadline") projectDeadline : RequestBody,
+                                  @Part("pj_deadline") projectDeadline : RequestBody
+    ) : GeneralResponse
+
+    @Multipart
+    @PUT("project/{projectId}")
+    suspend fun updateProjectImage(@Path("projectId") projectId : Int?,
                                   @Part image : MultipartBody.Part
     ) : GeneralResponse
 

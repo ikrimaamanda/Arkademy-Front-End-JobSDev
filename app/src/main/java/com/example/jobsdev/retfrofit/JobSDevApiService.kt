@@ -34,7 +34,12 @@ interface JobSDevApiService {
                                    @Part("en_job_title") jobTitle : RequestBody,
                                    @Part("en_job_type") jobType : RequestBody,
                                    @Part("en_location") location : RequestBody,
-                                   @Part("en_description") enDesc : RequestBody,
+                                   @Part("en_description") enDesc : RequestBody
+    ) : GeneralResponse
+
+    @Multipart
+    @PUT("engineer/{enId}")
+    suspend fun updateProfilePictEngineer(@Path("enId") enId : Int?,
                                    @Part image : MultipartBody.Part
     ) : GeneralResponse
 
@@ -50,8 +55,13 @@ interface JobSDevApiService {
                               @Part("cn_description") description : RequestBody,
                               @Part("cn_instagram") instagram : RequestBody,
                               @Part("cn_linkedin") linkedin : RequestBody,
-                              @Part image : MultipartBody.Part,
                               @Part("cn_company") companyName : RequestBody
+    ) : GeneralResponse
+
+    @Multipart
+    @PUT("company/{cnId}")
+    suspend fun updateProfilePictCompany(@Path("cnId") cnId : Int?,
+                              @Part image : MultipartBody.Part
     ) : GeneralResponse
 
 

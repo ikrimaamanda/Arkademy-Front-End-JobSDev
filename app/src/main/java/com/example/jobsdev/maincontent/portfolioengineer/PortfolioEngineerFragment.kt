@@ -55,7 +55,7 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
 
     override fun onPortfolioItemClicked(position: Int) {
         Toast.makeText(requireContext(), "${listPortfolio[position].portfolioId} clicked", Toast.LENGTH_SHORT).show()
-        val intent = Intent(requireContext(), UpdatePortfolioTwoActivity::class.java)
+        val intent = Intent(requireContext(), UpdatePortfolioActivity::class.java)
         sharedPref.putValue(ConstantPortfolio.portfolioImage, listPortfolio[position].portfolioImage!!)
         intent.putExtra("updatePortfolioId", listPortfolio[position].portfolioId)
         intent.putExtra("appName", listPortfolio[position].appName)

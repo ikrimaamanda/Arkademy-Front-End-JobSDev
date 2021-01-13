@@ -45,8 +45,7 @@ class FormHireActivity : AppCompatActivity() {
         }
 
         Toast.makeText(this, "${intent.getStringExtra("enId")}", Toast.LENGTH_SHORT).show()
-
-
+        
         binding.btnHire.setOnClickListener {
             val enId = sharedPref.getValueString(ConstantDetailEngineer.engineerId)
             val projectId = sharedPref.getValueString(ConstantProjectCompany.projectId)

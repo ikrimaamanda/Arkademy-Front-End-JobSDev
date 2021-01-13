@@ -17,6 +17,7 @@ import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.maincontent.account.AccountCompanyContract
 import com.example.jobsdev.maincontent.account.AccountCompanyPresenter
 import com.example.jobsdev.maincontent.editprofile.EditAccountCompanyActivity
+import com.example.jobsdev.maincontent.editprofile.UpdateProfilePictActivity
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.retfrofit.DetailCompanyByAcIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
@@ -31,7 +32,7 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
     private lateinit var coroutineScope : CoroutineScope
     val imageLink = "http://54.236.22.91:4000/image/"
     private lateinit var service : JobSDevApiService
-    private var presenter : AccountCompanyPresenter? = null
+    private var presenter : AccountCompanyContract.PresenterAcCompany? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +45,10 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
         sharedPref = PreferencesHelper(requireContext())
         service = ApiClient.getApiClient(requireContext())!!.create(JobSDevApiService::class.java)
         presenter = AccountCompanyPresenter(coroutineScope, service, sharedPref)
+
+        binding.civProfilePict.setOnClickListener {
+            startActivity(Intent(requireContext(), UpdateProfilePictActivity::class.java))
+        }
 
         binding.btnEditProfile.setOnClickListener {
             startActivity(Intent(activity, EditAccountCompanyActivity::class.java))

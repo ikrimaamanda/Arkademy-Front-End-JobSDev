@@ -21,6 +21,7 @@ import com.example.jobsdev.maincontent.account.AccountEngineerContract
 import com.example.jobsdev.maincontent.account.AccountEngineerPresenter
 import com.example.jobsdev.maincontent.adapter.TabPagerAdapter
 import com.example.jobsdev.maincontent.editprofile.EditAccountEngineerActivity
+import com.example.jobsdev.maincontent.editprofile.UpdateProfilePictActivity
 import com.example.jobsdev.maincontent.skillengineer.AddSkillActivity
 import com.example.jobsdev.maincontent.skillengineer.ItemSkillEngineerModel
 import com.example.jobsdev.maincontent.skillengineer.RecyclerViewSkillEngineerAdapter
@@ -60,14 +61,13 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         sharedPref = PreferencesHelper(requireContext())
         presenter = AccountEngineerPresenter(coroutineScope, service, sharedPref)
 
+        binding.civProfilePict.setOnClickListener {
+            startActivity(Intent(requireContext(), UpdateProfilePictActivity::class.java))
+        }
         binding.btnEditProfile.setOnClickListener {
             startActivity(Intent(activity, EditAccountEngineerActivity::class.java))
         }
 
-        binding.btnLogout.setOnClickListener {
-            showDialogLogOut()
-            showMessage("Log Out")
-        }
         binding.tvGithub.setOnClickListener {
             startActivity(Intent(activity, GitHubWebViewActivity::class.java))
         }
@@ -81,6 +81,11 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
                 childFragmentManager
             )
         addFragment(binding.root)
+
+        binding.btnLogout.setOnClickListener {
+            showDialogLogOut()
+            showMessage("Log Out")
+        }
 
         return binding.root
     }

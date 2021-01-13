@@ -49,6 +49,12 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
             .error(R.drawable.profile_pict_base)
             .into(binding.ivProjectImage)
 
+        binding.btnUpdateProjectImage.setOnClickListener {
+            val intent = Intent(this, UpdateProjectImageActivity::class.java)
+            intent.putExtra("projectImage", image)
+            startActivity(intent)
+        }
+
         binding.tvProjectName.text = intent.getStringExtra("projectName")
         val deadline = intent.getStringExtra("deadline")
         binding.tvDeadline.text = deadline!!.split("T")[0]
@@ -79,6 +85,7 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
         binding.progressBarBtn.visibility = View.GONE
         binding.ivEmptyIllustration.visibility = View.GONE
         binding.btnEditProject.visibility = View.GONE
+        binding.btnUpdateProjectImage.visibility = View.GONE
     }
 
     override fun failedAdd(msg: String) {
@@ -88,6 +95,7 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
         binding.progressBarList.visibility = View.GONE
         binding.btnEditProject.visibility = View.VISIBLE
+        binding.btnUpdateProjectImage.visibility = View.VISIBLE
     }
 
     override fun showProgressBar() {

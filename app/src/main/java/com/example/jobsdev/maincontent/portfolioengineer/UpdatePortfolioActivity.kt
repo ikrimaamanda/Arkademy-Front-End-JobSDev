@@ -37,7 +37,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-class UpdatePortfolioTwoActivity : AppCompatActivity() {
+class UpdatePortfolioActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityUpdatePortfolioTwoBinding
     private lateinit var sharedPref : PreferencesHelper

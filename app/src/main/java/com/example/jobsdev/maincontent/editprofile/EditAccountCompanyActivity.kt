@@ -39,12 +39,6 @@ class EditAccountCompanyActivity : AppCompatActivity() {
     private lateinit var binding : ActivityEditAccountCompanyBinding
     private lateinit var service : JobSDevApiService
     private lateinit var coroutineScope: CoroutineScope
-    val imageLink = "http://54.236.22.91:4000/image/"
-
-    companion object {
-        private const val IMAGE_PICK_CODE = 1000
-        private const val PERMISSION_CODE = 1001
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,92 +61,22 @@ class EditAccountCompanyActivity : AppCompatActivity() {
         binding.etOldPassword.setText(oldPassword)
         binding.etNewPassword.setText(newPassword)
 
-        val image = sharedPref.getValueString(Constant.prefProfilePict)
-
-        Glide.with(binding.civEditProfilePict)
-            .load(imageLink+image)
-            .placeholder(R.drawable.profile_pict_base)
-            .error(R.drawable.profile_pict_base)
-            .into(binding.civEditProfilePict)
-
-        binding.civEditProfilePict.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    requestPermissions(permissions, PERMISSION_CODE)
-                } else {
-                    pickImageFromGalery()
-                }
-            } else {
-                pickImageFromGalery()
+        binding.btnSave.setOnClickListener {
+            if (binding.etCompanyName.text.isNullOrEmpty() || binding.etAcName.text.isNullOrEmpty() || binding.etEditPhoneNumber.text.isNullOrEmpty()
+                || binding.etOldPassword.text.isNullOrEmpty() || binding.etNewPassword.text.isNullOrEmpty()
+                || binding.etEditPosition.text.isNullOrEmpty() || binding.etEditFields.text.isNullOrEmpty()
+                || binding.etEditLocation.text.isNullOrEmpty() || binding.etEditDescription.text.isNullOrEmpty()
+                || binding.etInstagram.text.isNullOrEmpty() || binding.etEditLinkedin.text.isNullOrEmpty()) {
+                showMessage("Please filled all fields")
             }
+                callUpdateAccount(sharedPref.getValueString(Constant.prefAccountId)!!.toInt(), binding.etAcName.text.toString(), binding.etEditPhoneNumber.text.toString(), binding.etNewPassword.text.toString())
+                callUpdateCompany()
+
         }
 
         binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
-    }
-
-    private fun pickImageFromGalery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            binding.civEditProfilePict.setImageURI(data?.data)
-
-            val filePath = data?.data?.let { getPath(this, it) }
-            val file = File(filePath)
-
-            var img : MultipartBody.Part?
-            val mediaTypeImg = "image/jpeg".toMediaType()
-            val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
-            val reqFile : RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
-
-            img = reqFile?.let { it1 ->
-                MultipartBody.Part.createFormData("image", file.name, it1)
-            }
-
-            binding.btnSave.setOnClickListener {
-                if (binding.etCompanyName.text.isNullOrEmpty() || binding.etAcName.text.isNullOrEmpty() || binding.etEditPhoneNumber.text.isNullOrEmpty()
-                    || binding.etOldPassword.text.isNullOrEmpty() || binding.etNewPassword.text.isNullOrEmpty()
-                    || binding.etEditPosition.text.isNullOrEmpty() || binding.etEditFields.text.isNullOrEmpty()
-                    || binding.etEditLocation.text.isNullOrEmpty() || binding.etEditDescription.text.isNullOrEmpty()
-                    || binding.etInstagram.text.isNullOrEmpty() || binding.etEditLinkedin.text.isNullOrEmpty()) {
-                    showMessage("Please filled all fields")
-                }
-                if (img != null) {
-                    Glide.with(binding.civEditProfilePict)
-                        .load(img)
-                        .placeholder(R.drawable.profile_pict_base)
-                        .error(R.drawable.profile_pict_base)
-                        .into(binding.civEditProfilePict)
-                    callUpdateAccount(sharedPref.getValueString(Constant.prefAccountId)!!.toInt(), binding.etAcName.text.toString(), binding.etEditPhoneNumber.text.toString(), binding.etNewPassword.text.toString())
-                    callUpdateCompany(img)
-                }
-            }
-
-        }
-    }
-
-    private fun getPath(context : Context, contentUri : Uri) : String? {
-        var result : String? = null
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-
-        val cursorLoader = CursorLoader(context, contentUri, proj, null, null, null)
-        val cursor = cursorLoader.loadInBackground()
-
-        if (cursor != null) {
-            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            cursor.moveToFirst()
-            result = cursor.getString(columnIndex)
-            cursor.close()
-        }
-        return result
     }
 
     private fun callUpdateAccount(acId : Int, acName : String, acPhoneNumber : String, acPassword : String) {
@@ -173,7 +97,7 @@ class EditAccountCompanyActivity : AppCompatActivity() {
         }
     }
 
-    private fun callUpdateCompany(image : MultipartBody.Part) {
+    private fun callUpdateCompany() {
         coroutineScope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
@@ -193,7 +117,7 @@ class EditAccountCompanyActivity : AppCompatActivity() {
                     val companyName = binding.etCompanyName.text.toString()
                         .toRequestBody("text/plain".toMediaTypeOrNull())
 
-                    service.updateCompany(cnId, position, fields, location, description, instagram, linkedin, image, companyName)
+                    service.updateCompany(cnId, position, fields, location, description, instagram, linkedin, companyName)
 
                 } catch (e:Throwable) {
                     e.printStackTrace()
@@ -222,11 +146,6 @@ class EditAccountCompanyActivity : AppCompatActivity() {
 
             if (response is DetailCompanyByAcIdResponse) {
                 binding.model = response.data
-                Glide.with(this@EditAccountCompanyActivity)
-                    .load(imageLink + response.data.cnProfilePict)
-                    .placeholder(R.drawable.profile_pict_base)
-                    .into(binding.civEditProfilePict)
-                Log.d("cnIdReqByCom", response.toString())
             }
         }
     }
