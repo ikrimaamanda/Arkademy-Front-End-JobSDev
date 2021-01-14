@@ -1,9 +1,7 @@
 package com.example.jobsdev.maincontent.listhireengineer
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.jobsdev.maincontent.fragment.ListHireEngineerView
 import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
@@ -12,23 +10,16 @@ import kotlin.coroutines.CoroutineContext
 
 class ListHireEngineerViewModel : ViewModel(), CoroutineScope {
 
-    private var view : ListHireEngineerView? = null
-
     val isListHireEngineerLiveData = MutableLiveData<Boolean>()
+    val isAddList = MutableLiveData<List<DetailHireEngineerModel>>()
+    val isLoading = MutableLiveData<Boolean>()
+    val isMessage = MutableLiveData<String>()
 
     private lateinit var service : HireEngineerApiService
     private lateinit var sharedPref : PreferencesHelper
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
-
-    fun bindToView(view: ListHireEngineerView) {
-        this.view = view
-    }
-
-    fun unbind() {
-        this.view = null
-    }
 
     fun setSharedPrefHire(sharedPref : PreferencesHelper) {
         this.sharedPref = sharedPref
@@ -40,24 +31,25 @@ class ListHireEngineerViewModel : ViewModel(), CoroutineScope {
 
     fun callListHireEngineerApi() {
         launch {
-            view?.showProgressBar()
+            isLoading.value = true
 
             val response = withContext(Dispatchers.IO) {
                 try {
                     service?.getHireByEngineerId(sharedPref.getValueString(ConstantAccountEngineer.engineerId))
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
-                        view?.hideProgressBar()
+                        isLoading.value = false
+                        isListHireEngineerLiveData.value = false
 
                         when {
                             e.code() == 404 -> {
-                                view?.failedAdd("No data engineer!")
+                                isMessage.value = "No data engineer!"
                             }
                             e.code() == 400 -> {
-                                view?.failedAdd("expired")
+                                isMessage.value = "expired"
                             }
                             else -> {
-                                view?.failedAdd("Server under maintenance!")
+                                isMessage.value = "Server under maintenance!"
                             }
                         }
                     }
@@ -65,22 +57,20 @@ class ListHireEngineerViewModel : ViewModel(), CoroutineScope {
             }
 
             if(response is ListHireEngineerResponse) {
-
-                if (response.success) {
-                    val list = response.data?.map {
-                        DetailHireEngineerModel(it.hireId, it.companyId, it.companyName, it.position,
+                val list = response.data?.map {
+                    DetailHireEngineerModel(it.hireId, it.companyId, it.companyName, it.position,
                             it.companyFields, it.companyCity, it.companyDescription, it.companyInstagram,
                             it.companyLinkedIn, it.engineerId, it.projectId, it.projectName, it.projectDescription,
                             it.projectDeadline, it.projectImage, it.price, it.message, it.status, it.dateConfirm)
                     }
-                    view?.addListHireEngineer(list)
-                    isListHireEngineerLiveData.value = true
-                } else {
-                    view?.failedAdd(response.message)
-                }
+                isListHireEngineerLiveData.value = true
+                isAddList.value = list
+                isLoading.value = false
+
             } else {
                 isListHireEngineerLiveData.value = false
-                view?.failedAdd("Hello, your list hire is empty!")
+                isMessage.value = "Hello, your list hire is empty!"
+                isLoading.value = false
             }
         }
     }

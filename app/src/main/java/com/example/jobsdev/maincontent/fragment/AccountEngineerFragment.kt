@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +28,8 @@ import com.example.jobsdev.maincontent.skillengineer.UpdateSkillActivity
 import com.example.jobsdev.maincontent.webview.GitHubWebViewActivity
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.retfrofit.DetailEngineerByAcIdResponse
-import com.example.jobsdev.retfrofit.GetSkillByEnIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.*
@@ -47,7 +44,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
     var listSkill = ArrayList<ItemSkillEngineerModel>()
     private lateinit var coroutineScope : CoroutineScope
     val imageLink = "http://54.236.22.91:4000/image/"
-    private var presenter : AccountEngineerPresenter? = null
+    private var presenter : AccountEngineerContract.PresenterAcEngineer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,12 +117,12 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Log Out")
         builder.setMessage("Do you want to log out?")
-        builder.setPositiveButton("Yes", { dialogInterface : DialogInterface, i : Int -> sharedPref.putValue(Constant.prefIsLogin, false)
-        moveActivity()
+        builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int -> sharedPref.putValue(Constant.prefIsLogin, false)
+            moveActivity()
             sharedPref.clear()
             activity!!.finish()
-        })
-        builder.setNegativeButton("No", {dialogInterface : DialogInterface, i : Int ->})
+        }
+        builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
         builder.show()
     }
 
@@ -171,8 +168,10 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
     override fun failedSetData(message: String) {
         if (message == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            binding.progressBar.showOrGone(false)
         }
-        binding.progressBar.showOrGone(false)
     }
 
     override fun showProgressBar() {

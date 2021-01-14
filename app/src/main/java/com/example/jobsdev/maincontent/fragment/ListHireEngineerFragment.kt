@@ -2,26 +2,24 @@ package com.example.jobsdev.maincontent.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentListHireEngineerBinding
 import com.example.jobsdev.maincontent.listhireengineer.*
-import com.example.jobsdev.maincontent.projectcompany.ProjectCompanyModel
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
-class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireEngineerClickListener, ListHireEngineerView {
+class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireEngineerClickListener {
 
     private lateinit var binding : FragmentListHireEngineerBinding
     private var listHireEngineer = ArrayList<DetailHireEngineerModel>()
@@ -41,12 +39,49 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
         val service = ApiClient.getApiClient(requireContext())?.create(HireEngineerApiService::class.java)
 
         viewModel.setSharedPrefHire(sharedPref)
-
         if (service != null) {
             viewModel.setListHireEngineerService(service)
         }
 
+        viewModel.callListHireEngineerApi()
+
+        subscribeListHireLiveData()
+        subscribeLoadingLiveData()
+
         return binding.root
+    }
+
+    private fun subscribeLoadingLiveData() {
+        viewModel.isLoading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.showOrGone(true)
+            } else {
+                binding.progressBar.showOrGone(false)
+            }
+        })
+    }
+
+    private fun subscribeListHireLiveData() {
+        viewModel.isListHireEngineerLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isAddList.observe(this, Observer {
+                    (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(it)
+                })
+                binding.recyclerViewHireEngineer.showOrGone(true)
+                binding.ivEmptyIllustration.showOrGone(false)
+                binding.tvEmptyList.showOrGone(false)
+            } else {
+                binding.ivEmptyIllustration.showOrGone(true)
+                binding.tvEmptyList.showOrGone(true)
+                viewModel.isMessage.observe(this, Observer {
+                    if (it.equals("expired")) {
+                        Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                    }
+                })
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,46 +89,6 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
 
         binding.recyclerViewHireEngineer.adapter = ListHireEngineerAdapter(listHireEngineer, this)
         binding.recyclerViewHireEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-    }
-
-    override fun addListHireEngineer(list: List<DetailHireEngineerModel>) {
-        (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(list)
-        binding.recyclerViewHireEngineer.showOrGone(true)
-        binding.progressBar.showOrGone(false)
-        binding.ivEmptyIllustration.showOrGone(false)
-        binding.tvEmptyList.showOrGone(false)
-    }
-
-    override fun failedAdd(message: String) {
-        binding.recyclerViewHireEngineer.showOrGone(false)
-        if (message == "expired") {
-            Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
-        }
-        binding.ivEmptyIllustration.showOrGone(true)
-        binding.tvEmptyList.showOrGone(true)
-        binding.progressBar.showOrGone(false)
-    }
-
-    override fun showProgressBar() {
-        binding.recyclerViewHireEngineer.showOrGone(false)
-        binding.progressBar.showOrGone(true)
-        binding.ivEmptyIllustration.showOrGone(false)
-        binding.tvEmptyList.showOrGone(false)
-    }
-
-    override fun hideProgressBar() {
-        binding.progressBar.showOrGone(false)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.bindToView(this)
-        viewModel.callListHireEngineerApi()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.unbind()
     }
 
     override fun onDestroy() {
@@ -126,11 +121,4 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
         }
     }
 
-}
-
-interface ListHireEngineerView {
-    fun addListHireEngineer(list : List<DetailHireEngineerModel>)
-    fun failedAdd(message : String)
-    fun showProgressBar()
-    fun hideProgressBar()
 }
