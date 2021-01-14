@@ -32,7 +32,7 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
     private lateinit var coroutineScope : CoroutineScope
     val imageLink = "http://54.236.22.91:4000/image/"
     private lateinit var service : JobSDevApiService
-    private var presenter : AccountCompanyContract.PresenterAcCompany? = null
+    private var presenter : AccountCompanyPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

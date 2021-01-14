@@ -44,7 +44,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
     var listSkill = ArrayList<ItemSkillEngineerModel>()
     private lateinit var coroutineScope : CoroutineScope
     val imageLink = "http://54.236.22.91:4000/image/"
-    private var presenter : AccountEngineerContract.PresenterAcEngineer? = null
+    private var presenter : AccountEngineerPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

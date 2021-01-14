@@ -24,7 +24,7 @@ class EditAccountEngineerActivity : AppCompatActivity(), EditAccountEngineerCont
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : JobSDevApiService
     val typeJob = arrayOf("freelance", "fulltime")
-    private var presenter : EditAccountEngineerContract.PresenterEditAcEngineer? = null
+    private var presenter : EditAccountEngineerPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

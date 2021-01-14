@@ -10,24 +10,22 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityUpdateProfilePictBinding
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GeneralResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantAccountCompany
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -40,6 +38,7 @@ class UpdateProfilePictActivity : AppCompatActivity() {
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : JobSDevApiService
+    private lateinit var viewModel : UpdateProfilePictViewModel
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
@@ -52,6 +51,10 @@ class UpdateProfilePictActivity : AppCompatActivity() {
         service = ApiClient.getApiClient(this)!!.create(JobSDevApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(this)
+        viewModel = ViewModelProvider(this).get(UpdateProfilePictViewModel::class.java)
+
+        viewModel.setSharedPref(sharedPref)
+        viewModel.setUpdateImageService(service)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -83,6 +86,33 @@ class UpdateProfilePictActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        subscribeLoadingLiveData()
+        subscribeUpdateImageLiveData()
+    }
+
+    private fun subscribeUpdateImageLiveData() {
+        viewModel.isUpdateImageLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                })
+                moveActivity()
+            } else {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                })
+            }
+        })
+    }
+
+    private fun subscribeLoadingLiveData() {
+        viewModel.isLoading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
     }
 
     private fun pickImageFromGalery() {
@@ -117,9 +147,9 @@ class UpdateProfilePictActivity : AppCompatActivity() {
                         .placeholder(R.drawable.img_loading)
                         .into(binding.civUpdateProfilePict)
                     if (sharedPref.getValueInt(Constant.prefLevel) == 0 ) {
-                        callUpdateProfilePictEngineerApi(img)
+                        viewModel.callUpdateProfilePictEngineerApi(img)
                     } else if (sharedPref.getValueInt(Constant.prefLevel) == 1) {
-                        callUpdateProfilePictCompanyApi(img)
+                        viewModel.callUpdateProfilePictCompanyApi(img)
                     }
                 }
             }
@@ -141,49 +171,6 @@ class UpdateProfilePictActivity : AppCompatActivity() {
             cursor.close()
         }
         return result
-    }
-
-    private fun callUpdateProfilePictEngineerApi(img: MultipartBody.Part) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val enId = sharedPref.getValueString(ConstantAccountEngineer.engineerId)!!.toInt()
-                    service.updateProfilePictEngineer(enId, img)
-
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if(result is GeneralResponse) {
-                showMessage(result.message)
-                moveActivity()
-            } else {
-                showMessage("Something wrong...")
-            }
-        }
-
-    }
-
-    private fun callUpdateProfilePictCompanyApi(img: MultipartBody.Part) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val cnId = sharedPref.getValueString(ConstantAccountCompany.companyId)!!.toInt()
-                    service.updateProfilePictCompany(cnId, img)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if(result is GeneralResponse) {
-                showMessage(result.message)
-                moveActivity()
-            } else {
-                showMessage("Something wrong...")
-            }
-        }
-
     }
 
     private fun showMessage(message : String) {

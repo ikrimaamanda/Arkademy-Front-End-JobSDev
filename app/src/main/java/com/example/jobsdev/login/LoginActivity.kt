@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityLoginBinding
 import com.example.jobsdev.maincontent.MainContentActivity
+import com.example.jobsdev.maincontent.editprofile.EditAccountCompanyActivity
+import com.example.jobsdev.maincontent.editprofile.EditAccountEngineerActivity
 import com.example.jobsdev.onboard.OnBoardRegLogActivity
 import com.example.jobsdev.onboard.OnBoardRegisterActivity
 import com.example.jobsdev.remote.ApiClient
@@ -66,9 +68,29 @@ class LoginActivity : AppCompatActivity() {
             if (it1) {
                 viewModel.isMessage.observe(this, Observer {
                     showMessage(it)
-                    moveActivity()
                 })
-
+                viewModel.isGetCompanyId.observe(this, Observer {
+                    if (it) {
+                        if (sharedPref.getValueString(ConstantAccountCompany.fields) != null) {
+                            moveActivity()
+                        } else {
+                            startActivity(Intent(this, EditAccountCompanyActivity::class.java))
+                            showMessage("Please complete your profile before enjoy this app")
+                            finish()
+                        }
+                    }
+                })
+                viewModel.isGetEngineerId.observe(this, Observer {
+                    if (it) {
+                        if (sharedPref.getValueString(ConstantAccountEngineer.jobType) != null) {
+                            moveActivity()
+                        } else {
+                            startActivity(Intent(this, EditAccountEngineerActivity::class.java))
+                            showMessage("Please complete your profile before enjoy this app")
+                            finish()
+                        }
+                    }
+                })
             } else {
                 viewModel.isMessage.observe(this, Observer {
                     showMessage(it)
@@ -78,10 +100,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun moveActivity() {
-        if (sharedPref.getValueBoolean(Constant.prefIsLogin)!!) {
             startActivity(Intent(this, MainContentActivity::class.java))
             finish()
-        }
     }
 
     private fun showMessage(message : String) {

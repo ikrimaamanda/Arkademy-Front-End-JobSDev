@@ -24,7 +24,7 @@ class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAda
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var service : JobSDevApiService
-    private var presenter : PortfolioDetailEngineerContract.PresenterPortfolioDetailEngineer? = null
+    private var presenter : PortfolioDetailEngineerPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

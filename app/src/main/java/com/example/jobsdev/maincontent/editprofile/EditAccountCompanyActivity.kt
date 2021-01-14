@@ -23,7 +23,7 @@ class EditAccountCompanyActivity : AppCompatActivity(), EditAccountCompanyContra
     private lateinit var binding : ActivityEditAccountCompanyBinding
     private lateinit var service : JobSDevApiService
     private lateinit var coroutineScope: CoroutineScope
-    private var presenter : EditAccountCompanyContract.PresenterEditAcCompany? = null
+    private var presenter : EditAccountCompanyPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

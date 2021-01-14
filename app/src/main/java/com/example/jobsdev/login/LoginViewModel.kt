@@ -60,7 +60,6 @@ class LoginViewModel : ViewModel(), CoroutineScope {
                     } else if (result.data.accountLevel == 1) {
                         getCompanyId(result.data.accountId)
                     }
-
                 } else {
                     isLoginLiveData.value = false
                     isMessage.value = result.message
@@ -99,6 +98,11 @@ class LoginViewModel : ViewModel(), CoroutineScope {
                     sharedPref.putValue(Constant.prefName, result.data.accountName!!)
                     sharedPref.putValue(Constant.prefPhoneNumber, result.data.accountPhoneNumber!!)
 
+                    if (result.data.enJobType != null) {
+                        sharedPref.putValue(ConstantAccountEngineer.jobType, result.data.enJobType)
+                    } else {
+                        sharedPref.getValueString(ConstantAccountEngineer.jobType)
+                    }
                     isGetEngineerId.value = true
                 } else {
                     isGetEngineerId.value = false
@@ -128,6 +132,12 @@ class LoginViewModel : ViewModel(), CoroutineScope {
                     sharedPref.putValue(Constant.prefPhoneNumber, result.data.accountPhoneNumber!!)
                     sharedPref.putValue(ConstantAccountCompany.companyName, result.data.companyName!!)
                     sharedPref.putValue(ConstantAccountCompany.position, result.data.position!!)
+
+                    if (result.data.fields != null) {
+                        sharedPref.putValue(ConstantAccountCompany.fields, result.data.fields)
+                    } else {
+                        sharedPref.getValueString(ConstantAccountCompany.fields)
+                    }
 
                     isGetCompanyId.value = true
                 } else {

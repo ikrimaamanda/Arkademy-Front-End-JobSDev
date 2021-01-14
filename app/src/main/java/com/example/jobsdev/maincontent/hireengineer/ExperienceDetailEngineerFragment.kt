@@ -24,7 +24,7 @@ class ExperienceDetailEngineerFragment : Fragment(), RecyclerViewListExperienceA
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var service : JobSDevApiService
-    private var presenter : ExperienceDetailEngineerContract.PresenterExperienceDetailEngineer? = null
+    private var presenter : ExperienceDetailEngineerPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
