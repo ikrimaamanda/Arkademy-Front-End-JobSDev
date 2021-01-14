@@ -2,13 +2,14 @@ package com.example.jobsdev.maincontent.hireengineer
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityFormHireBinding
 import com.example.jobsdev.maincontent.MainContentActivity
@@ -17,7 +18,6 @@ import com.example.jobsdev.maincontent.projectcompany.ProjectResponse
 import com.example.jobsdev.maincontent.projectcompany.ProjectsCompanyApiService
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.sharedpreference.ConstantAccountCompany
-import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
@@ -28,14 +28,19 @@ class FormHireActivity : AppCompatActivity() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : HireApiService
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var viewModel : FormHireViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_form_hire)
         sharedPref = PreferencesHelper(this)
-
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(HireApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(FormHireViewModel::class.java)
+        viewModel.setService(service)
+        viewModel.setSharedPref(sharedPref)
+
         configSpinnerProject()
 
         setSupportActionBar(binding.toolbar)
@@ -47,13 +52,11 @@ class FormHireActivity : AppCompatActivity() {
         Toast.makeText(this, "${intent.getStringExtra("enId")}", Toast.LENGTH_SHORT).show()
         
         binding.btnHire.setOnClickListener {
-            val enId = sharedPref.getValueString(ConstantDetailEngineer.engineerId)
-            val projectId = sharedPref.getValueString(ConstantProjectCompany.projectId)
             if(binding.spinnerProject.equals("none") || binding.etHireMessage.text.isEmpty() || binding.etPrice.text.isEmpty()) {
                 showMessage("Please filled all field")
                 binding.etHireMessage.requestFocus()
             } else {
-                callHireApi(enId!!.toInt(), projectId!!.toInt(), binding.etPrice.text.toString(), binding.etHireMessage.text.toString())
+                viewModel.callHireApi(binding.etPrice.text.toString(), binding.etHireMessage.text.toString())
             }
         }
 
@@ -61,6 +64,23 @@ class FormHireActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        subscribeHireLiveData()
+
+    }
+
+    private fun subscribeHireLiveData() {
+        viewModel.isHireLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer { it1 ->
+                    showMessage(it1)
+                    moveActivity()
+                })
+            } else {
+                viewModel.isMessage.observe(this, Observer { it1 ->
+                    showMessage(it1)
+                })
+            }
+        })
     }
 
     private fun configSpinnerProject() {
@@ -113,29 +133,6 @@ class FormHireActivity : AppCompatActivity() {
 
         }
 
-    }
-
-    private fun callHireApi(enId : Int, projectId : Int, hirePrice : String, hireMessage : String) {
-        coroutineScope.launch {
-            val results = withContext(Dispatchers.IO){
-                try {
-                    service.addHire(enId, projectId, hirePrice, hireMessage)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if(results is HireResponse) {
-                Log.d("addHireReq", results.toString())
-
-                if(results.success) {
-                    showMessage("Success Hire Engineer")
-                    moveActivity()
-                } else {
-                    showMessage(results.message)
-                }
-            }
-        }
     }
 
     private fun showMessage(message : String) {

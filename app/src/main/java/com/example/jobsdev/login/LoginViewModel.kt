@@ -1,6 +1,5 @@
 package com.example.jobsdev.login
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.jobsdev.retfrofit.DetailCompanyByAcIdResponse
@@ -16,6 +15,7 @@ import kotlin.coroutines.CoroutineContext
 class LoginViewModel : ViewModel(), CoroutineScope {
 
     val isLoginLiveData = MutableLiveData<Boolean>()
+    val isMessage = MutableLiveData<String>()
     val isGetEngineerId = MutableLiveData<Boolean>()
     val isGetCompanyId = MutableLiveData<Boolean>()
 
@@ -50,11 +50,10 @@ class LoginViewModel : ViewModel(), CoroutineScope {
             if(result is LoginResponse) {
 
                 if(result.success) {
-                    Log.d("loginReq", result.toString())
-
                     saveSession(result.data.accountId, result.data.accountEmail, result.data.token, result.data.accountLevel)
                     sharedPref.putValue(Constant.prefPassword, password)
                     isLoginLiveData.value = true
+                    isMessage.value = result.message
 
                     if (result.data.accountLevel == 0) {
                         getEngineerId(result.data.accountId)
@@ -64,10 +63,11 @@ class LoginViewModel : ViewModel(), CoroutineScope {
 
                 } else {
                     isLoginLiveData.value = false
+                    isMessage.value = result.message
                 }
             } else {
                 isLoginLiveData.value = false
-//                showMessage("Email / password not registered")
+                isMessage.value = "Email / password not registered"
             }
         }
     }

@@ -3,17 +3,14 @@ package com.example.jobsdev.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.jobsdev.login.LoginActivity
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityRegisterCompanyBinding
-import com.example.jobsdev.databinding.ActivityRegisterEngineerBinding
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
@@ -23,6 +20,7 @@ class RegisterCompanyActivity : AppCompatActivity() {
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : RegistrationApiService
+    private lateinit var viewModel : RegisterCompanyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +29,10 @@ class RegisterCompanyActivity : AppCompatActivity() {
         sharedPref = PreferencesHelper(this)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(RegistrationApiService::class.java)
+        viewModel = ViewModelProvider(this).get(RegisterCompanyViewModel::class.java)
+
+        viewModel.setSharedPref(sharedPref)
+        viewModel.setRegisterEngineerService(service)
 
         binding.tvLoginHere.setOnClickListener {
             val intentLogin = Intent(this, LoginActivity::class.java)
@@ -46,34 +48,23 @@ class RegisterCompanyActivity : AppCompatActivity() {
                 binding.etConfirmPassword.requestFocus()
             }
             else {
-                callRegistrationApi(binding.etName.text.toString(), binding.etEmail.text.toString(), binding.etNumberPhone.text.toString(), binding.etPassword.text.toString(), binding.etCompany.text.toString(), binding.etPosition.text.toString())
+                viewModel.callRegistrationApi(binding.etName.text.toString(), binding.etEmail.text.toString(), binding.etNumberPhone.text.toString(), binding.etPassword.text.toString(), binding.etCompany.text.toString(), binding.etPosition.text.toString())
             }
         }
+
+        subscribeLiveData()
 
     }
 
-    private fun callRegistrationApi(name : String, email : String, phoneNumber: String, password : String, companyName : String, position : String) {
-        coroutineScope.launch {
-            val result =  withContext(Dispatchers.IO) {
-                try {
-                    service.registrationCompanyReq(name, email, phoneNumber, password, 1, companyName, position)
-                } catch (e : Throwable) {
-                    e.printStackTrace()
-                }
+    private fun subscribeLiveData() {
+        viewModel.isRegisterCompanyLiveData.observe( this, Observer {
+            if (it) {
+                showMessage("Registration Success!")
+                moveActivity()
+            } else {
+                showMessage("Registration failed!")
             }
-
-            if(result is RegistrationResponse) {
-                Log.d("registrationComReq : ", result.toString())
-
-                if(result.success) {
-                    showMessage("Registration Success!")
-                    moveActivity()
-                } else {
-                    showMessage(result.message)
-                }
-            }
-            showMessage("Email already registered")
-        }
+        })
     }
 
     private fun showMessage(message : String) {

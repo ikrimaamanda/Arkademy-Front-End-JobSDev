@@ -157,7 +157,12 @@ interface JobSDevApiService {
                              @Part("pr_link_pub") prLinkPub : RequestBody,
                              @Part("pr_link_repo") prLinkRepo : RequestBody,
                              @Part("pr_workplace") prWorkplace : RequestBody,
-                             @Part("pr_type") prType : RequestBody,
+                             @Part("pr_type") prType : RequestBody
+    ) : GeneralResponse
+
+    @Multipart
+    @PUT("portfolio/{portfolioId}")
+    suspend fun updatePortfolioImage(@Path("portfolioId") portfolioId : Int,
                                 @Part image : MultipartBody.Part
     ) : GeneralResponse
 

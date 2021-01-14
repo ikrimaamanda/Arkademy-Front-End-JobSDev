@@ -3,16 +3,15 @@ package com.example.jobsdev.maincontent.experienceengineer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityAddExperienceEngineerBinding
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GeneralResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
@@ -22,14 +21,18 @@ class AddExperienceActivity : AppCompatActivity() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : JobSDevApiService
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var viewModel : AddExperienceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_experience_engineer)
         sharedPref = PreferencesHelper(this)
-
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(JobSDevApiService::class.java)
+        viewModel = ViewModelProvider(this).get(AddExperienceViewModel::class.java)
+
+        viewModel.setService(service)
+        viewModel.setSharedPref(sharedPref)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -38,42 +41,34 @@ class AddExperienceActivity : AppCompatActivity() {
         }
 
         binding.btnAddExperience.setOnClickListener {
-            val enId = sharedPref.getValueString(ConstantAccountEngineer.engineerId)
-
             if (binding.etPositionExperience.text.isNullOrEmpty() || binding.etCompanyExperience.text.isNullOrEmpty() || binding.etStartDateExperience.text.isNullOrEmpty() || binding.etEndDateExperience.text.isNullOrEmpty() || binding.etDescriptionExperience.text.isNullOrEmpty()) {
                 showMessage("Please filled all fields")
                 binding.etPositionExperience.requestFocus()
+            } else {
+                viewModel.callAddExperienceApi(binding.etPositionExperience.text.toString(),  binding.etCompanyExperience.text.toString(), binding.etStartDateExperience.text.toString(), binding.etEndDateExperience.text.toString(), binding.etDescriptionExperience.text.toString())
             }
-            callAddExperienceApi(binding.etPositionExperience.text.toString(),  binding.etCompanyExperience.text.toString(), binding.etStartDateExperience.text.toString(), binding.etEndDateExperience.text.toString(), binding.etDescriptionExperience.text.toString(), enId!!.toInt())
         }
 
         binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
+
+        subscribeLiveData()
     }
 
-    private fun callAddExperienceApi(exPosition : String, exCompany : String, exStartDate : String, exEndDate : String, exDesc : String, enId : Int) {
-        coroutineScope.launch {
-            val results = withContext(Dispatchers.IO){
-                try {
-                    service.addExperience(exPosition, exCompany, exStartDate, exEndDate, exDesc, enId)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if(results is GeneralResponse) {
-                Log.d("addExp", results.toString())
-
-                if(results.success) {
-                    showMessage(results.message)
+    private fun subscribeLiveData() {
+        viewModel.isAddExperienceLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessageLiveData.observe(this, Observer {
+                    showMessage(it)
                     moveActivity()
-                } else {
-                    showMessage(results.message)
-                }
+                })
+            } else {
+                viewModel.isMessageLiveData.observe(this, Observer {
+                    showMessage(it)
+                })
             }
-            showMessage("Something wrong ...")
-        }
+        })
     }
 
     private fun showMessage(message : String) {

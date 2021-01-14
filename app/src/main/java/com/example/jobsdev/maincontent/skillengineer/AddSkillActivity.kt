@@ -3,18 +3,15 @@ package com.example.jobsdev.maincontent.skillengineer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityAddSkillBinding
 import com.example.jobsdev.maincontent.MainContentActivity
-import com.example.jobsdev.maincontent.hireengineer.HireApiService
-import com.example.jobsdev.maincontent.hireengineer.HireResponse
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GeneralResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
@@ -24,14 +21,18 @@ class AddSkillActivity : AppCompatActivity() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : JobSDevApiService
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var viewModel : AddSkillViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_skill)
         sharedPref = PreferencesHelper(this)
-
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(JobSDevApiService::class.java)
+        viewModel = ViewModelProvider(this).get(AddSkillViewModel::class.java)
+
+        viewModel.setService(service)
+        viewModel.setSharedPref(sharedPref)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -43,33 +44,27 @@ class AddSkillActivity : AppCompatActivity() {
             if(binding.etAddSkillName.text.isNullOrEmpty()) {
                 showMessage("Please input skill name")
                 binding.etAddSkillName.requestFocus()
+            } else {
+                viewModel.callAddSkillApi(binding.etAddSkillName.text.toString())
             }
-            callAddSkillApi(binding.etAddSkillName.text.toString())
         }
+
+        subscribeAddSkillLiveData()
     }
 
-    private fun callAddSkillApi(skillName : String) {
-        coroutineScope.launch {
-            val results = withContext(Dispatchers.IO){
-                try {
-                    service.addSkill(skillName, sharedPref.getValueString(ConstantAccountEngineer.engineerId)!!.toInt())
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if(results is GeneralResponse) {
-                Log.d("addSkill", results.toString())
-
-                if(results.success) {
-                    showMessage(results.message)
+    private fun subscribeAddSkillLiveData() {
+        viewModel.isAddSkillLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
                     moveActivity()
-                } else {
-                    showMessage(results.message)
-                }
+                })
+            } else {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                })
             }
-            showMessage("Something wrong ...")
-        }
+        })
     }
 
     private fun showMessage(message : String) {

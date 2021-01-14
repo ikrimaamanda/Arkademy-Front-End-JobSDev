@@ -42,7 +42,6 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
         }
 
         val image = intent.getStringExtra("image")
-
         Glide.with(binding.ivProjectImage)
             .load(imgLink + image)
             .placeholder(R.drawable.img_loading)

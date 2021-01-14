@@ -3,7 +3,6 @@ package com.example.jobsdev.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -17,7 +16,6 @@ import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.reset_password.ResetPasswordSendEmailActivity
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.*
-import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -48,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        subscribeLiveData()
+        subscribeLoginLiveData()
 
         binding.tvRegisterHere.setOnClickListener {
             val intentRegister = Intent(this, OnBoardRegisterActivity::class.java)
@@ -62,15 +60,19 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun subscribeLiveData() {
-        viewModel.isLoginLiveData.observe(this, Observer {
-            Log.d("subs", it.toString())
+    private fun subscribeLoginLiveData() {
+        viewModel.isLoginLiveData.observe(this, Observer { it1 ->
 
-            if (it) {
-                showMessage("Login Success!")
-                moveActivity()
+            if (it1) {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                    moveActivity()
+                })
+
             } else {
-                showMessage("Login Failed!")
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                })
             }
         })
     }

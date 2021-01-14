@@ -52,6 +52,13 @@
                 android:padding="20dp"
                 >
 
+                <ProgressBar
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/progress_bar"
+                    android:visibility="gone"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+
                 <TextView
                     android:id="@+id/tv_company_name"
                     android:text="Company Name"

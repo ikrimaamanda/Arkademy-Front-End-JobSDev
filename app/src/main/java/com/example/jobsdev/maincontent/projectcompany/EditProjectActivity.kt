@@ -1,34 +1,20 @@
 package com.example.jobsdev.maincontent.projectcompany
 
-import android.Manifest
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.loader.content.CursorLoader
-import com.bumptech.glide.Glide
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityEditProjectBinding
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GeneralResponse
 import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
 
 class EditProjectActivity : AppCompatActivity() {
 
@@ -36,6 +22,7 @@ class EditProjectActivity : AppCompatActivity() {
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var service : ProjectsCompanyApiService
     private lateinit var coroutineScope: CoroutineScope
+    private lateinit var viewModel : EditProjectViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +30,16 @@ class EditProjectActivity : AppCompatActivity() {
         sharedPref = PreferencesHelper(this)
         service = ApiClient.getApiClient(context = this)!!.create(ProjectsCompanyApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        viewModel = ViewModelProvider(this).get(EditProjectViewModel::class.java)
+
+        viewModel.setSharedPref(sharedPref)
+        viewModel.setUpdateImageService(service)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-
-        val projectId = sharedPref.getValueString(ConstantProjectCompany.projectId)!!.toInt()
 
         binding.etProjectName.setText(sharedPref.getValueString(ConstantProjectCompany.projectName))
         val deadline = sharedPref.getValueString(ConstantProjectCompany.projectDeadline)!!.split("T")[0]
@@ -61,34 +50,58 @@ class EditProjectActivity : AppCompatActivity() {
             if(binding.etProjectName.text.isNullOrEmpty() || binding.etDeadline.text.isNullOrEmpty() || binding.etDesc.text.isNullOrEmpty()) {
                 showMessage("Please filled all fields")
                 binding.etProjectName.requestFocus()
+            } else {
+                viewModel.callUpdateProjectApi(binding.etProjectName.text.toString(), binding.etDesc.text.toString(), binding.etDeadline.text.toString())
             }
-            callUpdateProjectApi(projectId)
         }
 
         binding.btnDelete.setOnClickListener {
-            callDeleteProjectApi(projectId)
+            viewModel.callDeleteProjectApi()
         }
 
+        subsribeLoadingLiveData()
+        subscribeUpdateImageLiveData()
+        subscribeDeleteLiveData()
     }
 
-    private fun callDeleteProjectApi(projectId: Int) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.deleteProjectById(projectId)
-                } catch (e : Throwable) {
-                    Log.e("error?", e.message.toString())
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is GeneralResponse) {
-                showMessage(result.message)
-                moveActivity()
+    private fun subscribeDeleteLiveData() {
+        viewModel.isDeleteLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                    moveActivity()
+                })
             } else {
-                showMessage("Something wrong...")
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                })
             }
-        }
+        })
+    }
+
+    private fun subscribeUpdateImageLiveData() {
+        viewModel.isUpdateLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                    moveActivity()
+                })
+            } else {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                })
+            }
+        })
+    }
+
+    private fun subsribeLoadingLiveData() {
+        viewModel.isLoading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
     }
 
     private fun showMessage(message : String) {
@@ -100,30 +113,4 @@ class EditProjectActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun callUpdateProjectApi(projectId : Int) {
-        coroutineScope.launch {
-            val response = withContext(Dispatchers.IO) {
-                try {
-                    val projectName = binding.etProjectName.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val projectDesc = binding.etDesc.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val projectDeadline = binding.etDeadline.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-
-                    service.updateProjectById(projectId, projectName, projectDesc, projectDeadline)
-                } catch (e : Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-
-            if (response is GeneralResponse) {
-                showMessage(response.message)
-                moveActivity()
-            } else {
-                showMessage("Something wrong...")
-            }
-        }
-    }
 }

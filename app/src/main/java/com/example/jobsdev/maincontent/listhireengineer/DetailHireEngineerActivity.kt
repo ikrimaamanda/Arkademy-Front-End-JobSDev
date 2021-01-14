@@ -6,12 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityDetailHireEngineerBinding
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.maincontent.hireengineer.HireApiService
-import com.example.jobsdev.maincontent.hireengineer.HireResponse
 import com.example.jobsdev.remote.ApiClient
 import kotlinx.coroutines.*
 
@@ -20,12 +21,17 @@ class DetailHireEngineerActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailHireEngineerBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : HireApiService
+    private var imgLink = "http://54.236.22.91:4000/image/"
+    private lateinit var viewModel : DetailHireEngineerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail_hire_engineer)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(this)!!.create(HireApiService::class.java)
+
+        viewModel = ViewModelProvider(this).get(DetailHireEngineerViewModel::class.java)
+        viewModel.setUpdateStatusHireService(service)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -59,9 +65,8 @@ class DetailHireEngineerActivity : AppCompatActivity() {
         }
 
         val image = intent.getStringExtra("projectImage")
-        var img = "http://54.236.22.91:4000/image/$image"
         Glide.with(binding.ivProjectImage)
-            .load(img)
+            .load(imgLink + image)
             .placeholder(R.drawable.profile_pict_base)
             .error(R.drawable.profile_pict_base)
             .into(binding.ivProjectImage)
@@ -69,35 +74,40 @@ class DetailHireEngineerActivity : AppCompatActivity() {
         val hireId = intent.getIntExtra("hireId",0)
 
         binding.btnApprove.setOnClickListener {
-            updateHireStatus(hireId, "approve")
+            viewModel.callUpdateHireStatusApi(hireId, "approve")
         }
 
         binding.btnReject.setOnClickListener {
-            updateHireStatus(hireId, "reject")
+            viewModel.callUpdateHireStatusApi(hireId, "reject")
         }
+
+        subsribeLoadingLiveData()
+        subscribeUpdateImageLiveData()
     }
 
-    private fun updateHireStatus(hireId : Int, status : String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.updateHireStatus(hireId, status)
-                } catch (e : Throwable) {
-                    e.printStackTrace()
-                }
-            }
-            if (result is HireResponse) {
-                if (result.success) {
-                    showMessage(result.message)
+    private fun subscribeUpdateImageLiveData() {
+        viewModel.isUpdateStatusHireLivedata.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
                     moveActivity()
-                } else {
-                    showMessage(result.message)
-                    moveActivity()
-                }
+                })
             } else {
-                showMessage("Error")
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                })
             }
-        }
+        })
+    }
+
+    private fun subsribeLoadingLiveData() {
+        viewModel.isLoading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
     }
 
     private fun showMessage(message : String) {

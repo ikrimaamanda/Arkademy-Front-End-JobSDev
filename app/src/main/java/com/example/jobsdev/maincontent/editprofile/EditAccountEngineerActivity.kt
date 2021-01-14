@@ -3,7 +3,6 @@ package com.example.jobsdev.maincontent.editprofile
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,21 +13,18 @@ import com.example.jobsdev.databinding.ActivityEditAccountEngineerBinding
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.retfrofit.DetailEngineerByAcIdResponse
-import com.example.jobsdev.retfrofit.GeneralResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.*
 import kotlinx.coroutines.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 
-class EditAccountEngineerActivity : AppCompatActivity() {
+class EditAccountEngineerActivity : AppCompatActivity(), EditAccountEngineerContract.ViewEditAcEngineer {
 
     private lateinit var binding : ActivityEditAccountEngineerBinding
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : JobSDevApiService
     val typeJob = arrayOf("freelance", "fulltime")
-    val imageLink = "http://54.236.22.91:4000/image/"
+    private var presenter : EditAccountEngineerContract.PresenterEditAcEngineer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +32,7 @@ class EditAccountEngineerActivity : AppCompatActivity() {
         service = ApiClient.getApiClient(this)!!.create(JobSDevApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(this)
+        presenter = EditAccountEngineerPresenter(coroutineScope, service, sharedPref)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -43,9 +40,6 @@ class EditAccountEngineerActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        val acId = sharedPref.getValueString(Constant.prefAccountId)
-
-        getEngineerId(acId.toString())
         val oldPassword = sharedPref.getValueString(Constant.prefPassword)
         val newPassword = sharedPref.getValueString(Constant.prefPassword)
         binding.etOldPassword.setText(oldPassword)
@@ -59,9 +53,10 @@ class EditAccountEngineerActivity : AppCompatActivity() {
                 || binding.etEditJobTitle.text.isNullOrEmpty() || binding.etEditLocation.text.isNullOrEmpty()
                 || binding.etEditDescription.text.isNullOrEmpty()) {
                 showMessage("Please filled all fields")
+            } else {
+                presenter?.callUpdateAccountApi(binding.etAcName.text.toString(), binding.etEditPhoneNumber.text.toString(), binding.etNewPassword.text.toString())
+                presenter?.callUpdateEngineerApi(binding.etEditJobTitle.text.toString(), binding.etEditLocation.text.toString(), binding.etEditDescription.text.toString())
             }
-                callUpdateAccount(sharedPref.getValueString(Constant.prefAccountId)!!.toInt(), binding.etAcName.text.toString(), binding.etEditPhoneNumber.text.toString(), binding.etNewPassword.text.toString())
-                callUpdateEngineer()
         }
 
         binding.btnCancel.setOnClickListener {
@@ -88,74 +83,6 @@ class EditAccountEngineerActivity : AppCompatActivity() {
         }
     }
 
-    private fun getEngineerId(acId : String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service?.getEngineerByAcId(acId)
-                } catch (e:Throwable) {
-                    Log.e("errorMessage : ", e.message.toString())
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is DetailEngineerByAcIdResponse) {
-                Log.d("engineerResponse", result.toString())
-                binding.model = result.data
-            }
-        }
-    }
-
-    private fun callUpdateAccount(acId : Int, acName : String, acPhoneNumber : String, acPassword : String) {
-        coroutineScope.launch {
-            val response = withContext(Dispatchers.IO) {
-                try {
-                    service.updateAccountByAcId(acId, acName, acPhoneNumber, acPassword)
-                } catch (e : Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (response is GeneralResponse) {
-                showMessage(response.message)
-            } else{
-                showMessage("Something wrong...")
-            }
-        }
-    }
-
-    private fun callUpdateEngineer() {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val enId = sharedPref.getValueString(ConstantAccountEngineer.engineerId)!!.toInt()
-                    val jobTitle = binding.etEditJobTitle.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val jobType = sharedPref.getValueString(ConstantAccountEngineer.jobType)!!
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val location = binding.etEditLocation.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val description = binding.etEditDescription.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-
-                    service.updateEngineerById(enId, jobTitle, jobType, location, description)
-
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            Log.d("editEng", result.toString())
-
-            if(result is GeneralResponse) {
-                showMessage(result.message)
-                moveActivity()
-            } else {
-                showMessage("Something wrong...")
-            }
-        }
-    }
-
     private fun showMessage(message : String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
@@ -163,6 +90,49 @@ class EditAccountEngineerActivity : AppCompatActivity() {
     private fun moveActivity() {
         startActivity(Intent(this, MainContentActivity::class.java))
         finish()
+    }
+
+    override fun setData(data: DetailEngineerByAcIdResponse.Engineer) {
+        binding.model = data
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun successUpdate(msg: String) {
+        showMessage(msg)
+        moveActivity()
+    }
+
+    override fun failed(msg: String) {
+        if (msg == "expired") {
+            Toast.makeText(this, "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            showMessage(msg)
+        }
+    }
+
+    override fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.bindView(this)
+        presenter?.callEngineerIdApi()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter?.unbind()
+    }
+
+    override fun onDestroy() {
+        coroutineScope.cancel()
+        presenter = null
+        super.onDestroy()
     }
 
 }

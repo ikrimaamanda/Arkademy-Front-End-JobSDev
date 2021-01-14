@@ -21,7 +21,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".maincontent.projectcompany.UpdateProjectImageActivity"></activity>
+        <activity android:name=".maincontent.portfolioengineer.UpdatePortfolioImageActivity"></activity>
+        <activity android:name=".maincontent.portfolioengineer.DetailPortfolioActivity" />
+        <activity android:name=".maincontent.projectcompany.UpdateProjectImageActivity" />
         <activity android:name=".maincontent.editprofile.UpdateProfilePictActivity" />
         <activity android:name=".maincontent.hireengineer.DetailPortfolioEngineerActivity" />
         <activity android:name=".maincontent.projectcompany.EditProjectActivity" />

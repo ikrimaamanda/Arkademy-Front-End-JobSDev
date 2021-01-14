@@ -60,8 +60,6 @@ class PortfolioEngineerPresenter(private val coroutineScope: CoroutineScope,
                 } else {
                     view?.failedAdd(response.message)
                 }
-            } else {
-                view?.failedAdd("Hello, your list is empty")
             }
         }
 

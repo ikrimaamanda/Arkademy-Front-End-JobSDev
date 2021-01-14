@@ -3,16 +3,15 @@ package com.example.jobsdev.maincontent.skillengineer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityUpdateSkillBinding
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GeneralResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 
@@ -22,14 +21,18 @@ class UpdateSkillActivity : AppCompatActivity() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : JobSDevApiService
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var viewModel : UpdateSkillViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_update_skill)
         sharedPref = PreferencesHelper(this)
-
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(JobSDevApiService::class.java)
+        viewModel = ViewModelProvider(this).get(UpdateSkillViewModel::class.java)
+
+        viewModel.setService(service)
+        viewModel.setSharedPref(sharedPref)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -45,65 +48,47 @@ class UpdateSkillActivity : AppCompatActivity() {
             if(binding.etUpdateSkillName.text.isNullOrEmpty()) {
                 showMessage("Please input skill name")
                 binding.etUpdateSkillName.requestFocus()
+            } else {
+                viewModel.callUpdateSkillApi(skillId, binding.etUpdateSkillName.text.toString())
             }
-            callUpdateSkillApi(skillId!!, binding.etUpdateSkillName.text.toString())
         }
 
         binding.btnDelete.setOnClickListener {
-            callDeleteSkillApi(skillId)
+            viewModel.callDeleteSkillApi(skillId)
         }
+
+        subscribeUpdateSkillLiveData()
+        subscribeDeleteSkillLiveData()
     }
 
-    private fun callUpdateSkillApi(skillId : Int, skillName : String) {
-        coroutineScope.launch {
-            val results = withContext(Dispatchers.IO){
-                try {
-                    service.updateSkillName(skillId, skillName)
-                } catch (e:Throwable) {
-                    Log.e("errorM", e.message.toString())
-                    e.printStackTrace()
-                }
-            }
-            Log.d("updateSkill", results.toString())
-
-            if(results is GeneralResponse) {
-                Log.d("updateSkill", results.toString())
-
-                if(results.success) {
-                    showMessage(results.message)
+    private fun subscribeDeleteSkillLiveData() {
+        viewModel.isDeleteSkillLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessageLiveData.observe(this, Observer {
+                    showMessage(it)
                     moveActivity()
-                } else {
-                    showMessage(results.message)
-                }
+                })
+            } else {
+                viewModel.isMessageLiveData.observe(this, Observer {
+                    showMessage(it)
+                })
             }
-            showMessage("Something wrong ...")
-        }
+        })
     }
 
-    private fun callDeleteSkillApi(skillId : Int) {
-        coroutineScope.launch {
-            val results = withContext(Dispatchers.IO){
-                try {
-                    service.deleteSkillBySkId(skillId)
-                } catch (e:Throwable) {
-                    Log.e("errorM", e.message.toString())
-                    e.printStackTrace()
-                }
-            }
-            Log.d("deleteSkill", results.toString())
-
-            if(results is GeneralResponse) {
-                Log.d("deleteSkill", results.toString())
-
-                if(results.success) {
-                    showMessage(results.message)
+    private fun subscribeUpdateSkillLiveData() {
+        viewModel.isUpdateSkillLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessageLiveData.observe(this, Observer {
+                    showMessage(it)
                     moveActivity()
-                } else {
-                    showMessage(results.message)
-                }
+                })
+            } else {
+                viewModel.isMessageLiveData.observe(this, Observer {
+                    showMessage(it)
+                })
             }
-            showMessage("Something wrong ...")
-        }
+        })
     }
 
     private fun showMessage(message : String) {

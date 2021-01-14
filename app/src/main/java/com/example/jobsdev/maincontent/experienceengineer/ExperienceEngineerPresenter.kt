@@ -59,8 +59,6 @@ class ExperienceEngineerPresenter(private val coroutineScope: CoroutineScope,
                 } else {
                     view?.failedAdd(response.message)
                 }
-                } else {
-                view?.failedAdd("Hello, your list experience is empty!")
             }
         }
 

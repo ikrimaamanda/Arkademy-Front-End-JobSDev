@@ -10,21 +10,17 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityUpdateProjectImageBinding
 import com.example.jobsdev.maincontent.MainContentActivity
-import com.example.jobsdev.maincontent.editprofile.UpdateProfilePictActivity
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GeneralResponse
-import com.example.jobsdev.retfrofit.JobSDevApiService
-import com.example.jobsdev.sharedpreference.Constant
-import com.example.jobsdev.sharedpreference.ConstantAccountCompany
-import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -40,6 +36,7 @@ class UpdateProjectImageActivity : AppCompatActivity() {
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : ProjectsCompanyApiService
+    private lateinit var viewModel : UpdateProjectImageViewModel
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
@@ -52,6 +49,10 @@ class UpdateProjectImageActivity : AppCompatActivity() {
         service = ApiClient.getApiClient(this)!!.create(ProjectsCompanyApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(this)
+        viewModel = ViewModelProvider(this).get(UpdateProjectImageViewModel::class.java)
+
+        viewModel.setSharedPref(sharedPref)
+        viewModel.setUpdateImageService(service)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -78,6 +79,9 @@ class UpdateProjectImageActivity : AppCompatActivity() {
                 pickImageFromGalery()
             }
         }
+
+        subsribeLoadingLiveData()
+        subscribeUpdateImageLiveData()
     }
 
     private fun pickImageFromGalery() {
@@ -111,7 +115,7 @@ class UpdateProjectImageActivity : AppCompatActivity() {
                         .load(img)
                         .placeholder(R.drawable.img_loading)
                         .into(binding.civUpdateProjectImage)
-                    callUpdateProjectImageApi(img)
+                    viewModel.callUpdateProjectImageApi(img)
                 }
             }
 
@@ -134,27 +138,29 @@ class UpdateProjectImageActivity : AppCompatActivity() {
         return result
     }
 
-    private fun callUpdateProjectImageApi(img: MultipartBody.Part) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    val pjId = sharedPref.getValueString(ConstantProjectCompany.projectId)!!.toInt()
-                    service.updateProjectImage(pjId, img)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            Log.d("companyPict", result.toString())
-
-            if(result is GeneralResponse) {
-                showMessage(result.message)
-                moveActivity()
+    private fun subsribeLoadingLiveData() {
+        viewModel.isLoading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
             } else {
-                showMessage("Something wrong...")
+                binding.progressBar.visibility = View.GONE
             }
-        }
+        })
+    }
 
+    private fun subscribeUpdateImageLiveData() {
+        viewModel.isUpdateImageLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                    moveActivity()
+                })
+            } else {
+                viewModel.isMessage.observe(this, Observer {
+                    showMessage(it)
+                })
+            }
+        })
     }
 
     private fun showMessage(message : String) {
