@@ -2,6 +2,7 @@ package com.example.jobsdev.maincontent.projectcompany
 
 import android.Manifest
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -28,6 +30,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddNewProjectActivity : AppCompatActivity() {
 
@@ -36,6 +40,8 @@ class AddNewProjectActivity : AppCompatActivity() {
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var viewModel : AddNewProjectViewModel
+    private lateinit var deadlineProject: DatePickerDialog.OnDateSetListener
+    private lateinit var c: Calendar
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
@@ -51,6 +57,8 @@ class AddNewProjectActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(AddNewProjectViewModel::class.java)
         viewModel.setService(service)
         viewModel.setSharedPref(sharedPref)
+
+        c = Calendar.getInstance()
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -71,12 +79,36 @@ class AddNewProjectActivity : AppCompatActivity() {
             }
         }
 
+        binding.etDeadlineNewProject.setOnClickListener {
+            DatePickerDialog(
+                this, deadlineProject, c.get(Calendar.YEAR),
+                c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        deadlineProject()
+
         binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
 
         subscribeLoadingLiveData()
         subscribeCreateProjectLiveData()
+    }
+
+    private fun deadlineProject() {
+        deadlineProject = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            c.set(Calendar.YEAR, year)
+            c.set(Calendar.MONTH, month)
+            c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            val day = findViewById<TextView>(R.id.et_deadline_new_project)
+            val formatDate = "yyyy-MM-dd"
+            val sdf = SimpleDateFormat(formatDate, Locale.US)
+
+            day.text = sdf.format(c.time)
+        }
     }
 
     private fun subscribeLoadingLiveData() {
@@ -151,9 +183,9 @@ class AddNewProjectActivity : AppCompatActivity() {
             binding.btnAdd.setOnClickListener {
                 val projectName = binding.etProjectName.text.toString()
                 val projectDesc = binding.etProjectDesc.text.toString()
-                val projectDeadline = binding.etDeadline.text.toString()
+                val projectDeadline = binding.etDeadlineNewProject.text.toString()
 
-                if(binding.etProjectName.text.isEmpty() || binding.etProjectDesc.text.isEmpty() || binding.etDeadline.text.isEmpty()) {
+                if(binding.etProjectName.text.isEmpty() || binding.etProjectDesc.text.isEmpty() || binding.etDeadlineNewProject.text.isEmpty()) {
                     Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
                     binding.etProjectName.requestFocus()
                 } else {

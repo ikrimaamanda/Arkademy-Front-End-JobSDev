@@ -136,6 +136,14 @@
                     android:background="@drawable/button_white_stroke_purple"
                     android:padding="10dp" />
 
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="50dp"
+                    android:visibility="gone"
+                    android:layout_height="50dp"/>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <EditText
-                    android:id="@+id/et_start_date_experience"
+                    android:id="@+id/et_start_date_new_experience"
                     android:hint="Input start date"
                     android:inputType="date"
                     android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <EditText
-                    android:id="@+id/et_end_date_experience"
+                    android:id="@+id/et_end_date_new_experience"
                     android:hint="Input end date"
                     android:inputType="date"
                     android:layout_width="match_parent"
@@ -131,6 +131,14 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/button_white_stroke_purple"
                     android:padding="10dp" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

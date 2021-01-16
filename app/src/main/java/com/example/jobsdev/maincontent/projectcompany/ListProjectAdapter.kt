@@ -36,7 +36,7 @@ class ListProjectAdapter(private val listProjectCompany : ArrayList<ProjectCompa
 
         Glide.with(holder.itemView)
             .load(img)
-            .placeholder(R.drawable.profile_pict_base)
+            .placeholder(R.drawable.img_loading)
             .error(R.drawable.profile_pict_base)
             .into(holder.binding.ivImageProject)
 

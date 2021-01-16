@@ -53,7 +53,7 @@ class FormHireActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        
+
         binding.btnHire.setOnClickListener {
             if(binding.spinnerProject.equals("none") || binding.etHireMessage.text.isEmpty() || binding.etPrice.text.isEmpty()) {
                 showMessage("Please filled all field")
