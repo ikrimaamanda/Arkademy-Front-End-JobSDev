@@ -53,8 +53,6 @@ class FormHireActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-
-        Toast.makeText(this, "${intent.getStringExtra("enId")}", Toast.LENGTH_SHORT).show()
         
         binding.btnHire.setOnClickListener {
             if(binding.spinnerProject.equals("none") || binding.etHireMessage.text.isEmpty() || binding.etPrice.text.isEmpty()) {
@@ -78,11 +76,15 @@ class FormHireActivity : AppCompatActivity() {
             if (it) {
                 viewModel.isMessage.observe(this, Observer { it1 ->
                     showMessage(it1)
-                    moveActivity()
                 })
+                moveActivity()
             } else {
                 viewModel.isMessage.observe(this, Observer { it1 ->
-                    showMessage(it1)
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })
@@ -93,20 +95,17 @@ class FormHireActivity : AppCompatActivity() {
         coroutineScope.launch {
             val cnId = sharedPref.getValueString(ConstantAccountCompany.companyId)
             val enId = sharedPref.getValueString(ConstantDetailEngineer.engineerId)
-            Log.d("enId", enId.toString())
             val listProjectIdDoHire = mutableListOf<Long>()
-            var listProject = arrayListOf<String>()
 
-            val result2 = withContext(Dispatchers.IO) {
+            val result1 = withContext(Dispatchers.IO) {
                 try {
                     service.getHireByEngineerId(enId)
                 } catch (e:Throwable) {
-                    Log.e("error?", e.message.toString())
                     e.printStackTrace()
                 }
             }
 
-            val result1 = withContext(Dispatchers.IO) {
+            val result2 = withContext(Dispatchers.IO) {
                 try {
                     service2.getProjectByCnId(cnId)
                 } catch (e:Throwable) {
@@ -114,19 +113,17 @@ class FormHireActivity : AppCompatActivity() {
                 }
             }
 
-            if (result2 is ListHireEngineerResponse) {
-                result2.data?.map {
+            if (result1 is ListHireEngineerResponse) {
+                result1.data?.map {
                     if (it.companyId == cnId!!.toInt() && it.engineerId == enId!!.toInt()) {
                         listProjectIdDoHire.add(it.projectId!!.toLong())
                     }
                 }
             }
 
-            Log.d("listProject", listProjectIdDoHire.size.toString())
-            Log.d("listProject", listProjectIdDoHire.toString())
 
-            if(result1 is ProjectResponse) {
-                val list = result1.data?.map {
+            if(result2 is ProjectResponse) {
+                val list = result2.data?.map {
                     ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
                 }
 
@@ -150,7 +147,7 @@ class FormHireActivity : AppCompatActivity() {
 
                 binding.spinnerProject.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onNothingSelected(parent: AdapterView<*>?) {
-                        Toast.makeText(this@FormHireActivity, "None", Toast.LENGTH_SHORT).show()
+
                     }
 
                     override fun onItemSelected(
@@ -159,7 +156,6 @@ class FormHireActivity : AppCompatActivity() {
                         position: Int,
                         id: Long
                     ) {
-                        Toast.makeText(this@FormHireActivity, "${projectName[position]} clicked", Toast.LENGTH_SHORT).show();
                         sharedPref.putValue(ConstantProjectCompany.projectId, projectId[position].toString())
 
                     }

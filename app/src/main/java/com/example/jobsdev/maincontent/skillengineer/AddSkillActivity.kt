@@ -3,6 +3,7 @@ package com.example.jobsdev.maincontent.skillengineer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -49,19 +50,34 @@ class AddSkillActivity : AppCompatActivity() {
             }
         }
 
+        subscribeLoadingLiveData()
         subscribeAddSkillLiveData()
+    }
+
+    private fun subscribeLoadingLiveData() {
+        viewModel.isLoadingLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
     }
 
     private fun subscribeAddSkillLiveData() {
         viewModel.isAddSkillLiveData.observe(this, Observer {
             if (it) {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
-                    moveActivity()
+                viewModel.isMessage.observe(this, Observer { it1->
+                    showMessage(it1)
                 })
+                moveActivity()
             } else {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessage.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })

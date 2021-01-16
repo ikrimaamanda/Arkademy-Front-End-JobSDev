@@ -49,7 +49,7 @@ class ExperienceDetailEngineerFragment : Fragment(), RecyclerViewListExperienceA
     }
 
     override fun onExperienceItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listExperience[position].position} clicked", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), "${listExperience[position].position} clicked", Toast.LENGTH_SHORT).show()
     }
 
     override fun addListExperience(list: List<ItemExperienceModel>) {
@@ -62,8 +62,9 @@ class ExperienceDetailEngineerFragment : Fragment(), RecyclerViewListExperienceA
     override fun failedAdd(msg: String) {
         if (msg == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         binding.progressBar.visibility = View.GONE
     }
 

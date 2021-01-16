@@ -20,11 +20,11 @@ import kotlinx.coroutines.*
 class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener, PortfolioContract.ViewPortfolio {
 
     private lateinit var binding : FragmentPortfolioEngineerBinding
-    var listPortfolio = ArrayList<ItemPortfolioModel>()
+    private var listPortfolio = ArrayList<ItemPortfolioModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var service : JobSDevApiService
-    private var presenter : PortfolioContract.PresenterPortfolio? = null
+    private var presenter : PortfolioEngineerPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,14 +47,13 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var portfolioAdapter = RecyclerViewListPortfolioAdapter(listPortfolio, this)
+        val portfolioAdapter = RecyclerViewListPortfolioAdapter(listPortfolio, this)
         binding.recyclerViewPortfolio.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewPortfolio.adapter = portfolioAdapter
 
     }
 
     override fun onPortfolioItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listPortfolio[position].portfolioId} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), DetailPortfolioActivity::class.java)
         sharedPref.putValue(ConstantPortfolio.portfolioImage, listPortfolio[position].portfolioImage!!)
         intent.putExtra("portfolioId", listPortfolio[position].portfolioId)
@@ -76,8 +75,9 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
     override fun failedAdd(msg: String) {
         if (msg == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         binding.progressBar.showOrGone(false)
     }
 
@@ -90,10 +90,10 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
     }
 
     private fun View.showOrGone(show : Boolean) {
-        if (show) {
-            visibility = View.VISIBLE
+        visibility = if (show) {
+            View.VISIBLE
         } else {
-            visibility = View.GONE
+            View.GONE
         }
     }
 

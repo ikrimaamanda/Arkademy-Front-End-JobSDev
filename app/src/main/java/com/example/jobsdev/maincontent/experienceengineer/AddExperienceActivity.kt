@@ -59,13 +59,17 @@ class AddExperienceActivity : AppCompatActivity() {
     private fun subscribeLiveData() {
         viewModel.isAddExperienceLiveData.observe(this, Observer {
             if (it) {
-                viewModel.isMessageLiveData.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessageLiveData.observe(this, Observer { it1->
+                    showMessage(it1)
                     moveActivity()
                 })
             } else {
-                viewModel.isMessageLiveData.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessageLiveData.observe(this, Observer { it1 ->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })

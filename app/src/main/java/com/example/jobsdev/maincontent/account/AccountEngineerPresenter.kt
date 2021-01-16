@@ -57,13 +57,9 @@ class AccountEngineerPresenter(private val coroutineScope: CoroutineScope,
                 if (result.success) {
                     view?.setDataEngineer(result.data)
                     if (result.data.enProfilePict != null) {
-                        sharedPref.putValue(Constant.prefProfilePict, result.data.enProfilePict!!)
+                        sharedPref.putValue(Constant.prefProfilePict, result.data.enProfilePict)
                     }
-                } else {
-                    view?.failedSetData(result.message)
                 }
-            } else {
-                view?.failedSetData("Hello, your data is empty!")
             }
         }
     }
@@ -82,13 +78,13 @@ class AccountEngineerPresenter(private val coroutineScope: CoroutineScope,
 
                         when {
                             e.code() == 404 -> {
-                                view?.failedSetData("Data not found!")
+                                view?.failedAddSkill("Data not found!")
                             }
                             e.code() == 400 -> {
-                                view?.failedSetData("expired")
+                                view?.failedAddSkill("expired")
                             }
                             else -> {
-                                view?.failedSetData("Server under maintenance!")
+                                view?.failedAddSkill("Server under maintenance!")
                             }
                         }
                     }
@@ -101,11 +97,7 @@ class AccountEngineerPresenter(private val coroutineScope: CoroutineScope,
                         ItemSkillEngineerModel(it?.skId, it?.enId, it?.skillName)
                     }
                     view?.addSkill(list)
-                } else {
-                    view?.failedAddSkill(response.message)
                 }
-            } else {
-                view?.failedAddSkill("Hello, your list skill is empty!")
             }
         }
     }

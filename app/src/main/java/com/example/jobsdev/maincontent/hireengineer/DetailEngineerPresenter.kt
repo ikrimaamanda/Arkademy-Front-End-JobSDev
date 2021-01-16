@@ -1,8 +1,6 @@
 package com.example.jobsdev.maincontent.hireengineer
 
-import android.util.Log
 import com.example.jobsdev.maincontent.skillengineer.ItemSkillEngineerModel
-import com.example.jobsdev.retfrofit.DetailEngineerByAcIdResponse
 import com.example.jobsdev.retfrofit.GetSkillByEnIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
@@ -30,12 +28,12 @@ class DetailEngineerPresenter(private val coroutineScope: CoroutineScope,
 
     override fun callListSkillApi() {
         coroutineScope.launch {
-
             view?.showProgressBarSkill()
+
             val response = withContext(Dispatchers.IO) {
 
                 try {
-                    service?.getSkillByEnId(sharedPref.getValueString(ConstantDetailEngineer.engineerId)!!.toInt())
+                    service.getSkillByEnId(sharedPref.getValueString(ConstantDetailEngineer.engineerId)!!.toInt())
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         view?.hideProgressBarSkill()
@@ -61,11 +59,7 @@ class DetailEngineerPresenter(private val coroutineScope: CoroutineScope,
                         ItemSkillEngineerModel(it?.skId, it?.enId, it?.skillName)
                     }
                     view?.addListSkill(list)
-                } else {
-                    view?.failedAddSkill(response.message)
                 }
-            } else {
-                view?.failedAddSkill("Hello, your list skill is empty!")
             }
         }
 

@@ -1,15 +1,16 @@
 package com.example.jobsdev.register
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class RegisterCompanyViewModel : ViewModel(), CoroutineScope {
 
     val isRegisterCompanyLiveData = MutableLiveData<Boolean>()
+    val isMessage = MutableLiveData<String>()
 
     private lateinit var service : RegistrationApiService
     private lateinit var sharedPref : PreferencesHelper
@@ -30,21 +31,31 @@ class RegisterCompanyViewModel : ViewModel(), CoroutineScope {
             val result =  withContext(Dispatchers.IO) {
                 try {
                     service.registrationCompanyReq(name, email, phoneNumber, password, 1, companyName, position)
-                } catch (e : Throwable) {
-                    e.printStackTrace()
-
+                } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         isRegisterCompanyLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }
 
             if(result is RegistrationResponse) {
-                Log.d("registrationComReq : ", result.toString())
-
                 isRegisterCompanyLiveData.value = result.success
+                isMessage.value = result.message
             } else {
                 isRegisterCompanyLiveData.value = false
+                isMessage.value = "Registration failed!"
             }
         }
     }

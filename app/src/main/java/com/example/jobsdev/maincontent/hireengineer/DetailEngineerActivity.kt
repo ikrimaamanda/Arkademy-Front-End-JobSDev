@@ -13,7 +13,6 @@ import com.example.jobsdev.databinding.ActivityDetailEngineerBinding
 import com.example.jobsdev.maincontent.skillengineer.ItemSkillEngineerModel
 import com.example.jobsdev.maincontent.skillengineer.RecyclerViewSkillEngineerAdapter
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.DetailEngineerByAcIdResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.Constant
 import com.example.jobsdev.sharedpreference.PreferencesHelper
@@ -26,8 +25,8 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var service : JobSDevApiService
-    var listSkill = ArrayList<ItemSkillEngineerModel>()
-    var imgLink = "http://54.236.22.91:4000/image/"
+    private var listSkill = ArrayList<ItemSkillEngineerModel>()
+    private var imgLink = "http://54.236.22.91:4000/image/"
     private var presenter : DetailEngineerPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +98,11 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
     }
 
     override fun failedAddSkill(msg: String) {
+        if (msg == "expired") {
+            Toast.makeText(this, "Please sign in again!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        }
         binding.rvSkillEngineer.showOrGone(false)
         binding.tvEmptyListSkill.showOrGone(true)
         binding.progressBarSkill.showOrGone(false)

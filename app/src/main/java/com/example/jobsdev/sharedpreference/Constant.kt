@@ -58,7 +58,5 @@ class ConstantAccountCompany {
         val companyId = "id of company"
         val position = "position"
         val fields = ""
-        val instagram = ""
-        val linkedin = ""
     }
 }

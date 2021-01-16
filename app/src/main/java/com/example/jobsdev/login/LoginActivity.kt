@@ -93,7 +93,11 @@ class LoginActivity : AppCompatActivity() {
                 })
             } else {
                 viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
+                    if (it == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it)
+                    }
                 })
             }
         })

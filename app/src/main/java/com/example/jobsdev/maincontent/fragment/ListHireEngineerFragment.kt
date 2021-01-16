@@ -97,7 +97,6 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
     }
 
     override fun onHireEngineerItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listHireEngineer[position].hireId} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), DetailHireEngineerActivity::class.java)
         intent.putExtra("hireId", listHireEngineer[position].hireId)
         intent.putExtra("projectName", listHireEngineer[position].projectName)

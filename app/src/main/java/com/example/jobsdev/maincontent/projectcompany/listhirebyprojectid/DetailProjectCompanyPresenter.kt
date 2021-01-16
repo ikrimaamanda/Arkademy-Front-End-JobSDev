@@ -33,7 +33,7 @@ class DetailProjectCompanyPresenter(private val coroutineScope: CoroutineScope,
                 Log.d("listHireProject", "CallApi: ${Thread.currentThread().name}")
 
                 try {
-                    service?.getListHireByProjectId(sharedPref.getValueString(ConstantProjectCompany.projectId))
+                    service.getListHireByProjectId(sharedPref.getValueString(ConstantProjectCompany.projectId))
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         view?.hideProgressBar()

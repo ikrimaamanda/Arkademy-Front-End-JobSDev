@@ -99,8 +99,9 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
     override fun failedSetData(msg: String) {
         if (msg == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         binding.btnEditProfile.showOrGone(true)
         binding.fabUpdateImage.showOrGone(true)
         binding.progressBar.showOrGone(false)

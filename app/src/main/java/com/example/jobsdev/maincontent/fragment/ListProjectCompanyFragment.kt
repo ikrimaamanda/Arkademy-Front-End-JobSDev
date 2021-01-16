@@ -87,6 +87,8 @@ class ListProjectCompanyFragment : Fragment(), ListProjectAdapter.OnListProjectC
         binding.rvListProject.showOrGone(false)
         if (message == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         binding.ivEmptyIllustration.showOrGone(true)
         binding.tvEmptyList.showOrGone(true)

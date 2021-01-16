@@ -89,6 +89,8 @@ class SearchFragment : Fragment(),
         binding.recyclerViewSearchEngineer.visibility = View.GONE
         if (message == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         binding.ivEmpty.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
@@ -149,9 +151,6 @@ class SearchFragment : Fragment(),
                 when(it.itemId) {
                     R.id.item_0 -> {
                         presenter?.callServiceFilter(0)
-                    }
-                    R.id.item_1 -> {
-                        presenter?.callServiceFilter(1)
                     }
                     R.id.item_2 -> {
                         presenter?.callServiceFilter(2)

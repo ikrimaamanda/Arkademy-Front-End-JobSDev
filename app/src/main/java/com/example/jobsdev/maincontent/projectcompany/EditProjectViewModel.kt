@@ -8,6 +8,7 @@ import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class EditProjectViewModel : ViewModel(), CoroutineScope {
@@ -44,12 +45,23 @@ class EditProjectViewModel : ViewModel(), CoroutineScope {
                         .toRequestBody("text/plain".toMediaTypeOrNull())
 
                     service.updateProjectById(projectId!!.toInt(), projectName, projectDesc, projectDeadline)
-                } catch (e : Throwable) {
-                    e.printStackTrace()
+                } catch (e: HttpException) {
                     isLoading.value = false
 
                     withContext(Dispatchers.Main) {
                         isUpdateLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }
@@ -72,12 +84,23 @@ class EditProjectViewModel : ViewModel(), CoroutineScope {
             val result = withContext(Dispatchers.IO) {
                 try {
                     service.deleteProjectById(sharedPref.getValueString(ConstantProjectCompany.projectId)!!.toInt())
-                } catch (e : Throwable) {
+                } catch (e: HttpException) {
                     isLoading.value = false
-                    e.printStackTrace()
 
                     withContext(Dispatchers.Main) {
                         isDeleteLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }

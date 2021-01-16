@@ -30,7 +30,7 @@ class PortfolioEngineerPresenter(private val coroutineScope: CoroutineScope,
             view?.showProgressBar()
             val response = withContext(Dispatchers.IO) {
                 try {
-                    service?.getListPortfolioByEnId(sharedPref.getValueString(
+                    service.getListPortfolioByEnId(sharedPref.getValueString(
                         ConstantAccountEngineer.engineerId)!!.toInt())
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
@@ -53,7 +53,7 @@ class PortfolioEngineerPresenter(private val coroutineScope: CoroutineScope,
 
             if(response is GetPortfolioByEnIdResponse) {
                 if (response.success) {
-                    val list = response.data?.map {
+                    val list = response.data.map {
                         ItemPortfolioModel(it.enId, it.portfolioId, it.portfolioprAppName, it.portfolioDesc, it.portfolioLinkPub, it.portfolioLinkRepo, it.portfolioWorkPlace, it.portfolioType, it.portfolioImage)
                     }
                     view?.addListPortfolio(list)

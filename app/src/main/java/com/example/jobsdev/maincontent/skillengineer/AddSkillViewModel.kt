@@ -7,12 +7,14 @@ import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class AddSkillViewModel : ViewModel(), CoroutineScope {
 
     var isAddSkillLiveData = MutableLiveData<Boolean>()
     var isMessage =  MutableLiveData<String>()
+    var isLoadingLiveData = MutableLiveData<Boolean>()
 
     private lateinit var service : JobSDevApiService
     private lateinit var sharedPref : PreferencesHelper
@@ -30,14 +32,27 @@ class AddSkillViewModel : ViewModel(), CoroutineScope {
 
     fun callAddSkillApi(skillName : String) {
         launch {
+            isLoadingLiveData.value = true
             val results = withContext(Dispatchers.IO){
                 try {
                     service.addSkill(skillName, sharedPref.getValueString(ConstantAccountEngineer.engineerId)!!.toInt())
-                } catch (e:Throwable) {
-                    e.printStackTrace()
+                } catch (e: HttpException) {
+                    isLoadingLiveData.value = false
 
                     withContext(Dispatchers.Main) {
                         isAddSkillLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }
@@ -45,9 +60,11 @@ class AddSkillViewModel : ViewModel(), CoroutineScope {
             if(results is GeneralResponse) {
                 isAddSkillLiveData.value = true
                 isMessage.value = results.message
+                isLoadingLiveData.value = false
             } else {
                 isAddSkillLiveData.value = false
                 isMessage.value = "Something wrong ..."
+                isLoadingLiveData.value = false
             }
         }
     }

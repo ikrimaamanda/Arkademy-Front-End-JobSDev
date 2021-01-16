@@ -7,6 +7,7 @@ import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 import okhttp3.MultipartBody
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class UpdateProjectImageViewModel : ViewModel(), CoroutineScope {
@@ -35,12 +36,23 @@ class UpdateProjectImageViewModel : ViewModel(), CoroutineScope {
                 try {
                     val pjId = sharedPref.getValueString(ConstantProjectCompany.projectId)!!.toInt()
                     service.updateProjectImage(pjId, img)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
+                } catch (e: HttpException) {
                     isLoading.value = false
 
                     withContext(Dispatchers.Main) {
                         isUpdateImageLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }

@@ -4,10 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class RegisterEngineerViewModel : ViewModel(), CoroutineScope {
     val isRegisterLiveData = MutableLiveData<Boolean>()
+    val isMessage = MutableLiveData<String>()
 
     private lateinit var service : RegistrationApiService
     private lateinit var sharedPref : PreferencesHelper
@@ -28,19 +30,31 @@ class RegisterEngineerViewModel : ViewModel(), CoroutineScope {
             val result =  withContext(Dispatchers.IO) {
                 try {
                     service.registrationEngineerReq(name, email, phoneNumber, password, 0 )
-                } catch (e : Throwable) {
-                    e.printStackTrace()
-
+                } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         isRegisterLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }
 
             if(result is RegistrationResponse) {
                 isRegisterLiveData.value = result.success
+                isMessage.value = result.message
             } else {
                 isRegisterLiveData.value = false
+                isMessage.value = "Registration failed!"
             }
         }
     }

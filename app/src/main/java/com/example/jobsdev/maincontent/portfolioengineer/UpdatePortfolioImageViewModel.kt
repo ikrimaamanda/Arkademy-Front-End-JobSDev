@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.jobsdev.retfrofit.GeneralResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
-import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 import okhttp3.MultipartBody
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class UpdatePortfolioImageViewModel : ViewModel(), CoroutineScope {
@@ -31,12 +31,23 @@ class UpdatePortfolioImageViewModel : ViewModel(), CoroutineScope {
                 try {
                     service.updatePortfolioImage(portfolioId, image)
 
-                } catch (e:Throwable) {
+                } catch (e: HttpException) {
                     e.printStackTrace()
                     isLoading.value = false
-
                     withContext(Dispatchers.Main) {
                         isUpdatePortfolioImageLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }

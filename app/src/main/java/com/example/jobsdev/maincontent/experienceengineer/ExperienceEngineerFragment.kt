@@ -52,7 +52,6 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
     }
 
     override fun onExperienceItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listExperience[position].exId} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), UpdateExperienceActivity::class.java)
         intent.putExtra("exId", listExperience[position].exId)
         intent.putExtra("exPosition", listExperience[position].position)
@@ -82,8 +81,9 @@ class ExperienceEngineerFragment : Fragment(), RecyclerViewListExperienceAdapter
     override fun failedAdd(msg: String) {
         if (msg == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         binding.progressBar.showOrGone(false)
     }
 

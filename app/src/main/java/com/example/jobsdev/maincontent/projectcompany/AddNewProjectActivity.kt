@@ -2,7 +2,6 @@ package com.example.jobsdev.maincontent.projectcompany
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,39 +9,25 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.OpenableColumns
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityAddNewProjectBinding
 import com.example.jobsdev.maincontent.MainContentActivity
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GeneralResponse
-import com.example.jobsdev.sharedpreference.ConstantAccountCompany
-import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
-import com.example.jobsdev.sharedpreference.ConstantPortfolio
 import com.example.jobsdev.sharedpreference.PreferencesHelper
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import okhttp3.Call
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import pub.devrel.easypermissions.EasyPermissions
-import retrofit2.Response
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-
 
 class AddNewProjectActivity : AppCompatActivity() {
 
@@ -50,6 +35,7 @@ class AddNewProjectActivity : AppCompatActivity() {
     private lateinit var service : ProjectsCompanyApiService
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
+    private lateinit var viewModel : AddNewProjectViewModel
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
@@ -62,6 +48,9 @@ class AddNewProjectActivity : AppCompatActivity() {
         service = ApiClient.getApiClient(context = this)!!.create(ProjectsCompanyApiService::class.java)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         sharedPref = PreferencesHelper(this)
+        viewModel = ViewModelProvider(this).get(AddNewProjectViewModel::class.java)
+        viewModel.setService(service)
+        viewModel.setSharedPref(sharedPref)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -85,6 +74,38 @@ class AddNewProjectActivity : AppCompatActivity() {
         binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
+
+        subscribeLoadingLiveData()
+        subscribeCreateProjectLiveData()
+    }
+
+    private fun subscribeLoadingLiveData() {
+        viewModel.isLoading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun subscribeCreateProjectLiveData() {
+        viewModel.isCreateProjectLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer { it1->
+                    showMessage(it1)
+                })
+                moveActivity()
+            } else {
+                viewModel.isMessage.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
+                })
+            }
+        })
     }
 
     override fun onRequestPermissionsResult(
@@ -128,6 +149,10 @@ class AddNewProjectActivity : AppCompatActivity() {
             }
 
             binding.btnAdd.setOnClickListener {
+                val projectName = binding.etProjectName.text.toString()
+                val projectDesc = binding.etProjectDesc.text.toString()
+                val projectDeadline = binding.etDeadline.text.toString()
+
                 if(binding.etProjectName.text.isEmpty() || binding.etProjectDesc.text.isEmpty() || binding.etDeadline.text.isEmpty()) {
                     Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
                     binding.etProjectName.requestFocus()
@@ -138,7 +163,7 @@ class AddNewProjectActivity : AppCompatActivity() {
                             .placeholder(R.drawable.img_add_new_project)
                             .error(R.drawable.img_add_new_project)
                             .into(binding.ivAddProjectImage)
-                        callAddProjectApi(img)
+                        viewModel.callAddProjectApi(projectName, projectDesc, projectDeadline, img)
                     }
                 }
             }
@@ -162,40 +187,6 @@ class AddNewProjectActivity : AppCompatActivity() {
         return result
     }
 
-    private fun callAddProjectApi(image : MultipartBody.Part) {
-        coroutineScope.launch {
-            val results = withContext(Dispatchers.IO){
-                try {
-                    val cnId = sharedPref.getValueString(ConstantAccountCompany.companyId)!!.toRequestBody("text/plain".toMediaTypeOrNull())
-                    val projectName = binding.etProjectName.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val projectDesc = binding.etProjectDesc.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val projectDeadline = binding.etDeadline.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-
-                    service.addNewProject(projectName, projectDesc, projectDeadline, image, cnId)
-                } catch (e:Throwable) {
-                    Log.e("error?", e.message.toString())
-                    e.printStackTrace()
-                }
-            }
-            Log.d("addPortfolioReq", results.toString())
-
-            if(results is AddProjectResponse) {
-                Log.d("addPortfolioReq", results.toString())
-
-                if(results.success) {
-                    showMessage(results.message)
-                    moveActivity()
-                } else {
-                    showMessage(results.message)
-                }
-            }
-            showMessage("Something wrong...")
-        }
-    }
-
     private fun showMessage(message : String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
@@ -203,14 +194,6 @@ class AddNewProjectActivity : AppCompatActivity() {
     private fun moveActivity() {
         val intent = Intent(this, MainContentActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun View.snackbar(message : String) {
-        Snackbar.make(this, message, Snackbar.LENGTH_LONG).also {
-            snackbar ->  snackbar.setAction("Ok") {
-            snackbar.dismiss()
-        }
-        }.show()
     }
 
 }

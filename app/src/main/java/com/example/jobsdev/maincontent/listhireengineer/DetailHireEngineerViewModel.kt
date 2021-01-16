@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.jobsdev.maincontent.hireengineer.HireApiService
 import com.example.jobsdev.maincontent.hireengineer.HireResponse
-import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class DetailHireEngineerViewModel : ViewModel(), CoroutineScope {
@@ -15,7 +15,6 @@ class DetailHireEngineerViewModel : ViewModel(), CoroutineScope {
     val isLoading = MutableLiveData<Boolean>()
 
     private lateinit var service : HireApiService
-    private lateinit var sharedPref : PreferencesHelper
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
@@ -30,14 +29,25 @@ class DetailHireEngineerViewModel : ViewModel(), CoroutineScope {
             val result = withContext(Dispatchers.IO) {
                 try {
                     service.updateHireStatus(hireId, status)
-                } catch (e : Throwable) {
-                    e.printStackTrace()
-                    isLoading.value = false
-
+                } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
+                        isLoading.value = false
                         isUpdateStatusHireLivedata.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
+
             }
             if (result is HireResponse) {
                 if (result.success) {

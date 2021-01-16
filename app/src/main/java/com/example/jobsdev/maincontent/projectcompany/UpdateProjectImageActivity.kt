@@ -32,7 +32,7 @@ import java.io.File
 class UpdateProjectImageActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityUpdateProjectImageBinding
-    val imageLink = "http://54.236.22.91:4000/image/"
+    private val imageLink = "http://54.236.22.91:4000/image/"
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : ProjectsCompanyApiService
@@ -151,13 +151,17 @@ class UpdateProjectImageActivity : AppCompatActivity() {
     private fun subscribeUpdateImageLiveData() {
         viewModel.isUpdateImageLiveData.observe(this, Observer {
             if (it) {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
-                    moveActivity()
+                viewModel.isMessage.observe(this, Observer { it1->
+                    showMessage(it1)
                 })
+                moveActivity()
             } else {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessage.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })

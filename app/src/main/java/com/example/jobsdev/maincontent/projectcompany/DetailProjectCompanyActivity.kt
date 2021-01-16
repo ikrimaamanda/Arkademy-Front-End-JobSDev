@@ -20,7 +20,7 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
     ListHireByProjectIdAdapter.OnHireByProjectIdClickListener, DetailProjectCompanyContract.ViewDetailProjectCompany {
 
     private lateinit var binding : ActivityDetailProjectCompanyBinding
-    var listHireProject = ArrayList<HireByProjectIdModel>()
+    private var listHireProject = ArrayList<HireByProjectIdModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
     private var imgLink = "http://54.236.22.91:4000/image/"
@@ -68,7 +68,7 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
             startActivity(intent)
         }
 
-        var listHireProjectAdapter = ListHireByProjectIdAdapter(listHireProject, this)
+        val listHireProjectAdapter = ListHireByProjectIdAdapter(listHireProject, this)
         binding.rvHireByProjectId.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvHireByProjectId.adapter = listHireProjectAdapter
     }
@@ -90,8 +90,9 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
     override fun failedAdd(msg: String) {
         if (msg == "expired") {
             Toast.makeText(this, "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
         binding.progressBarList.visibility = View.GONE
         binding.btnEditProject.visibility = View.VISIBLE
         binding.fabUpdateImage.visibility = View.VISIBLE

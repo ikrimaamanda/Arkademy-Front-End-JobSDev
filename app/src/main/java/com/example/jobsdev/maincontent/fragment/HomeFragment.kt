@@ -57,7 +57,6 @@ class HomeFragment : Fragment(),
     }
 
     override fun onEngineerItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listEngineer[position].engineerName} clicked", Toast.LENGTH_SHORT).show()
         sharedPref.putValue(ConstantDetailEngineer.engineerId, listEngineer[position].engineerId!!)
 
         val intent = Intent(requireContext(), DetailEngineerActivity::class.java)
@@ -87,6 +86,8 @@ class HomeFragment : Fragment(),
         binding.recyclerViewListEngineer.visibility = View.GONE
         if (message == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         }
         binding.ivEmpty.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE

@@ -6,6 +6,7 @@ import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class FormHireViewModel : ViewModel(), CoroutineScope {
@@ -34,11 +35,21 @@ class FormHireViewModel : ViewModel(), CoroutineScope {
                     val enId = sharedPref.getValueString(ConstantDetailEngineer.engineerId)
                     val projectId = sharedPref.getValueString(ConstantProjectCompany.projectId)
                     service.addHire(enId!!.toInt(), projectId!!.toInt(), hirePrice, hireMessage)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-
+                } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         isHireLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }

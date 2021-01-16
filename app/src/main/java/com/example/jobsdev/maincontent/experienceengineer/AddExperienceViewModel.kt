@@ -7,6 +7,7 @@ import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class AddExperienceViewModel : ViewModel(), CoroutineScope {
@@ -34,11 +35,21 @@ class AddExperienceViewModel : ViewModel(), CoroutineScope {
             val results = withContext(Dispatchers.IO){
                 try {
                     service.addExperience(exPosition, exCompany, exStartDate, exEndDate, exDesc, enId!!.toInt())
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-
+                } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         isAddExperienceLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessageLiveData.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessageLiveData.value = "expired"
+                            }
+                            else -> {
+                                isMessageLiveData.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }
@@ -46,7 +57,6 @@ class AddExperienceViewModel : ViewModel(), CoroutineScope {
             if(results is GeneralResponse) {
                 isAddExperienceLiveData.value = true
                 isMessageLiveData.value = results.message
-//                moveActivity()
             } else {
                 isAddExperienceLiveData.value = false
                 isMessageLiveData.value = "Something wrong ..."

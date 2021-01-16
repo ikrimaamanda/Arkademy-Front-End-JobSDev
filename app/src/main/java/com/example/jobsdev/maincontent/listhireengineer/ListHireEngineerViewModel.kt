@@ -43,7 +43,7 @@ class ListHireEngineerViewModel : ViewModel(), CoroutineScope {
 
                         when {
                             e.code() == 404 -> {
-                                isMessage.value = "No data engineer!"
+                                isMessage.value = "Data not found!"
                             }
                             e.code() == 400 -> {
                                 isMessage.value = "expired"

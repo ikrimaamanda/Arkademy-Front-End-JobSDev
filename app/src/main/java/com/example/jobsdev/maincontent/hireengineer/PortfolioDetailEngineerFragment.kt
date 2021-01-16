@@ -20,7 +20,7 @@ import kotlinx.coroutines.*
 
 class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.OnPortfolioClickListener, PortfolioDetailEngineerContract.ViewPortfolioDetailEngineer {
     private lateinit var binding : FragmentPortfolioDetailEngineerBinding
-    var listPortfolio = ArrayList<ItemPortfolioModel>()
+    private var listPortfolio = ArrayList<ItemPortfolioModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var service : JobSDevApiService
@@ -43,14 +43,13 @@ class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAda
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var portfolioAdapter = RecyclerViewListPortfolioAdapter(listPortfolio, this)
+        val portfolioAdapter = RecyclerViewListPortfolioAdapter(listPortfolio, this)
         binding.recyclerViewPortfolio.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewPortfolio.adapter = portfolioAdapter
 
     }
 
     override fun onPortfolioItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listPortfolio[position].appName} clicked", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), DetailPortfolioEngineerActivity::class.java)
         intent.putExtra("portfolioImage", listPortfolio[position].portfolioImage)
         intent.putExtra("appName", listPortfolio[position].appName)
@@ -74,8 +73,9 @@ class PortfolioDetailEngineerFragment : Fragment(), RecyclerViewListPortfolioAda
     override fun failedAdd(msg: String) {
         if (msg == "expired") {
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
         binding.progressBar.visibility = View.GONE
     }
 

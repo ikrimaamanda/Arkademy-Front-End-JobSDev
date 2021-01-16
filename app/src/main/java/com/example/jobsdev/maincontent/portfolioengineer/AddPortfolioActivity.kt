@@ -16,6 +16,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityAddPortfolioBinding
@@ -42,6 +44,7 @@ class AddPortfolioActivity : AppCompatActivity() {
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : JobSDevApiService
     val typeApp = arrayOf("mobile app", "web app")
+    private lateinit var viewModel : AddPortfolioViewModel
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
@@ -52,9 +55,11 @@ class AddPortfolioActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_portfolio)
         sharedPref = PreferencesHelper(this)
-
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(JobSDevApiService::class.java)
+        viewModel = ViewModelProvider(this).get(AddPortfolioViewModel::class.java)
+        viewModel.setService(service)
+        viewModel.setSharedPref(sharedPref)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -81,6 +86,38 @@ class AddPortfolioActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        subscribeLoadingLiveData()
+        subscribeUpdateLiveData()
+
+    }
+
+    private fun subscribeLoadingLiveData() {
+        viewModel.isLoading.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun subscribeUpdateLiveData() {
+        viewModel.isCreatePortfolioLiveData.observe(this, Observer {
+            if (it) {
+                viewModel.isMessage.observe(this, Observer { it1->
+                    showMessage(it1)
+                })
+                moveActivity()
+            } else {
+                viewModel.isMessage.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
+                })
+            }
+        })
     }
 
     private fun pickImageFromGalery() {
@@ -108,12 +145,18 @@ class AddPortfolioActivity : AppCompatActivity() {
             }
 
             binding.btnAddPortfolio.setOnClickListener {
+                val prAppName = binding.etAppName.text.toString()
+                val prDesc = binding.etDescriptionPortfolio.text.toString()
+                val prLinkPub = binding.etLinkPubPortfolio.text.toString()
+                val prLinkRepo = binding.etLinkRepoPortfolio.text.toString()
+                val prWorkplace = binding.etWorkplacePortfolio.text.toString()
+
                 if(binding.etAppName.text.isNullOrEmpty() || binding.etDescriptionPortfolio.text.isNullOrEmpty() || binding.etLinkPubPortfolio.text.isNullOrEmpty() || binding.etLinkRepoPortfolio.text.isNullOrEmpty() || binding.etWorkplacePortfolio.text.isNullOrEmpty()) {
                     showMessage("Please filled all field")
                     binding.etAppName.requestFocus()
                 } else {
                     if (img != null) {
-                        callAddPortfolioApi(img)
+                        viewModel.callAddPortfolioApi(prAppName, prDesc, prLinkPub, prLinkRepo, prWorkplace, img)
                     }
                 }
             }
@@ -154,46 +197,6 @@ class AddPortfolioActivity : AppCompatActivity() {
                 sharedPref.putValue(ConstantPortfolio.typeApp, typeApp[position])
             }
 
-        }
-    }
-
-    private fun callAddPortfolioApi(image : MultipartBody.Part) {
-        coroutineScope.launch {
-            val results = withContext(Dispatchers.IO){
-                try {
-                    val enId = sharedPref.getValueString(ConstantAccountEngineer.engineerId)!!.toRequestBody("text/plain".toMediaTypeOrNull())
-                    val prAppName = binding.etAppName.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val prDesc = binding.etDescriptionPortfolio.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val prLinkPub = binding.etLinkPubPortfolio.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val prLinkRepo = binding.etLinkRepoPortfolio.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val prWorkplace = binding.etWorkplacePortfolio.text.toString()
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-                    val prType = sharedPref.getValueString(ConstantPortfolio.typeApp)!!
-                        .toRequestBody("text/plain".toMediaTypeOrNull())
-
-                    service.addPortfolio(prAppName, prDesc, prLinkPub, prLinkRepo, prWorkplace, prType, image, enId!!)
-                } catch (e:Throwable) {
-                    Log.e("errorM", e.message.toString())
-                    e.printStackTrace()
-                }
-            }
-            Log.d("addPortfolioReq", results.toString())
-
-            if(results is GeneralResponse) {
-                Log.d("addPortfolioReq", results.toString())
-
-                if(results.success) {
-                    showMessage(results.message)
-                    moveActivity()
-                } else {
-                    showMessage(results.message)
-                }
-            }
-            showMessage("Something wrong...")
         }
     }
 

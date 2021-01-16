@@ -30,7 +30,7 @@ class AccountCompanyPresenter(private val coroutineScope: CoroutineScope,
             view?.showProgressBar()
             val response = withContext(Dispatchers.IO) {
                 try {
-                    service?.getCompanyByAcId(sharedPref.getValueString(Constant.prefAccountId))
+                    service.getCompanyByAcId(sharedPref.getValueString(Constant.prefAccountId))
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         view?.hideProgressBar()
@@ -54,7 +54,7 @@ class AccountCompanyPresenter(private val coroutineScope: CoroutineScope,
                 if (response.success) {
                     view?.setDataCompany(response.data)
                     if (response.data.cnProfilePict != null) {
-                        sharedPref.putValue(Constant.prefProfilePict, response.data.cnProfilePict!!)
+                        sharedPref.putValue(Constant.prefProfilePict, response.data.cnProfilePict)
                     }
                 } else {
                     view?.failedSetData(response.message)

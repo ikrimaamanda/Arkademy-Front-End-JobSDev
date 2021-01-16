@@ -58,10 +58,14 @@ class RegisterEngineerActivity : AppCompatActivity() {
     private fun subscribeLiveData() {
         viewModel.isRegisterLiveData.observe( this, Observer {
             if (it) {
-                showMessage("Registration Success!")
+                viewModel.isMessage.observe(this, Observer { it1->
+                    showMessage(it1)
+                })
                 moveActivity()
             } else {
-                showMessage("Registration failed!")
+                viewModel.isMessage.observe(this, Observer { it1->
+                    showMessage(it1)
+                })
             }
         })
     }

@@ -10,6 +10,7 @@ import com.example.jobsdev.sharedpreference.ConstantAccountCompany
 import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel : ViewModel(), CoroutineScope {
@@ -38,11 +39,21 @@ class LoginViewModel : ViewModel(), CoroutineScope {
             val result = withContext(Dispatchers.IO) {
                 try {
                     service.loginRequest(email, password)
-                } catch (e : Throwable) {
-                    e.printStackTrace()
-
+                } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         isLoginLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Email/Password not registered!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }
@@ -52,7 +63,7 @@ class LoginViewModel : ViewModel(), CoroutineScope {
                 if(result.success) {
                     saveSession(result.data.accountId, result.data.accountEmail, result.data.token, result.data.accountLevel)
                     sharedPref.putValue(Constant.prefPassword, password)
-                    isLoginLiveData.value = true
+                    isLoginLiveData.value = result.success
                     isMessage.value = result.message
 
                     if (result.data.accountLevel == 0) {

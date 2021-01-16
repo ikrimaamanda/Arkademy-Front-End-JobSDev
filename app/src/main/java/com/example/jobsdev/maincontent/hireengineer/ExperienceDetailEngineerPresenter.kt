@@ -32,7 +32,7 @@ class ExperienceDetailEngineerPresenter(private val coroutineScope: CoroutineSco
 
             val response = withContext(Dispatchers.IO) {
                 try {
-                    service?.getListExperienceByEnId(sharedPref.getValueString(ConstantDetailEngineer.engineerId)!!.toInt())
+                    service.getListExperienceByEnId(sharedPref.getValueString(ConstantDetailEngineer.engineerId)!!.toInt())
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         view?.hideProgressBar()
@@ -54,15 +54,11 @@ class ExperienceDetailEngineerPresenter(private val coroutineScope: CoroutineSco
 
             if(response is GetExperienceByEnIdResponse) {
                 if (response.success) {
-                    val list = response.data?.map {
+                    val list = response.data.map {
                         ItemExperienceModel(it.enId, it.exId, it.exPosition, it.exCompany, it.exStartDate, it.exEndDate, it.exDesc)
                     }
                     view?.addListExperience(list)
-                } else {
-                    view?.failedAdd(response.message)
                 }
-            } else {
-                view?.failedAdd("Hello, your list experience is empty!")
             }
         }
 

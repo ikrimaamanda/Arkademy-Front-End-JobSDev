@@ -33,7 +33,7 @@ class PortfolioDetailEngineerPresenter (private val coroutineScope: CoroutineSco
             val response = withContext(Dispatchers.IO) {
 
                 try {
-                    service?.getListPortfolioByEnId(sharedPref.getValueString(ConstantDetailEngineer.engineerId)!!.toInt())
+                    service.getListPortfolioByEnId(sharedPref.getValueString(ConstantDetailEngineer.engineerId)!!.toInt())
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         view?.hideProgressBar()
@@ -53,19 +53,13 @@ class PortfolioDetailEngineerPresenter (private val coroutineScope: CoroutineSco
                 }
             }
 
-            Log.d("PortResponse", response.toString())
-
             if(response is GetPortfolioByEnIdResponse) {
                 if (response.success) {
-                    val list = response.data?.map {
+                    val list = response.data.map {
                         ItemPortfolioModel(it.enId, it.portfolioId, it.portfolioprAppName, it.portfolioDesc, it.portfolioLinkPub, it.portfolioLinkRepo, it.portfolioWorkPlace, it.portfolioType, it.portfolioImage)
                     }
                     view?.addListPortfolioDetailEngineer(list)
-                } else {
-                    view?.failedAdd(response.message)
                 }
-            } else {
-                view?.failedAdd("Hello, your list portfolio is empty!")
             }
         }
 

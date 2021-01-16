@@ -51,12 +51,10 @@ class UpdateExperienceActivity : AppCompatActivity() {
                 binding.etUpdateCompanyExperience.text.toString(),
                 binding.etUpdateStartDateExperience.text.toString(),binding.etUpdateEndDateExperience.text.toString(),
                 binding.etUpdateDescriptionExperience.text.toString())
-//            callUpdateExperienceApi(exId, binding.etUpdatePositionExperience.text.toString(), binding.etUpdateCompanyExperience.text.toString(), binding.etUpdateStartDateExperience.text.toString(),binding.etUpdateEndDateExperience.text.toString(), binding.etUpdateDescriptionExperience.text.toString())
         }
 
         binding.btnDeleteExp.setOnClickListener {
             viewModel.callDeleteExpApi(exId)
-//            callDeleteExpApi(exId)
         }
 
         subscribeUpdateLiveData()
@@ -67,13 +65,17 @@ class UpdateExperienceActivity : AppCompatActivity() {
     private fun subscribeDeleteLiveData() {
         viewModel.isDeleteLivedata.observe(this, Observer {
             if (it) {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessage.observe(this, Observer { it1->
+                    showMessage(it1)
                     moveActivity()
                 })
             } else {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessage.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })
@@ -82,13 +84,17 @@ class UpdateExperienceActivity : AppCompatActivity() {
     private fun subscribeUpdateLiveData() {
         viewModel.isUpdateLivedata.observe(this, Observer {
             if (it) {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessage.observe(this, Observer { it1->
+                    showMessage(it1)
                     moveActivity()
                 })
             } else {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessage.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })

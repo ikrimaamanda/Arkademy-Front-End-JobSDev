@@ -3,6 +3,7 @@ package com.example.jobsdev.maincontent.skillengineer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -57,20 +58,35 @@ class UpdateSkillActivity : AppCompatActivity() {
             viewModel.callDeleteSkillApi(skillId)
         }
 
+        subscribeLoadingLiveData()
         subscribeUpdateSkillLiveData()
         subscribeDeleteSkillLiveData()
+    }
+
+    private fun subscribeLoadingLiveData() {
+        viewModel.isLoadingLiveData.observe(this, Observer {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
     }
 
     private fun subscribeDeleteSkillLiveData() {
         viewModel.isDeleteSkillLiveData.observe(this, Observer {
             if (it) {
-                viewModel.isMessageLiveData.observe(this, Observer {
-                    showMessage(it)
-                    moveActivity()
+                viewModel.isMessageLiveData.observe(this, Observer { it1->
+                    showMessage(it1)
                 })
+                moveActivity()
             } else {
-                viewModel.isMessageLiveData.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessageLiveData.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })
@@ -79,13 +95,17 @@ class UpdateSkillActivity : AppCompatActivity() {
     private fun subscribeUpdateSkillLiveData() {
         viewModel.isUpdateSkillLiveData.observe(this, Observer {
             if (it) {
-                viewModel.isMessageLiveData.observe(this, Observer {
-                    showMessage(it)
-                    moveActivity()
+                viewModel.isMessageLiveData.observe(this, Observer { it1->
+                    showMessage(it1)
                 })
+                moveActivity()
             } else {
-                viewModel.isMessageLiveData.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessageLiveData.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })

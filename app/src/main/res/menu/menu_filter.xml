@@ -3,8 +3,6 @@
 
     <item android:title="Name"
         android:id="@+id/item_0"/>
-    <item android:title="Skill"
-        android:id="@+id/item_1"/>
     <item android:title="Location"
         android:id="@+id/item_2"/>
     <item android:title="Freelance"

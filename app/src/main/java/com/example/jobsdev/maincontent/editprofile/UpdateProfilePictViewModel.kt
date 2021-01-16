@@ -9,6 +9,7 @@ import com.example.jobsdev.sharedpreference.ConstantAccountEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
 import okhttp3.MultipartBody
+import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 class UpdateProfilePictViewModel : ViewModel(), CoroutineScope {
@@ -37,13 +38,22 @@ class UpdateProfilePictViewModel : ViewModel(), CoroutineScope {
                 try {
                     val enId = sharedPref.getValueString(ConstantAccountEngineer.engineerId)!!.toInt()
                     service.updateProfilePictEngineer(enId, img)
-
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                    isLoading.value = false
-
+                } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
+                        isLoading.value = false
                         isUpdateImageLiveData.value = false
+
+                        when {
+                            e.code() == 404 -> {
+                                isMessage.value = "Not Found!"
+                            }
+                            e.code() == 400 -> {
+                                isMessage.value = "expired"
+                            }
+                            else -> {
+                                isMessage.value = "Server under maintenance!"
+                            }
+                        }
                     }
                 }
             }

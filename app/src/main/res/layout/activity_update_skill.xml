@@ -44,6 +44,15 @@
             android:paddingHorizontal="40dp"
             android:paddingVertical="50dp">
 
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
             <TextView
                 android:id="@+id/tv_desc"
                 android:text="Update your skill to interest Hiring Partners"

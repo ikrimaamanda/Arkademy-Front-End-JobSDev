@@ -97,13 +97,17 @@ class UpdatePortfolioImageActivity : AppCompatActivity() {
     private fun subscribeUpdateImageLiveData() {
         viewModel.isUpdatePortfolioImageLiveData.observe(this, Observer {
             if (it) {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
-                    moveActivity()
+                viewModel.isMessage.observe(this, Observer {it1->
+                    showMessage(it1)
                 })
+                moveActivity()
             } else {
-                viewModel.isMessage.observe(this, Observer {
-                    showMessage(it)
+                viewModel.isMessage.observe(this, Observer { it1->
+                    if (it1 == "expired") {
+                        showMessage("Please sign in again!")
+                    } else {
+                        showMessage(it1)
+                    }
                 })
             }
         })
