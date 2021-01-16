@@ -1,11 +1,14 @@
 package com.example.jobsdev.maincontent.hireengineer
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -13,13 +16,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityFormHireBinding
 import com.example.jobsdev.maincontent.MainContentActivity
+import com.example.jobsdev.maincontent.listhireengineer.ListHireEngineerResponse
 import com.example.jobsdev.maincontent.projectcompany.ProjectCompanyModel
 import com.example.jobsdev.maincontent.projectcompany.ProjectResponse
 import com.example.jobsdev.maincontent.projectcompany.ProjectsCompanyApiService
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.sharedpreference.ConstantAccountCompany
-import com.example.jobsdev.sharedpreference.ConstantProjectCompany
-import com.example.jobsdev.sharedpreference.PreferencesHelper
+import com.example.jobsdev.sharedpreference.*
 import kotlinx.coroutines.*
 
 class FormHireActivity : AppCompatActivity() {
@@ -27,15 +29,18 @@ class FormHireActivity : AppCompatActivity() {
     private lateinit var binding : ActivityFormHireBinding
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var service : HireApiService
+    private lateinit var service2 : ProjectsCompanyApiService
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var viewModel : FormHireViewModel
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_form_hire)
         sharedPref = PreferencesHelper(this)
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(context = this)!!.create(HireApiService::class.java)
+        service2 = ApiClient.getApiClient(context = this)!!.create(ProjectsCompanyApiService::class.java)
 
         viewModel = ViewModelProvider(this).get(FormHireViewModel::class.java)
         viewModel.setService(service)
@@ -83,31 +88,62 @@ class FormHireActivity : AppCompatActivity() {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun configSpinnerProject() {
-        val service = ApiClient.getApiClient(context = this)?.create(ProjectsCompanyApiService::class.java)
-
         coroutineScope.launch {
-            val response = withContext(Dispatchers.IO) {
+            val cnId = sharedPref.getValueString(ConstantAccountCompany.companyId)
+            val enId = sharedPref.getValueString(ConstantDetailEngineer.engineerId)
+            Log.d("enId", enId.toString())
+            val listProjectIdDoHire = mutableListOf<Long>()
+            var listProject = arrayListOf<String>()
+
+            val result2 = withContext(Dispatchers.IO) {
                 try {
-                    service?.getProjectByCnId(sharedPref.getValueString(ConstantAccountCompany.companyId))
+                    service.getHireByEngineerId(enId)
+                } catch (e:Throwable) {
+                    Log.e("error?", e.message.toString())
+                    e.printStackTrace()
+                }
+            }
+
+            val result1 = withContext(Dispatchers.IO) {
+                try {
+                    service2.getProjectByCnId(cnId)
                 } catch (e:Throwable) {
                     e.printStackTrace()
                 }
             }
 
-            if(response is ProjectResponse) {
-                val list = response.data?.map {
+            if (result2 is ListHireEngineerResponse) {
+                result2.data?.map {
+                    if (it.companyId == cnId!!.toInt() && it.engineerId == enId!!.toInt()) {
+                        listProjectIdDoHire.add(it.projectId!!.toLong())
+                    }
+                }
+            }
+
+            Log.d("listProject", listProjectIdDoHire.size.toString())
+            Log.d("listProject", listProjectIdDoHire.toString())
+
+            if(result1 is ProjectResponse) {
+                val list = result1.data?.map {
                     ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
                 }
 
-                val projectName =
-                    arrayOfNulls<String>(list.size)
-                val projectId =
-                    arrayOfNulls<String>(list.size)
+                val mutableListProject = list.toMutableList()
 
-                for (i in 0 until list.size) {
-                    projectName[i] = list.get(i).projectName
-                    projectId[i] = list.get(i).projectId
+                for (i in 0 until listProjectIdDoHire.size) {
+                    mutableListProject.removeIf{it.projectId.toInt() == listProjectIdDoHire[i].toInt()}
+                }
+
+                val projectName =
+                    arrayOfNulls<String>(mutableListProject.size)
+                val projectId =
+                    arrayOfNulls<String>(mutableListProject.size)
+
+                for (i in 0 until mutableListProject.size) {
+                    projectName[i] = mutableListProject.get(i).projectName
+                    projectId[i] = mutableListProject.get(i).projectId
                 }
 
                 binding.spinnerProject.adapter = ArrayAdapter<String>(this@FormHireActivity, R.layout.support_simple_spinner_dropdown_item, projectName)

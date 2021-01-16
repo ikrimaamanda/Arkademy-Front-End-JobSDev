@@ -35,7 +35,7 @@ class ListHireEngineerViewModel : ViewModel(), CoroutineScope {
 
             val response = withContext(Dispatchers.IO) {
                 try {
-                    service?.getHireByEngineerId(sharedPref.getValueString(ConstantAccountEngineer.engineerId))
+                    service.getHireByEngineerId(sharedPref.getValueString(ConstantAccountEngineer.engineerId))
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         isLoading.value = false
