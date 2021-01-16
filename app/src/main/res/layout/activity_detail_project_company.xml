@@ -66,20 +66,17 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         />
 
-                    <Button
-                        android:id="@+id/btn_update_project_image"
-                        android:text="Update Project Image"
-                        android:textColor="@color/white"
-                        android:textAllCaps="false"
-                        android:paddingHorizontal="10dp"
-                        android:visibility="gone"
-                        android:background="@drawable/bg_orange"
-                        app:layout_constraintTop_toBottomOf="@id/iv_project_image"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="10dp"
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fab_update_image"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:tint="@color/white"
+                        android:visibility="gone"
+                        android:src="@drawable/ic_camera"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_project_image"
+                        app:layout_constraintStart_toStartOf="@id/iv_project_image"
+                        app:layout_constraintEnd_toEndOf="@id/iv_project_image"
+                        />
 
                     <TextView
                         android:id="@+id/tv_project_name"
@@ -89,7 +86,7 @@
                         android:layout_marginTop="30dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/btn_update_project_image"
+                        app:layout_constraintTop_toBottomOf="@id/iv_project_image"
                         app:layout_constraintStart_toStartOf="parent"/>
 
                     <ImageView

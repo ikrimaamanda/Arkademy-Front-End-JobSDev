@@ -58,7 +58,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         sharedPref = PreferencesHelper(requireContext())
         presenter = AccountEngineerPresenter(coroutineScope, service, sharedPref)
 
-        binding.civProfilePict.setOnClickListener {
+        binding.fabUpdateImage.setOnClickListener {
             startActivity(Intent(requireContext(), UpdateProfilePictActivity::class.java))
         }
         binding.btnEditProfile.setOnClickListener {
@@ -150,6 +150,8 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
             .error(R.drawable.profile_pict_base)
             .into(binding.civProfilePict)
         binding.progressBar.showOrGone(false)
+        binding.btnEditProfile.showOrGone(true)
+        binding.fabUpdateImage.showOrGone(true)
     }
 
     override fun addSkill(list: List<ItemSkillEngineerModel>) {
@@ -172,6 +174,8 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
             binding.progressBar.showOrGone(false)
         }
+        binding.btnEditProfile.showOrGone(true)
+        binding.fabUpdateImage.showOrGone(true)
     }
 
     override fun showProgressBar() {

@@ -46,7 +46,7 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
         service = ApiClient.getApiClient(requireContext())!!.create(JobSDevApiService::class.java)
         presenter = AccountCompanyPresenter(coroutineScope, service, sharedPref)
 
-        binding.civProfilePict.setOnClickListener {
+        binding.fabUpdateImage.setOnClickListener {
             startActivity(Intent(requireContext(), UpdateProfilePictActivity::class.java))
         }
 
@@ -91,6 +91,8 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
             .placeholder(R.drawable.img_loading)
             .error(R.drawable.profile_pict_base)
             .into(binding.civProfilePict)
+        binding.btnEditProfile.showOrGone(true)
+        binding.fabUpdateImage.showOrGone(true)
         binding.progressBar.showOrGone(false)
     }
 
@@ -99,6 +101,8 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
             Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
         }
         Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+        binding.btnEditProfile.showOrGone(true)
+        binding.fabUpdateImage.showOrGone(true)
         binding.progressBar.showOrGone(false)
     }
 

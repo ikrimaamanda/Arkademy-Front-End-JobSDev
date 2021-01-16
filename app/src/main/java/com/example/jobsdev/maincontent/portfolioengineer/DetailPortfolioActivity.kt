@@ -42,7 +42,7 @@ class DetailPortfolioActivity : AppCompatActivity() {
             .error(R.drawable.ic_img_add_portfolio)
             .into(binding.ivPortfolioImage)
 
-        binding.ivPortfolioImage.setOnClickListener {
+        binding.fabUpdateImage.setOnClickListener {
             val intent = Intent(this, UpdatePortfolioImageActivity::class.java)
             intent.putExtra("updatePortfolioId", portfolioId)
             startActivity(intent)

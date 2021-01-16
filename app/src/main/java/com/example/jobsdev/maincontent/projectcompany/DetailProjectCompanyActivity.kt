@@ -48,7 +48,7 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
             .error(R.drawable.profile_pict_base)
             .into(binding.ivProjectImage)
 
-        binding.btnUpdateProjectImage.setOnClickListener {
+        binding.fabUpdateImage.setOnClickListener {
             val intent = Intent(this, UpdateProjectImageActivity::class.java)
             intent.putExtra("projectImage", image)
             startActivity(intent)
@@ -84,7 +84,7 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
         binding.progressBarBtn.visibility = View.GONE
         binding.ivEmptyIllustration.visibility = View.GONE
         binding.btnEditProject.visibility = View.GONE
-        binding.btnUpdateProjectImage.visibility = View.GONE
+        binding.fabUpdateImage.visibility = View.GONE
     }
 
     override fun failedAdd(msg: String) {
@@ -94,7 +94,7 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
         binding.progressBarList.visibility = View.GONE
         binding.btnEditProject.visibility = View.VISIBLE
-        binding.btnUpdateProjectImage.visibility = View.VISIBLE
+        binding.fabUpdateImage.visibility = View.VISIBLE
     }
 
     override fun showProgressBar() {
