@@ -67,7 +67,7 @@ class DetailHireEngineerActivity : AppCompatActivity() {
         val image = intent.getStringExtra("projectImage")
         Glide.with(binding.ivProjectImage)
             .load(imgLink + image)
-            .placeholder(R.drawable.profile_pict_base)
+            .placeholder(R.drawable.img_loading)
             .error(R.drawable.profile_pict_base)
             .into(binding.ivProjectImage)
 

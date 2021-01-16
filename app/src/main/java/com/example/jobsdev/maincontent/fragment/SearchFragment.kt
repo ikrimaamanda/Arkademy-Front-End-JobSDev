@@ -63,7 +63,6 @@ class SearchFragment : Fragment(),
     }
 
     override fun onEngineerItemClicked(position: Int) {
-        Toast.makeText(requireContext(), "${listEngineer[position].engineerName} clicked", Toast.LENGTH_SHORT).show()
         sharedPref.putValue(ConstantDetailEngineer.engineerId, listEngineer[position].engineerId!!)
 
         val intent = Intent(requireContext(), DetailEngineerActivity::class.java)

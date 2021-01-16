@@ -32,7 +32,7 @@ class DetailPortfolioEngineerActivity : AppCompatActivity() {
         val image = intent.getStringExtra("portfolioImage")
         Glide.with(binding.ivPortfoliImage)
             .load(imgLink+image)
-            .placeholder(R.drawable.ic_add_project_image)
+            .placeholder(R.drawable.img_loading)
             .error(R.drawable.ic_add_project_image)
             .into(binding.ivPortfoliImage)
     }
