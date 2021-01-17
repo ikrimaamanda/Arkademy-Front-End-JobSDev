@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.loader.content.CursorLoader
+import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityAddPortfolioBinding
 import com.example.jobsdev.maincontent.MainContentActivity
@@ -156,6 +157,10 @@ class AddPortfolioActivity : AppCompatActivity() {
                     binding.etAppName.requestFocus()
                 } else {
                     if (img != null) {
+                        Glide.with(binding.ivUploadPortfolioImage)
+                            .load(img)
+                            .placeholder(R.drawable.img_loading)
+                            .into(binding.ivUploadPortfolioImage)
                         viewModel.callAddPortfolioApi(prAppName, prDesc, prLinkPub, prLinkRepo, prWorkplace, img)
                     }
                 }

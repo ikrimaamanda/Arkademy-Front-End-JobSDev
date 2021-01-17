@@ -192,8 +192,7 @@ class AddNewProjectActivity : AppCompatActivity() {
                     if (img != null) {
                         Glide.with(binding.ivAddProjectImage)
                             .load(img)
-                            .placeholder(R.drawable.img_add_new_project)
-                            .error(R.drawable.img_add_new_project)
+                            .placeholder(R.drawable.img_loading)
                             .into(binding.ivAddProjectImage)
                         viewModel.callAddProjectApi(projectName, projectDesc, projectDeadline, img)
                     }

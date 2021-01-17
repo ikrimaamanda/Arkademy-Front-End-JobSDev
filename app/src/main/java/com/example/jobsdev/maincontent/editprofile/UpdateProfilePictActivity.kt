@@ -66,7 +66,6 @@ class UpdateProfilePictActivity : AppCompatActivity() {
         Glide.with(binding.civUpdateProfilePict)
             .load(imageLink+image)
             .placeholder(R.drawable.img_loading)
-            .error(R.drawable.profile_pict_base)
             .into(binding.civUpdateProfilePict)
 
         binding.civUpdateProfilePict.setOnClickListener {
