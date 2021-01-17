@@ -33,6 +33,8 @@ class DetailPortfolioActivity : AppCompatActivity() {
         val linkPub = intent.getStringExtra("linkPub")
         val linkRepo = intent.getStringExtra("linkRepo")
         val workPlace = intent.getStringExtra("workPlace")
+        val typeApp = intent.getStringExtra("typeApp")
+
 
         val image = sharedPref.getValueString(ConstantPortfolio.portfolioImage)
 
@@ -53,6 +55,7 @@ class DetailPortfolioActivity : AppCompatActivity() {
         binding.tvLinkPub.setText(linkPub)
         binding.tvLinkRepo.setText(linkRepo)
         binding.tvWorkplace.setText(workPlace)
+        binding.tvTypeApp.setText(typeApp)
 
         binding.btnUpdate.setOnClickListener {
             val intent = Intent(this, UpdatePortfolioActivity::class.java)

@@ -44,6 +44,8 @@ class MainContentActivity : AppCompatActivity() {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
         service = ApiClient.getApiClient(this)!!.create(JobSDevApiService::class.java)
 
+        setSupportActionBar(binding.toolbar)
+
         homeFragment = HomeFragment()
         searchFragment = SearchFragment()
         listHireEngineerFragment = ListHireEngineerFragment()
@@ -51,20 +53,8 @@ class MainContentActivity : AppCompatActivity() {
         accountEngineerFragment = AccountEngineerFragment()
         accountCompanyFragment = AccountCompanyFragment()
 
-        val acId = sharedPref.getValueString(Constant.prefAccountId)
-//        getEngineerId(acId.toString())
-//        getCompanyId(acId.toString())
-
         homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction().replace(R.id.fl_container, homeFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-
-
-//        if(sharedPref.getValueString(ConstantAccountEngineer.jobType) != null) {
-//            homeFragment = HomeFragment()
-//            supportFragmentManager.beginTransaction().replace(R.id.fl_container, homeFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-//        } else {
-//            showDialog()
-//        }
 
         binding.bottomNavMenu.setOnNavigationItemSelectedListener{
                 item -> when(item.itemId) {
@@ -72,17 +62,11 @@ class MainContentActivity : AppCompatActivity() {
                 homeFragment = HomeFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.fl_container, homeFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                 binding.tvTitleToolbar.setText("Home")
-//                if(sharedPref.getValueString(ConstantAccountEngineer.jobType) == null) {
-//                    showDialog()
-//                }
             }
             R.id.search -> {
                 searchFragment = SearchFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.fl_container, searchFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
                 binding.tvTitleToolbar.setText("Search")
-//                if(sharedPref.getValueString(ConstantAccountEngineer.jobType) == null) {
-//                    showDialog()
-//                }
             }
             R.id.list -> {
                 if(sharedPref.getValueInt(Constant.prefLevel) == 0) {
@@ -110,63 +94,6 @@ class MainContentActivity : AppCompatActivity() {
             true
         }
 
-    }
-
-    private fun getEngineerId(acId : String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.getEngineerByAcId(acId)
-                } catch (e:Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is DetailEngineerByAcIdResponse) {
-                if (result.success) {
-                    if (result.data.enJobType != null && result.data.enJobTitle != null && result.data.enLocation != null && result.data.enDescription != null) {
-                        sharedPref.putValue(ConstantAccountEngineer.jobType, result.data.enJobType)
-                        sharedPref.putValue(ConstantAccountEngineer.jobTitle, result.data.enJobTitle)
-                        sharedPref.putValue(Constant.prefLocation, result.data.enLocation)
-                        sharedPref.putValue(Constant.prefDescription, result.data.enDescription)
-                    } else {
-                        Toast.makeText(this@MainContentActivity, "Please complete your profile", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getCompanyId(acId : String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                try {
-                    service.getCompanyByAcId(acId)
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                }
-            }
-
-            if (result is DetailCompanyByAcIdResponse) {
-                if (result.success) {
-                    if (result.data.fields != null) {
-                        sharedPref.putValue(ConstantAccountCompany.fields, result.data.fields)
-                    } else {
-                        Toast.makeText(this@MainContentActivity, "Please complete your profile", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun showDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Please complete profile")
-        builder.setMessage("You must complete your profile before enjoy this app!")
-        builder.setPositiveButton("Ok", { dialogInterface : DialogInterface, i : Int -> moveActivity()
-            finish()
-        })
-        builder.show()
     }
 
     private fun moveActivity() {

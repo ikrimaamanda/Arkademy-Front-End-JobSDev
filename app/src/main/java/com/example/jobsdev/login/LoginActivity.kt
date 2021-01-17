@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.setLoginService(service)
 
         binding.btnLogin.setOnClickListener {
-            if(binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
+            if(binding.etEmail.text.isEmpty() || binding.etPassword.text!!.isEmpty()) {
                 Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
                 binding.etEmail.requestFocus()
             } else {

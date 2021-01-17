@@ -119,17 +119,27 @@
                 android:layout_marginTop="30dp"
                 />
 
-            <EditText
-                android:id="@+id/et_password"
-                android:hint="Enter password"
-                android:inputType="textPassword"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                app:passwordToggleEnabled="true"
                 android:layout_marginTop="5dp"
-                android:padding="15dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                app:hintAnimationEnabled="false"
+                android:hint="Enter password"
+                android:background="@drawable/white_button"
+                app:passwordToggleTint="@color/colorPrimaryDark"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:padding="15dp"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tv_confirm_password"
@@ -140,17 +150,27 @@
                 android:layout_marginTop="30dp"
                 />
 
-            <EditText
-                android:id="@+id/et_confirm_password"
-                android:hint="Enter confirm password"
-                android:inputType="textPassword"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                app:passwordToggleEnabled="true"
                 android:layout_marginTop="5dp"
-                android:padding="15dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+                app:hintAnimationEnabled="false"
+                android:hint="Enter confirm password"
+                android:background="@drawable/white_button"
+                app:passwordToggleTint="@color/colorPrimaryDark"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:padding="15dp"
+                    android:background="@color/white"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_register"

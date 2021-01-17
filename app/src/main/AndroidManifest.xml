@@ -38,7 +38,6 @@
         <activity android:name=".maincontent.experienceengineer.AddExperienceActivity" />
         <activity android:name=".maincontent.portfolioengineer.AddPortfolioActivity" />
         <activity android:name=".maincontent.skillengineer.AddSkillActivity" />
-        <activity android:name=".onboard.OnBoardLoginActivity" />
         <activity android:name=".maincontent.editprofile.EditAccountCompanyActivity" />
         <activity android:name=".maincontent.editprofile.EditAccountEngineerActivity" />
         <activity android:name=".maincontent.webview.GitHubWebViewActivity" />

@@ -32,6 +32,7 @@ class GitHubWebViewActivity : AppCompatActivity(), WebViewListener {
 
     class GitHubChromeClient(private var listener : WebViewListener) : WebChromeClient() {
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
+            listener.onProgressChange(newProgress)
             super.onProgressChanged(view, newProgress)
         }
     }

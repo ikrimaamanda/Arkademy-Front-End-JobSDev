@@ -73,7 +73,7 @@ class SearchFragment : Fragment(),
         intent.putExtra("email", listEngineer[position].engineerEmail)
         intent.putExtra("location", listEngineer[position].engineerLocation)
         intent.putExtra("description", listEngineer[position].engineerDescription)
-
+        intent.putExtra("phoneNumber", listEngineer[position].engineerPhoneNumber)
         startActivity(intent)
     }
 

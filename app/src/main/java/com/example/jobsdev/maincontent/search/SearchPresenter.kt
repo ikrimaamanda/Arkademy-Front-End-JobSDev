@@ -55,7 +55,7 @@ class SearchPresenter(private val coroutineScope: CoroutineScope,
                         DetailEngineerModel(it.engineerId, it.accountId, it.accountName, it.accountEmail, it.accountPhoneNumber, it.engineerJobTitle, it.engineerJobType, it.engineerLocation, it.engineerDescription, it.engineerProfilePict, it.skillEngineer)
                     }
                     val mutable = list.toMutableList()
-                    mutable.removeAll{it.engineerJobTitle == null || it.engineerJobType == null}
+                    mutable.removeAll{it.engineerJobTitle == null || it.engineerJobType == null || it.engineerProfilePict == null}
                     view?.onResultSuccess(mutable)
                 } else {
                     view?.onResultFail(response.message)
@@ -96,7 +96,9 @@ class SearchPresenter(private val coroutineScope: CoroutineScope,
                     val list = response.data?.map {
                         DetailEngineerModel(it.engineerId, it.accountId, it.accountName, it.accountEmail, it.accountPhoneNumber, it.engineerJobTitle, it.engineerJobType, it.engineerLocation, it.engineerDescription, it.engineerProfilePict, it.skillEngineer)
                     }
-                    view?.onResultSuccess(list)
+                    val mutable = list.toMutableList()
+                    mutable.removeAll{it.engineerJobTitle == null || it.engineerJobType == null || it.engineerProfilePict == null}
+                    view?.onResultSuccess(mutable)
                 } else {
                     view?.onResultFail(response.message)
                 }

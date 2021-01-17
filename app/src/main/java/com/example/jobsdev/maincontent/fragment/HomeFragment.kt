@@ -8,17 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentHomeBinding
 import com.example.jobsdev.maincontent.hireengineer.DetailEngineerActivity
 import com.example.jobsdev.maincontent.home.HomeContract
 import com.example.jobsdev.maincontent.home.HomePresenter
-import com.example.jobsdev.maincontent.listengineer.DetailEngineerModel
-import com.example.jobsdev.maincontent.listengineer.EngineerApiService
-import com.example.jobsdev.maincontent.listengineer.ListEngineerAdapter
-import com.example.jobsdev.maincontent.listengineer.OnListEngineerClickListener
+import com.example.jobsdev.maincontent.listengineer.*
 import com.example.jobsdev.remote.ApiClient
 import com.example.jobsdev.sharedpreference.ConstantDetailEngineer
 import com.example.jobsdev.sharedpreference.PreferencesHelper
@@ -28,7 +24,7 @@ class HomeFragment : Fragment(),
     OnListEngineerClickListener, HomeContract.ViewHome {
 
     private lateinit var binding : FragmentHomeBinding
-    var listEngineer = ArrayList<DetailEngineerModel>()
+    private var listEngineer = ArrayList<DetailEngineerModel>()
     private lateinit var coroutineScope : CoroutineScope
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var service : EngineerApiService
@@ -52,8 +48,8 @@ class HomeFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerViewListEngineer.adapter = ListEngineerAdapter(listEngineer,this)
-        binding.recyclerViewListEngineer.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        binding.recyclerViewListEngineer.adapter = ListEngineerHomeAdapter(listEngineer,this)
+        binding.recyclerViewListEngineer.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 
     override fun onEngineerItemClicked(position: Int) {
@@ -76,7 +72,7 @@ class HomeFragment : Fragment(),
     }
 
     override fun onResultSuccess(list: List<DetailEngineerModel>) {
-        (binding.recyclerViewListEngineer.adapter as ListEngineerAdapter).addListEngineer(list)
+        (binding.recyclerViewListEngineer.adapter as ListEngineerHomeAdapter).addListEngineerHome(list)
         binding.recyclerViewListEngineer.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
         binding.ivEmpty.visibility = View.GONE

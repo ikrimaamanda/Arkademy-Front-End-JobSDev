@@ -62,6 +62,7 @@ class PortfolioEngineerFragment : Fragment(), RecyclerViewListPortfolioAdapter.O
         intent.putExtra("linkPub", listPortfolio[position].linkPublication)
         intent.putExtra("linkRepo", listPortfolio[position].linkRepo)
         intent.putExtra("workPlace", listPortfolio[position].workPlace)
+        intent.putExtra("typeApp", listPortfolio[position].portfolioType)
         startActivity(intent)
     }
 

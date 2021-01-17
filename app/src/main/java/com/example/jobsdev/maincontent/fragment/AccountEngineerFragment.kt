@@ -4,9 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -65,10 +63,6 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
             startActivity(Intent(activity, EditAccountEngineerActivity::class.java))
         }
 
-        binding.tvGithub.setOnClickListener {
-            startActivity(Intent(activity, GitHubWebViewActivity::class.java))
-        }
-
         binding.btnAddSkill.setOnClickListener {
             startActivity(Intent(activity, AddSkillActivity::class.java))
         }
@@ -85,6 +79,24 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         }
 
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.github_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.github_web_view) {
+            startActivity(Intent(activity, GitHubWebViewActivity::class.java))
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -117,12 +129,12 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Log Out")
         builder.setMessage("Do you want to log out?")
-        builder.setPositiveButton("Yes") { dialogInterface : DialogInterface, i : Int -> sharedPref.putValue(Constant.prefIsLogin, false)
+        builder.setPositiveButton("Yes") { _: DialogInterface, _: Int -> sharedPref.putValue(Constant.prefIsLogin, false)
             moveActivity()
             sharedPref.clear()
             activity!!.finish()
         }
-        builder.setNegativeButton("No") { dialogInterface : DialogInterface, i : Int ->}
+        builder.setNegativeButton("No") { _: DialogInterface, _: Int ->}
         builder.show()
     }
 
