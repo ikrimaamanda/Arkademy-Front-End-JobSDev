@@ -1,5 +1,7 @@
 package com.example.jobsdev.maincontent.skillengineer
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -55,12 +57,22 @@ class UpdateSkillActivity : AppCompatActivity() {
         }
 
         binding.btnDelete.setOnClickListener {
-            viewModel.callDeleteSkillApi(skillId)
+            showDialogDelete(skillId)
         }
 
         subscribeLoadingLiveData()
         subscribeUpdateSkillLiveData()
         subscribeDeleteSkillLiveData()
+    }
+
+    private fun showDialogDelete(skillId : Int) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete Skill")
+        builder.setMessage("Are you sure to delete this skill?")
+        builder.setPositiveButton("Yes") { _: DialogInterface, _: Int -> viewModel.callDeleteSkillApi(skillId)
+        }
+        builder.setNegativeButton("No") { _: DialogInterface, _: Int ->}
+        builder.show()
     }
 
     private fun subscribeLoadingLiveData() {

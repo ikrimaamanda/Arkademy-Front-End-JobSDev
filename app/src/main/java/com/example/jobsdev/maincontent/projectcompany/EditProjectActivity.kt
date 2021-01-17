@@ -1,6 +1,8 @@
 package com.example.jobsdev.maincontent.projectcompany
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -75,7 +77,7 @@ class EditProjectActivity : AppCompatActivity() {
         }
 
         binding.btnDelete.setOnClickListener {
-            viewModel.callDeleteProjectApi()
+            showDialogDelete()
         }
 
         subsribeLoadingLiveData()
@@ -83,8 +85,18 @@ class EditProjectActivity : AppCompatActivity() {
         subscribeDeleteLiveData()
     }
 
+    private fun showDialogDelete() {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Delete Project")
+            builder.setMessage("Are you sure to delete this project?")
+            builder.setPositiveButton("Yes") { _: DialogInterface, _: Int -> viewModel.callDeleteProjectApi()
+            }
+        builder.setNegativeButton("No") { _: DialogInterface, _: Int ->}
+        builder.show()
+    }
+
     private fun deadlineProject() {
-        deadlineProject = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        deadlineProject = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             c.set(Calendar.YEAR, year)
             c.set(Calendar.MONTH, month)
             c.set(Calendar.DAY_OF_MONTH, dayOfMonth)

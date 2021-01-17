@@ -1,6 +1,8 @@
 package com.example.jobsdev.maincontent.experienceengineer
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -83,7 +85,7 @@ class UpdateExperienceActivity : AppCompatActivity() {
         }
 
         binding.btnDeleteExp.setOnClickListener {
-            viewModel.callDeleteExpApi(exId)
+            showDialogDelete(exId)
         }
 
         subscribeLoadingLiveData()
@@ -92,8 +94,18 @@ class UpdateExperienceActivity : AppCompatActivity() {
 
     }
 
+    private fun showDialogDelete(exId: Int) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete Experience")
+        builder.setMessage("Are you sure to delete this experience?")
+        builder.setPositiveButton("Yes") { _: DialogInterface, _: Int -> viewModel.callDeleteExpApi(exId)
+        }
+        builder.setNegativeButton("No") { _: DialogInterface, _: Int ->}
+        builder.show()
+    }
+
     private fun startDateExperience() {
-        updateStartDate = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        updateStartDate = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             c.set(Calendar.YEAR, year)
             c.set(Calendar.MONTH, month)
             c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -107,7 +119,7 @@ class UpdateExperienceActivity : AppCompatActivity() {
     }
 
     private fun endDateExperience() {
-        updateEndDate = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        updateEndDate = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             c.set(Calendar.YEAR, year)
             c.set(Calendar.MONTH, month)
             c.set(Calendar.DAY_OF_MONTH, dayOfMonth)

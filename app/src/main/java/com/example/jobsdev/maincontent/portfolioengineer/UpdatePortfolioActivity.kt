@@ -1,5 +1,7 @@
 package com.example.jobsdev.maincontent.portfolioengineer
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -66,18 +68,27 @@ class UpdatePortfolioActivity : AppCompatActivity() {
                 binding.etAppName.requestFocus()
             } else {
                 viewModel.callUpdatePortfolioApi(portfolioId, prAppName, prDesc, prLinkPub, prLinkRepo, prWorkplace)
-//                callUpdatePortfolioApi(intent.getIntExtra("updatePortfolioId", 0))
             }
 
         }
 
         binding.btnDeletePortfolio.setOnClickListener {
-            viewModel.callDeletePortfolioApi(portfolioId)
+            showDialogDelete(portfolioId)
         }
 
         subscribeUpdateLiveData()
         subscribeDeleteLivedata()
         subsriveLoadingLiveData()
+    }
+
+    private fun showDialogDelete(portfolioId: Int) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete Portfolio")
+        builder.setMessage("Are you sure to delete this portfolio?")
+        builder.setPositiveButton("Yes") { _: DialogInterface, _: Int -> viewModel.callDeletePortfolioApi(portfolioId)
+        }
+        builder.setNegativeButton("No") { _: DialogInterface, _: Int ->}
+        builder.show()
     }
 
     private fun subscribeDeleteLivedata() {
