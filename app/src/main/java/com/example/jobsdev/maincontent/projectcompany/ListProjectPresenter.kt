@@ -1,6 +1,5 @@
 package com.example.jobsdev.maincontent.projectcompany
 
-import android.util.Log
 import com.example.jobsdev.sharedpreference.ConstantAccountCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.CoroutineScope
@@ -52,7 +51,7 @@ class ListProjectPresenter(private val coroutineScope: CoroutineScope,
 
             if(response is ProjectResponse) {
                 if (response.success) {
-                    val list = response.data?.map {
+                    val list = response.data.map {
                         ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
                     }
                     view?.addListProject(list)

@@ -2,7 +2,6 @@
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.example.jobsdev.R
 import com.example.jobsdev.databinding.FragmentListProjectCompanyBinding
 import com.example.jobsdev.maincontent.projectcompany.*
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.sharedpreference.ConstantAccountCompany
 import com.example.jobsdev.sharedpreference.ConstantProjectCompany
 import com.example.jobsdev.sharedpreference.PreferencesHelper
 import kotlinx.coroutines.*
