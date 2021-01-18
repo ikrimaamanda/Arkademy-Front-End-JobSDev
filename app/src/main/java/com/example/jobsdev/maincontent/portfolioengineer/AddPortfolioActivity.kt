@@ -136,7 +136,7 @@ class AddPortfolioActivity : AppCompatActivity() {
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
 
-            var img : MultipartBody.Part? = null
+            var img : MultipartBody.Part?
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile : RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)

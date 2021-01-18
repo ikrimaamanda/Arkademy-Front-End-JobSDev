@@ -39,7 +39,7 @@ class RegisterEngineerActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
                 binding.etName.requestFocus()
             } else if(binding.etConfirmPassword.text.toString() != binding.etPassword.text.toString()) {
-                showMessage("Please write again password")
+                showMessage("Please check and rewrite your password!")
                 binding.etConfirmPassword.requestFocus()
             }
             else {

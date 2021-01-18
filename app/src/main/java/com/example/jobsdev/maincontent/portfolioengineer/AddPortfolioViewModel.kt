@@ -78,7 +78,6 @@ class AddPortfolioViewModel : ViewModel(), CoroutineScope {
                 isCreatePortfolioLiveData.value = results.success
                 isMessage.value = results.message
                 isLoading.value = false
-//                moveActivity()
             } else {
                 isCreatePortfolioLiveData.value = false
                 isMessage.value = "Something wrong..."

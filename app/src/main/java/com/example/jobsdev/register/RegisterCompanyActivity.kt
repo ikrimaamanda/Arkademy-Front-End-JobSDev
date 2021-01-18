@@ -40,11 +40,11 @@ class RegisterCompanyActivity : AppCompatActivity() {
         }
 
         binding.btnRegister.setOnClickListener {
-            if(binding.etName.text.isEmpty() || binding.etEmail.text.isEmpty() || binding.etNumberPhone.text.isEmpty() || binding.etPassword.text!!.isEmpty() || binding.etConfirmPassword.text!!.isEmpty()) {
+            if(binding.etName.text.isEmpty() || binding.etEmail.text.isEmpty() || binding.etCompany.text.isEmpty() || binding.etPosition.text.isEmpty() || binding.etNumberPhone.text.isEmpty() || binding.etPassword.text!!.isEmpty() || binding.etConfirmPassword.text!!.isEmpty()) {
                 Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
                 binding.etName.requestFocus()
             } else if(binding.etConfirmPassword.text.toString() != binding.etPassword.text.toString()) {
-                showMessage("Please write again password")
+                showMessage("Please check and rewrite your password!")
                 binding.etConfirmPassword.requestFocus()
             }
             else {
