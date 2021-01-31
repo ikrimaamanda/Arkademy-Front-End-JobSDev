@@ -10,7 +10,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -23,16 +22,11 @@ import com.bumptech.glide.Glide
 import com.example.jobsdev.R
 import com.example.jobsdev.databinding.ActivityAddPortfolioBinding
 import com.example.jobsdev.maincontent.MainContentActivity
-import com.example.jobsdev.maincontent.hireengineer.HireApiService
-import com.example.jobsdev.maincontent.hireengineer.HireResponse
-import com.example.jobsdev.maincontent.projectcompany.AddNewProjectActivity
 import com.example.jobsdev.remote.ApiClient
-import com.example.jobsdev.retfrofit.GeneralResponse
 import com.example.jobsdev.retfrofit.JobSDevApiService
 import com.example.jobsdev.sharedpreference.*
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -46,6 +40,8 @@ class AddPortfolioActivity : AppCompatActivity() {
     private lateinit var service : JobSDevApiService
     val typeApp = arrayOf("mobile app", "web app")
     private lateinit var viewModel : AddPortfolioViewModel
+    private var img: MultipartBody.Part? = null
+    private var image: String = ""
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
@@ -80,6 +76,30 @@ class AddPortfolioActivity : AppCompatActivity() {
                 }
             } else {
                 pickImageFromGalery()
+            }
+        }
+
+        binding.btnAddPortfolio.setOnClickListener {
+            val prAppName = binding.etAppName.text.toString()
+            val prDesc = binding.etDescriptionPortfolio.text.toString()
+            val prLinkPub = binding.etLinkPubPortfolio.text.toString()
+            val prLinkRepo = binding.etLinkRepoPortfolio.text.toString()
+            val prWorkplace = binding.etWorkplacePortfolio.text.toString()
+
+            if(binding.etAppName.text.isNullOrEmpty() || binding.etDescriptionPortfolio.text.isNullOrEmpty() || binding.etLinkPubPortfolio.text.isNullOrEmpty() || binding.etLinkRepoPortfolio.text.isNullOrEmpty() || binding.etWorkplacePortfolio.text.isNullOrEmpty()) {
+                showMessage("Please filled all field")
+                binding.etAppName.requestFocus()
+            } else {
+                if (image != "") {
+                    viewModel.setImage(img!!)
+                    Glide.with(binding.ivUploadPortfolioImage)
+                        .load(img)
+                        .placeholder(R.drawable.img_loading)
+                        .into(binding.ivUploadPortfolioImage)
+                    viewModel.callAddPortfolioApi(prAppName, prDesc, prLinkPub, prLinkRepo, prWorkplace)
+                } else {
+                    Toast.makeText(this, "Please choose image", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -135,35 +155,16 @@ class AddPortfolioActivity : AppCompatActivity() {
 
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
+            if (filePath != null) {
+                image = filePath
+            }
 
-            var img : MultipartBody.Part?
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile : RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
 
             img = reqFile?.let { it1 ->
                 MultipartBody.Part.createFormData("image", file.name, it1)
-            }
-
-            binding.btnAddPortfolio.setOnClickListener {
-                val prAppName = binding.etAppName.text.toString()
-                val prDesc = binding.etDescriptionPortfolio.text.toString()
-                val prLinkPub = binding.etLinkPubPortfolio.text.toString()
-                val prLinkRepo = binding.etLinkRepoPortfolio.text.toString()
-                val prWorkplace = binding.etWorkplacePortfolio.text.toString()
-
-                if(binding.etAppName.text.isNullOrEmpty() || binding.etDescriptionPortfolio.text.isNullOrEmpty() || binding.etLinkPubPortfolio.text.isNullOrEmpty() || binding.etLinkRepoPortfolio.text.isNullOrEmpty() || binding.etWorkplacePortfolio.text.isNullOrEmpty()) {
-                    showMessage("Please filled all field")
-                    binding.etAppName.requestFocus()
-                } else {
-                    if (img != null) {
-                        Glide.with(binding.ivUploadPortfolioImage)
-                            .load(img)
-                            .placeholder(R.drawable.img_loading)
-                            .into(binding.ivUploadPortfolioImage)
-                        viewModel.callAddPortfolioApi(prAppName, prDesc, prLinkPub, prLinkRepo, prWorkplace, img)
-                    }
-                }
             }
 
         }
@@ -198,7 +199,6 @@ class AddPortfolioActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                Toast.makeText(this@AddPortfolioActivity, "${typeApp[position]} clicked", Toast.LENGTH_SHORT).show();
                 sharedPref.putValue(ConstantPortfolio.typeApp, typeApp[position])
             }
 

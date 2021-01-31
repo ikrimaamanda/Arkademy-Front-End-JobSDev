@@ -19,6 +19,7 @@ class AddNewProjectViewModel : ViewModel(), CoroutineScope {
 
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var service : ProjectsCompanyApiService
+    private lateinit var image: MultipartBody.Part
 
     fun setSharedPref(sharedPref : PreferencesHelper) {
         this.sharedPref = sharedPref
@@ -28,10 +29,14 @@ class AddNewProjectViewModel : ViewModel(), CoroutineScope {
         this.service = service
     }
 
+    fun setImage(image : MultipartBody.Part) {
+        this.image = image
+    }
+
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
 
-    fun callAddProjectApi(projectName : String, projectDesc : String, projectDeadline : String,image : MultipartBody.Part) {
+    fun callAddProjectApi(projectName : String, projectDesc : String, projectDeadline : String) {
         launch {
             isLoading.value = true
             val results = withContext(Dispatchers.IO){

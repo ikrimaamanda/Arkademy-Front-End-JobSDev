@@ -39,14 +39,10 @@ class DetailEngineerPresenter(private val coroutineScope: CoroutineScope,
                         view?.hideProgressBarSkill()
 
                         when {
-                            e.code() == 404 -> {
-                                view?.failedAddSkill("Data not found!")
-                            }
                             e.code() == 400 -> {
-                                view?.failedAddSkill("expired")
+                                view?.failedAddSkill()
                             }
                             else -> {
-                                view?.failedAddSkill("Server under maintenance!")
                             }
                         }
                     }
@@ -60,6 +56,8 @@ class DetailEngineerPresenter(private val coroutineScope: CoroutineScope,
                     }
                     view?.addListSkill(list)
                 }
+            } else {
+                view?.failedAddSkill()
             }
         }
 

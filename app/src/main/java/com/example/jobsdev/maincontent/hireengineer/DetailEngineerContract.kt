@@ -7,7 +7,7 @@ interface DetailEngineerContract {
 
     interface ViewDetailEngineer{
         fun addListSkill(list : List<ItemSkillEngineerModel>)
-        fun failedAddSkill(msg : String)
+        fun failedAddSkill()
         fun showProgressBarSkill()
         fun hideProgressBarSkill()
     }

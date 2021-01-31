@@ -39,14 +39,10 @@ class AccountEngineerPresenter(private val coroutineScope: CoroutineScope,
                         view?.hideProgressBar()
 
                         when {
-                            e.code() == 404 -> {
-                                view?.failedSetData("Data not found!")
-                            }
                             e.code() == 400 -> {
                                 view?.failedSetData("expired")
                             }
                             else -> {
-                                view?.failedSetData("Server under maintenance!")
                             }
                         }
                     }
@@ -77,14 +73,10 @@ class AccountEngineerPresenter(private val coroutineScope: CoroutineScope,
                         view?.hideProgressBar()
 
                         when {
-                            e.code() == 404 -> {
-                                view?.failedAddSkill("Data not found!")
-                            }
                             e.code() == 400 -> {
-                                view?.failedAddSkill("expired")
+                                view?.failedAddSkill()
                             }
                             else -> {
-                                view?.failedAddSkill("Server under maintenance!")
                             }
                         }
                     }
@@ -98,6 +90,8 @@ class AccountEngineerPresenter(private val coroutineScope: CoroutineScope,
                     }
                     view?.addSkill(list)
                 }
+            } else {
+                view?.failedAddSkill()
             }
         }
     }

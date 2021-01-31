@@ -3,7 +3,6 @@ package com.example.jobsdev.maincontent.hireengineer
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -55,7 +54,7 @@ class FormHireActivity : AppCompatActivity() {
         }
 
         binding.btnHire.setOnClickListener {
-            if(binding.spinnerProject.equals("none") || binding.etHireMessage.text.isEmpty() || binding.etPrice.text.isEmpty()) {
+            if(binding.etHireMessage.text.isEmpty() || binding.etPrice.text.isEmpty()) {
                 showMessage("Please filled all field")
                 binding.etHireMessage.requestFocus()
             } else {
@@ -114,7 +113,7 @@ class FormHireActivity : AppCompatActivity() {
             }
 
             if (result1 is ListHireEngineerResponse) {
-                result1.data?.map {
+                result1.data.map {
                     if (it.companyId == cnId!!.toInt() && it.engineerId == enId!!.toInt()) {
                         listProjectIdDoHire.add(it.projectId!!.toLong())
                     }
@@ -123,7 +122,7 @@ class FormHireActivity : AppCompatActivity() {
 
 
             if(result2 is ProjectResponse) {
-                val list = result2.data?.map {
+                val list = result2.data.map {
                     ProjectCompanyModel(it.projectId, it.companyId, it.projectName, it.projectDesc, it.projectDeadline, it.projectImage, it.projectCreateAt, it.projectUpdateAt)
                 }
 
@@ -142,6 +141,10 @@ class FormHireActivity : AppCompatActivity() {
                     projectName[i] = mutableListProject.get(i).projectName
                     projectId[i] = mutableListProject.get(i).projectId
                 }
+                if (mutableListProject.isNullOrEmpty()) {
+                    binding.btnHire.visibility = View.GONE
+                    Toast.makeText(this@FormHireActivity, "You don't have any project to hire this engineer!", Toast.LENGTH_SHORT).show()
+                }
 
                 binding.spinnerProject.adapter = ArrayAdapter<String>(this@FormHireActivity, R.layout.support_simple_spinner_dropdown_item, projectName)
 
@@ -157,14 +160,10 @@ class FormHireActivity : AppCompatActivity() {
                         id: Long
                     ) {
                         sharedPref.putValue(ConstantProjectCompany.projectId, projectId[position].toString())
-
                     }
-
                 }
             }
-
         }
-
     }
 
     private fun showMessage(message : String) {

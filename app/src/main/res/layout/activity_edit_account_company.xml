@@ -69,7 +69,7 @@
 
                 <EditText
                     android:id="@+id/et_company_name"
-                    android:hint="Edit your name"
+                    android:hint="Example : PT. Maju Jaya"
                     android:text="@{model.companyName}"
                     android:inputType="text"
                     android:layout_width="match_parent"
@@ -90,7 +90,7 @@
 
                 <EditText
                     android:id="@+id/et_ac_name"
-                    android:hint="Edit your name"
+                    android:hint="Example : Soekarno"
                     android:text="@{model.accountName}"
                     android:inputType="text"
                     android:layout_width="match_parent"
@@ -111,7 +111,7 @@
 
                 <EditText
                     android:id="@+id/et_edit_phone_number"
-                    android:hint="Edit your phone number"
+                    android:hint="Example : 085123123124"
                     android:text="@{model.accountPhoneNumber}"
                     android:inputType="phone"
                     android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_old_password"
-                    android:hint="Input your last password"
+                    android:hint="Example : *******"
                     android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_new_password"
-                    android:hint="Input your new password"
+                    android:hint="Example : *******"
                     android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
 
                 <EditText
                     android:id="@+id/et_edit_position"
-                    android:hint="Edit your position"
+                    android:hint="Example : CEO"
                     android:text="@{model.position}"
                     android:inputType="text"
                     android:layout_width="match_parent"
@@ -190,7 +190,7 @@
 
                 <EditText
                     android:id="@+id/et_edit_fields"
-                    android:hint="Edit your fields"
+                    android:hint="Example : Technology"
                     android:text="@{model.fields}"
                     android:inputType="text"
                     android:layout_width="match_parent"
@@ -210,7 +210,7 @@
 
                 <EditText
                     android:id="@+id/et_edit_location"
-                    android:hint="Edit your location"
+                    android:hint="Example : Jakarta"
                     android:text="@{model.companyCity}"
                     android:inputType="text"
                     android:layout_width="match_parent"
@@ -230,7 +230,7 @@
 
                 <EditText
                     android:id="@+id/et_edit_description"
-                    android:hint="Edit description"
+                    android:hint="Example : I have any project to finish"
                     android:text="@{model.cnDescription}"
                     android:inputType="textMultiLine"
                     android:layout_width="match_parent"
@@ -252,7 +252,7 @@
 
                 <EditText
                     android:id="@+id/et_instagram"
-                    android:hint="Edit instagram"
+                    android:hint="Example : @MajuJaya"
                     android:text="@{model.instagram}"
                     android:inputType="text"
                     android:layout_width="match_parent"
@@ -273,7 +273,7 @@
 
                 <EditText
                     android:id="@+id/et_edit_linkedin"
-                    android:hint="Edit LinkedIn"
+                    android:hint="Example : PT. Maju Jaya"
                     android:text="@{model.linkedin}"
                     android:inputType="text"
                     android:layout_width="match_parent"

@@ -172,7 +172,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
         binding.tvEmptyListSkill.showOrGone(false)
     }
 
-    override fun failedAddSkill(message: String) {
+    override fun failedAddSkill() {
         binding.rvSkillEngineer.showOrGone(false)
         binding.tvEmptyListSkill.showOrGone(true)
         binding.progressBarSkill.showOrGone(false)

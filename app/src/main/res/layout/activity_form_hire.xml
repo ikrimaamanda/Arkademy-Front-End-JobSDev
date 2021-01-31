@@ -68,7 +68,7 @@
                 <EditText
                     android:id="@+id/et_hire_message"
                     android:text=""
-                    android:hint="Input message"
+                    android:hint="Example : Please response this"
                     android:gravity="top"
                     android:inputType="textMultiLine"
                     android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_price"
-                    android:hint="Input price"
+                    android:hint="Example : 20000000"
                     android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

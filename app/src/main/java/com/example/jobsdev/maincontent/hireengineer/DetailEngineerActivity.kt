@@ -87,7 +87,6 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
     }
 
     override fun onSkillItemClicked(position: Int) {
-//        Toast.makeText(this, "Skill ${listSkill[position].skillName} clicked", Toast.LENGTH_SHORT).show()
     }
 
     override fun addListSkill(list: List<ItemSkillEngineerModel>) {
@@ -97,12 +96,7 @@ class DetailEngineerActivity : AppCompatActivity(), RecyclerViewSkillEngineerAda
         binding.tvEmptyListSkill.showOrGone(false)
     }
 
-    override fun failedAddSkill(msg: String) {
-        if (msg == "expired") {
-            Toast.makeText(this, "Please sign in again!", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-        }
+    override fun failedAddSkill() {
         binding.rvSkillEngineer.showOrGone(false)
         binding.tvEmptyListSkill.showOrGone(true)
         binding.progressBarSkill.showOrGone(false)

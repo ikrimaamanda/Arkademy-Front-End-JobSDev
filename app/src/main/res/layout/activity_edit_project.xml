@@ -68,7 +68,7 @@
 
                     <EditText
                         android:id="@+id/et_project_name"
-                        android:hint="Input new project name"
+                        android:hint="Example : Build Study Apps"
                         android:inputType="text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
 
                     <EditText
                         android:id="@+id/et_deadline_update_project"
-                        android:hint="Input new deadline"
+                        android:hint="Example : 2021-04-05"
                         android:inputType="date"
                         android:focusable="false"
                         android:layout_width="match_parent"
@@ -132,7 +132,7 @@
 
                     <EditText
                         android:id="@+id/et_desc"
-                        android:hint="Input new description"
+                        android:hint="Example : Build this app with Kotlin"
                         android:inputType="textMultiLine"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"

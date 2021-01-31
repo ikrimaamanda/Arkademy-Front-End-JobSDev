@@ -42,6 +42,8 @@ class AddNewProjectActivity : AppCompatActivity() {
     private lateinit var viewModel : AddNewProjectViewModel
     private lateinit var deadlineProject: DatePickerDialog.OnDateSetListener
     private lateinit var c: Calendar
+    private var img: MultipartBody.Part? = null
+    private var image: String = ""
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
@@ -89,6 +91,28 @@ class AddNewProjectActivity : AppCompatActivity() {
 
         deadlineProject()
 
+        binding.btnAdd.setOnClickListener {
+            val projectName = binding.etProjectName.text.toString()
+            val projectDesc = binding.etProjectDesc.text.toString()
+            val projectDeadline = binding.etDeadlineNewProject.text.toString()
+
+            if(binding.etProjectName.text.isEmpty() || binding.etProjectDesc.text.isEmpty() || binding.etDeadlineNewProject.text.isEmpty()) {
+                Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
+                binding.etProjectName.requestFocus()
+            } else {
+                if (image != "") {
+                    viewModel.setImage(img!!)
+                    Glide.with(binding.ivAddProjectImage)
+                        .load(img)
+                        .placeholder(R.drawable.img_loading)
+                        .into(binding.ivAddProjectImage)
+                    viewModel.callAddProjectApi(projectName, projectDesc, projectDeadline)
+                } else {
+                    Toast.makeText(this, "Please choose image", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
@@ -98,7 +122,7 @@ class AddNewProjectActivity : AppCompatActivity() {
     }
 
     private fun deadlineProject() {
-        deadlineProject = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        deadlineProject = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             c.set(Calendar.YEAR, year)
             c.set(Calendar.MONTH, month)
             c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -170,33 +194,16 @@ class AddNewProjectActivity : AppCompatActivity() {
 
             val filePath = data?.data?.let { getPath(this, it) }
             val file = File(filePath)
+            if (filePath != null) {
+                image = filePath
+            }
 
-            var img : MultipartBody.Part?
             val mediaTypeImg = "image/jpeg".toMediaType()
             val inputStream = data?.data?.let { contentResolver.openInputStream(it) }
             val reqFile : RequestBody? = inputStream?.readBytes()?.toRequestBody(mediaTypeImg)
 
             img = reqFile?.let { it1 ->
                 MultipartBody.Part.createFormData("image", file.name, it1)
-            }
-
-            binding.btnAdd.setOnClickListener {
-                val projectName = binding.etProjectName.text.toString()
-                val projectDesc = binding.etProjectDesc.text.toString()
-                val projectDeadline = binding.etDeadlineNewProject.text.toString()
-
-                if(binding.etProjectName.text.isEmpty() || binding.etProjectDesc.text.isEmpty() || binding.etDeadlineNewProject.text.isEmpty()) {
-                    Toast.makeText(this, "Please filled all field", Toast.LENGTH_SHORT).show()
-                    binding.etProjectName.requestFocus()
-                } else {
-                    if (img != null) {
-                        Glide.with(binding.ivAddProjectImage)
-                            .load(img)
-                            .placeholder(R.drawable.img_loading)
-                            .into(binding.ivAddProjectImage)
-                        viewModel.callAddProjectApi(projectName, projectDesc, projectDeadline, img)
-                    }
-                }
             }
 
         }

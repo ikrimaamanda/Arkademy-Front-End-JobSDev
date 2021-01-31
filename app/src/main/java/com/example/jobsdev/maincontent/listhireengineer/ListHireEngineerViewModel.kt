@@ -57,12 +57,12 @@ class ListHireEngineerViewModel : ViewModel(), CoroutineScope {
             }
 
             if(response is ListHireEngineerResponse) {
-                val list = response.data?.map {
+                val list = response.data.map {
                     DetailHireEngineerModel(it.hireId, it.companyId, it.companyName, it.position,
-                            it.companyFields, it.companyCity, it.companyDescription, it.companyInstagram,
-                            it.companyLinkedIn, it.engineerId, it.projectId, it.projectName, it.projectDescription,
-                            it.projectDeadline, it.projectImage, it.price, it.message, it.status, it.dateConfirm)
-                    }
+                        it.companyFields, it.companyCity, it.companyDescription, it.companyInstagram,
+                        it.companyLinkedIn, it.engineerId, it.projectId, it.projectName, it.projectDescription,
+                        it.projectDeadline, it.projectImage, it.price, it.message, it.status, it.dateConfirm)
+                }
                 isListHireEngineerLiveData.value = true
                 isAddList.value = list
                 isLoading.value = false

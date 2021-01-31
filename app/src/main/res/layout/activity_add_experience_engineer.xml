@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_position_experience"
-                    android:hint="Input position"
+                    android:hint="Example : Software Engineer"
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_company_experience"
-                    android:hint="Input company"
+                    android:hint="Example : Tokopedia"
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_start_date_new_experience"
-                    android:hint="Input start date"
+                    android:hint="Example : 2021-02-05"
                     android:inputType="date"
                     android:focusable="false"
                     android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_end_date_new_experience"
-                    android:hint="Input end date"
+                    android:hint="Example : 2021-05-05"
                     android:inputType="date"
                     android:focusable="false"
                     android:layout_width="match_parent"
@@ -125,7 +125,7 @@
 
                 <EditText
                     android:id="@+id/et_description_experience"
-                    android:hint="Input description"
+                    android:hint="Example : Improving skill with team"
                     android:inputType="textMultiLine"
                     android:gravity="top"
                     android:layout_width="match_parent"

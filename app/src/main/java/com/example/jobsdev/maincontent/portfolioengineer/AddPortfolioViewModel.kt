@@ -22,6 +22,7 @@ class AddPortfolioViewModel : ViewModel(), CoroutineScope {
 
     private lateinit var sharedPref : PreferencesHelper
     private lateinit var service : JobSDevApiService
+    private lateinit var image: MultipartBody.Part
 
     fun setSharedPref(sharedPref : PreferencesHelper) {
         this.sharedPref = sharedPref
@@ -31,10 +32,14 @@ class AddPortfolioViewModel : ViewModel(), CoroutineScope {
         this.service = service
     }
 
+    fun setImage(image : MultipartBody.Part) {
+        this.image = image
+    }
+
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
 
-    fun callAddPortfolioApi(prAppName : String, prDesc : String, prLinkPub : String, prLinkRepo : String, prWorkplace : String,image : MultipartBody.Part) {
+    fun callAddPortfolioApi(prAppName : String, prDesc : String, prLinkPub : String, prLinkRepo : String, prWorkplace : String) {
         launch {
             isLoading.value = true
             val results = withContext(Dispatchers.IO){
@@ -60,9 +65,6 @@ class AddPortfolioViewModel : ViewModel(), CoroutineScope {
                         isCreatePortfolioLiveData.value = false
 
                         when {
-                            e.code() == 404 -> {
-                                isMessage.value = "Not Found!"
-                            }
                             e.code() == 400 -> {
                                 isMessage.value = "expired"
                             }

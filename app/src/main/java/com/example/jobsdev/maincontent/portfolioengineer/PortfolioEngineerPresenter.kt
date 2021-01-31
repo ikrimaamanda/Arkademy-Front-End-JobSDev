@@ -37,14 +37,10 @@ class PortfolioEngineerPresenter(private val coroutineScope: CoroutineScope,
                         view?.hideProgressBar()
 
                         when {
-                            e.code() == 404 -> {
-                                view?.failedAdd("Data not found!")
-                            }
                             e.code() == 400 -> {
                                 view?.failedAdd("expired")
                             }
                             else -> {
-                                view?.failedAdd("Server under maintenance!")
                             }
                         }
                     }

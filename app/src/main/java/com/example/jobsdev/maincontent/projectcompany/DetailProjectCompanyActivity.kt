@@ -25,7 +25,7 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
     private lateinit var sharedPref : PreferencesHelper
     private var imgLink = "http://54.236.22.91:4000/image/"
     private lateinit var service : HireApiService
-    private var presenter : DetailProjectCompanyContract.PresenterDetailProjectCompany? = null
+    private var presenter : DetailProjectCompanyPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +74,6 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
     }
 
     override fun onHireByProjectIdItemClicked(position: Int) {
-        Toast.makeText(this, "${listHireProject[position].acName} clicked", Toast.LENGTH_SHORT).show()
     }
 
     override fun addListHireByPjId(list: List<HireByProjectIdModel>) {

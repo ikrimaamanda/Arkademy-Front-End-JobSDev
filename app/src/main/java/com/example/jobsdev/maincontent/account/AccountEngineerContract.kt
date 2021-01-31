@@ -8,7 +8,7 @@ interface AccountEngineerContract {
     interface ViewAcEngineer{
         fun setDataEngineer(data : DetailEngineerByAcIdResponse.Engineer)
         fun addSkill(list : List<ItemSkillEngineerModel>)
-        fun failedAddSkill(message: String)
+        fun failedAddSkill()
         fun failedSetData(message : String)
         fun showProgressBar()
         fun hideProgressBar()

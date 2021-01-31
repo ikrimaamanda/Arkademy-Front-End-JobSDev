@@ -39,14 +39,10 @@ class DetailProjectCompanyPresenter(private val coroutineScope: CoroutineScope,
                         view?.hideProgressBar()
 
                         when {
-                            e.code() == 404 -> {
-                                view?.failedAdd("Data not found!")
-                            }
                             e.code() == 400 -> {
                                 view?.failedAdd("expired")
                             }
                             else -> {
-                                view?.failedAdd("Server under maintenance!")
                             }
                         }
                     }
@@ -60,11 +56,7 @@ class DetailProjectCompanyPresenter(private val coroutineScope: CoroutineScope,
                             it.projectDesc, it.projectDeadline, it.projectImage, it.hirePrice, it.hireMessage, it.hireStatus, it.hireDateConfirm, it.hireCreatedAt, it.projectCreateAt, it.projectUpdateAt, it.name, it.email, it.pHoneNumber)
                     }
                     view?.addListHireByPjId(list)
-                } else {
-                    view?.failedAdd(response.message)
                 }
-            } else {
-                view?.failedAdd("Your list is empty")
             }
         }
 

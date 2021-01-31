@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_app_name"
-                    android:hint="Input app name"
+                    android:hint="Example : Study Apps"
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_description_portfolio"
-                    android:hint="Input description"
+                    android:hint="Example : This app help everyone to study"
                     android:inputType="textMultiLine"
                     android:gravity="top"
                     android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_link_pub_portfolio"
-                    android:hint="Input link publication"
+                    android:hint="Example : https://study-apps"
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_link_repo_portfolio"
-                    android:hint="Input link repository"
+                    android:hint="Example : https://github.com/username"
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"/>
                 <EditText
                     android:id="@+id/et_workplace_portfolio"
-                    android:hint="Input workplace"
+                    android:hint="Example : Software House"
                     android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

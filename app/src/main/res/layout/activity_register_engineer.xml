@@ -57,7 +57,7 @@
 
             <EditText
                 android:id="@+id/et_name"
-                android:hint="Enter full name"
+                android:hint="Example : Soekarno"
                 android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
 
             <EditText
                 android:id="@+id/et_email"
-                android:hint="Enter email"
+                android:hint="Example : user@gmail.com"
                 android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
 
             <EditText
                 android:id="@+id/et_number_phone"
-                android:hint="Enter phone number"
+                android:hint="Example : 085667665432"
                 android:inputType="phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                 app:passwordToggleEnabled="true"
                 android:layout_marginTop="5dp"
                 app:hintAnimationEnabled="false"
-                android:hint="Enter password"
+                android:hint="********"
                 android:background="@drawable/white_button"
                 app:passwordToggleTint="@color/colorPrimaryDark"
                 >
@@ -156,7 +156,7 @@
                 app:passwordToggleEnabled="true"
                 android:layout_marginTop="5dp"
                 app:hintAnimationEnabled="false"
-                android:hint="Enter confirm password"
+                android:hint="********"
                 android:background="@drawable/white_button"
                 app:passwordToggleTint="@color/colorPrimaryDark"
                 >

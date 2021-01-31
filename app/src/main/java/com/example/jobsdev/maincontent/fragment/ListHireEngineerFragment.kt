@@ -64,8 +64,8 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
     private fun subscribeListHireLiveData() {
         viewModel.isListHireEngineerLiveData.observe(this, Observer {
             if (it) {
-                viewModel.isAddList.observe(this, Observer {
-                    (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(it)
+                viewModel.isAddList.observe(this, Observer { it1->
+                    (binding.recyclerViewHireEngineer.adapter as ListHireEngineerAdapter).addListHireEngineer(it1)
                 })
                 binding.recyclerViewHireEngineer.showOrGone(true)
                 binding.ivEmptyIllustration.showOrGone(false)
@@ -73,11 +73,11 @@ class ListHireEngineerFragment : Fragment(), ListHireEngineerAdapter.OnListHireE
             } else {
                 binding.ivEmptyIllustration.showOrGone(true)
                 binding.tvEmptyList.showOrGone(true)
-                viewModel.isMessage.observe(this, Observer {
-                    if (it.equals("expired")) {
+                viewModel.isMessage.observe(this, Observer { it1->
+                    if (it1 == "expired") {
                         Toast.makeText(requireContext(), "Please sign in!", Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), it1, Toast.LENGTH_LONG).show()
                     }
                 })
             }
