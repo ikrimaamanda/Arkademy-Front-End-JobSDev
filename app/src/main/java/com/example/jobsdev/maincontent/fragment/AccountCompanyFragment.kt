@@ -70,7 +70,6 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
         builder.setTitle("Log Out")
         builder.setMessage("Do you want to log out?")
         builder.setPositiveButton("Yes", { dialogInterface : DialogInterface, i : Int -> sharedPref.putValue(Constant.prefIsLogin, false)
-            showMessage("Log Out")
             moveActivity()
             sharedPref.clear()
             activity!!.finish()
@@ -82,6 +81,7 @@ class AccountCompanyFragment : Fragment(), AccountCompanyContract.ViewAcCompany 
     private fun moveActivity() {
         val  intent = Intent(activity, LoginActivity::class.java)
         activity!!.startActivity(intent)
+        showMessage("Log Out")
     }
 
     override fun setDataCompany(data: DetailCompanyByAcIdResponse.Company) {

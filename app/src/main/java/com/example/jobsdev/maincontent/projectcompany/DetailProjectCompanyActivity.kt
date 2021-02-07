@@ -97,6 +97,12 @@ class DetailProjectCompanyActivity : AppCompatActivity(),
         binding.fabUpdateImage.visibility = View.VISIBLE
     }
 
+    override fun failedAdd() {
+        binding.progressBarList.visibility = View.GONE
+        binding.btnEditProject.visibility = View.VISIBLE
+        binding.fabUpdateImage.visibility = View.VISIBLE
+    }
+
     override fun showProgressBar() {
         binding.progressBarList.visibility = View.VISIBLE
         binding.progressBarBtn.visibility = View.VISIBLE

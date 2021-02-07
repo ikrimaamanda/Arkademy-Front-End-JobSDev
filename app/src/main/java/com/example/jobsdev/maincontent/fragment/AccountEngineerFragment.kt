@@ -75,7 +75,6 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
 
         binding.btnLogout.setOnClickListener {
             showDialogLogOut()
-            showMessage("Log Out")
         }
 
         return binding.root
@@ -119,6 +118,7 @@ class AccountEngineerFragment : Fragment(), RecyclerViewSkillEngineerAdapter.OnS
     private fun moveActivity() {
         val  intent = Intent(activity, LoginActivity::class.java)
         activity!!.startActivity(intent)
+        showMessage("Log Out")
     }
 
     private fun showMessage(message : String) {

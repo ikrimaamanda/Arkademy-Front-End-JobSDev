@@ -56,7 +56,11 @@ class DetailProjectCompanyPresenter(private val coroutineScope: CoroutineScope,
                             it.projectDesc, it.projectDeadline, it.projectImage, it.hirePrice, it.hireMessage, it.hireStatus, it.hireDateConfirm, it.hireCreatedAt, it.projectCreateAt, it.projectUpdateAt, it.name, it.email, it.pHoneNumber)
                     }
                     view?.addListHireByPjId(list)
+                } else {
+                    view?.failedAdd()
                 }
+            } else {
+                view?.failedAdd()
             }
         }
 

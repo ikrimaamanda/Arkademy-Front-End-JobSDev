@@ -5,6 +5,7 @@ interface DetailProjectCompanyContract {
     interface ViewDetailProjectCompany {
         fun addListHireByPjId(list : List<HireByProjectIdModel>)
         fun failedAdd(msg : String)
+        fun failedAdd()
         fun showProgressBar()
         fun hideProgressBar()
     }
