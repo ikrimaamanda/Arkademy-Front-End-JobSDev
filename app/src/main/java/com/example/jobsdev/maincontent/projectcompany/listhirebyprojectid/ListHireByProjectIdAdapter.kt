@@ -2,6 +2,7 @@ package com.example.jobsdev.maincontent.projectcompany.listhirebyprojectid
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -39,7 +40,8 @@ class ListHireByProjectIdAdapter(private val listHireByProjectId: ArrayList<Hire
 
         var dateConfirm = item.dateConfirm
         if (dateConfirm.isNullOrEmpty()) {
-            holder.binding.tvDateConfirm.text = dateConfirm
+            holder.binding.ivCalendar.visibility = View.GONE
+            holder.binding.tvDateConfirm.visibility = View.GONE
         } else {
             dateConfirm = item.dateConfirm!!.split("T")[0]
             holder.binding.tvDateConfirm.text = dateConfirm
